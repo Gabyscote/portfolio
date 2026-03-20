@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stage JLM - Étude de cas | Gabriel Roger</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        const theme = localStorage.getItem('portfolio-theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+    </script>
+</head>
+<body class="page-padding">
+
+    <header class="header" id="header-container"></header>
+
+    <section class="case-study-hero">
+        <div class="case-study-header">
+            <a href="projets.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Retour aux projets</a>
+            <span class="project-badge mt-20">Stage de 2ème année (JLM Solution Informatique)</span>
+            <h1 class="case-title">Refonte & Optimisation d'un ERP Industriel</h1>
+            <p class="case-subtitle">Transformation d'un prototype web de gestion de stocks et de simulation de production en un outil quotidien fiable, sécurisé et responsive.</p>
+            
+            <div class="tech-tags justify-center mt-20">
+                <span>PHP</span><span>MySQL</span><span>CSS (Responsive)</span><span>UI/UX</span><span>Raspberry Pi</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="case-study-content">
+        
+        <div class="case-section">
+            <div class="case-text">
+                <h2><span class="highlight-purple">01.</span> Le Contexte & La Mission</h2>
+                <p>JLM Solution Informatique est une entreprise spécialisée dans la conception de logiciels métiers (ERP / GPAO) pour le monde industriel. Lors de mon arrivée, l'entreprise disposait d'un prototype partiellement fonctionnel, utilisant des données statiques ou simulées.</p>
+                <p>Ma mission était claire : reprendre ce code existant pour le transformer en un outil exploitable. Il fallait corriger l'absence de filtrage des données par client, fiabiliser les flux SQL, et surtout, repenser entièrement l'interface pour qu'elle s'adapte aux appareils mobiles et aux écrans d'atelier.</p>
+            </div>
+            <div class="case-image">
+                <img src="img/stage/stage_accueil.webp" alt="Tableau de bord de l'application" class="shadow-img">
+            </div>
+        </div>
+
+        <div class="case-section reverse">
+            <div class="case-text">
+                <h2><span class="highlight-purple">02.</span> Refonte UI/UX & Ergonomie</h2>
+                <p>Travailler sur un outil métier impose une contrainte majeure : l'information doit être lisible instantanément par les opérateurs. J'ai d'abord harmonisé le CSS pour respecter strictement la maquette initiale, tout en y apportant une dimension "Mobile First".</p>
+                <p>J'ai développé des tableaux de bord dynamiques intégrant des indicateurs clés (Livraisons, Réceptions, Production) et repensé la navigation entre les Produits et les Composants. L'intégration d'un "loader" et la refonte des pages de détails des Ordres de Fabrication (OF) ont considérablement amélioré l'expérience utilisateur.</p>
+            </div>
+            <div class="case-image">
+                <div class="manual-carousel" data-folder="img/stage/" data-photos="stage_detail_prod.webp, stage_detail_compo.webp"></div>
+            </div>
+        </div>
+
+        <div class="case-section">
+            <div class="case-text">
+                <h2><span class="highlight-purple">03.</span> Logique Métier & Backend</h2>
+                <p>Au-delà de l'interface, le cœur de ma mission résidait dans le traitement des données en PHP/SQL. J'ai optimisé les requêtes complexes pour récupérer précisément les informations de stock et calculer automatiquement le "Manque total" en composants pour une production donnée.</p>
+                <p>J'ai également intégré un système de <strong>GED (Gestion Électronique des Documents)</strong> permettant d'afficher et de lier des photos (contrôle qualité) directement aux Ordres de Fabrication. Enfin, j'ai configuré un Raspberry Pi en "mode kiosque" pour afficher des informations tournantes de manière autonome dans les ateliers, en récupérant la configuration directement depuis la base de données.</p>
+            </div>
+            <div class="case-image">
+                <div class="manual-carousel" data-folder="img/stage/" data-photos="stage_bd1.webp, stage_bd2.webp"></div>
+            </div>
+        </div>
+
+        <div class="case-features">
+            <h2 class="text-center mb-40"><span class="highlight-purple">04.</span> Les Réalisations Clés</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <img src="img/stage/stage_of.webp" alt="Suivi des OF" class="feature-img">
+                    <div class="feature-body">
+                        <h3>Suivi des Ordres de Fabrication</h3>
+                        <p>Création d'interfaces détaillées pour visualiser l'état d'avancement des OF et les palettes produites, avec un affichage clair des quantités et des statuts.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <img src="img/stage/stage_simu.webp" alt="Calcul des manques" class="feature-img">
+                    <div class="feature-body">
+                        <h3>Simulation & Calcul des Manques</h3>
+                        <p>Développement d'un module de simulation permettant d'anticiper les besoins en composants en fonction des stocks réels (disponibles et réservés).</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <img src="img/stage/stage_ged.webp" alt="GED Photos" class="feature-img">
+                    <div class="feature-body">
+                        <h3>Système de GED Intégré</h3>
+                        <p>Implémentation d'une gestion documentaire liée à la base de données pour lier des fichiers médias (photos de contrôle) aux opérations de l'atelier.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <img src="img/stage/stage_kiosk.webp" alt="Kiosque Raspberry" class="feature-img">
+                    <div class="feature-body">
+                        <h3>Affichage Autonome (Kiosque)</h3>
+                        <p>Mise en place d'un Raspberry Pi interrogeant la base de données pour diffuser des écrans d'information tournants toutes les minutes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="case-section">
+            <div class="case-text full-width text-center">
+                <h2><span class="highlight-purple">05.</span> Bilan & Évolution Professionnelle</h2>
+                <p class="max-w-800 mx-auto">Cette immersion en entreprise m'a permis de travailler sur une base de code existante et de m'adapter aux méthodes de développement d'une structure à taille humaine. J'ai gagné en autonomie et pris conscience de l'importance de la communication et de la rigueur organisationnelle.</p>
+                <p class="max-w-800 mx-auto mt-20">Surtout, ce projet a agi comme un véritable révélateur : le plaisir pris à repenser la maquette, à concevoir les dashboards et à améliorer l'ergonomie de l'outil a confirmé mon vif intérêt pour le design d'interface. C'est cette expérience qui oriente aujourd'hui mon parcours vers la gestion de projets digitaux et l'UX/UI.</p>
+            </div>
+        </div>
+
+    </section>
+
+    <footer class="footer" id="footer-container"></footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

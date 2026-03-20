@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusGo - Étude de cas | Gabriel Roger</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        const theme = localStorage.getItem('portfolio-theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+    </script>
+</head>
+<body class="page-padding">
+
+    <header class="header" id="header-container"></header>
+
+    <section class="case-study-hero">
+        <div class="case-study-header">
+            <a href="projets.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Retour aux projets</a>
+            <span class="project-badge mt-20">Projet Universitaire (SAE 3)</span>
+            <h1 class="case-title">Campus'Go : Plateforme de Covoiturage Étudiant</h1>
+            <p class="case-subtitle">Une solution de mobilité sécurisée, économique et écologique dédiée aux étudiants et au personnel de l'IUT d'Amiens.</p>
+            
+            <div class="tech-tags justify-center mt-20">
+                <span>Laravel 11</span><span>PHP</span><span>Tailwind CSS</span><span>MySQL</span><span>Git</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="case-study-content">
+        
+        <div class="case-section">
+            <div class="case-text">
+                <h2><span class="highlight-purple">01.</span> Le Contexte & La Problématique</h2>
+                <p>L'IUT d'Amiens est un lieu de vie très actif, mais s'y rendre est parfois compliqué pour les étudiants sans véhicule. Face à l'augmentation du coût du carburant et à l'impact écologique des voitures individuelles, nous avons identifié un besoin critique : <strong>comment faciliter la mobilité tout en réduisant les coûts ?</strong></p>
+                <p>La solution n'était pas de créer un "BlaBlaCar bis", mais une plateforme exclusive et sans commission pour les trajets domicile-campus, avec trois objectifs majeurs : l'économie, l'écologie (réduction de l'empreinte carbone) et la création de lien social (communauté).</p>
+            </div>
+            <div class="case-image">
+                <img src="/img/campusgo/campusgo_accueil.webp" alt="Page d'accueil de CampusGo" class="shadow-img">
+            </div>
+        </div>
+
+        <div class="case-section reverse">
+            <div class="case-text">
+                <h2><span class="highlight-purple">02.</span> Architecture & Base de données</h2>
+                <p>Pour garantir la robustesse et la maintenabilité du projet, nous avons opté pour le framework <strong>Laravel</strong> (architecture MVC) couplé à une base de données <strong>MySQL</strong>. L'interface a été stylisée avec <strong>Tailwind CSS</strong> pour assurer un design responsive et moderne, respectant notre charte graphique (Beige et Vert nature).</p>
+                <ul class="case-list">
+                    <li><i class="fa-solid fa-check text-purple"></i> <strong>Modélisation stricte :</strong> Entités Utilisateur, Véhicule, Trajet, Avis, et Préférences.</li>
+                    <li><i class="fa-solid fa-check text-purple"></i> <strong>Sécurité :</strong> Hashage des mots de passe, requêtes préparées (protection anti-injections SQL) et respect du RGPD.</li>
+                </ul>
+            </div>
+            <div class="case-image">
+                <img src="/img/campusgo/campusgo_bd.webp" alt="Architecture de l'application" class="shadow-img">
+            </div>
+        </div>
+
+        <div class="case-features">
+            <h2 class="text-center mb-40"><span class="highlight-purple">03.</span> Les Fonctionnalités Clés</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <img src="/img/campusgo/campusgo_recherche.webp" alt="Recherche de trajets" class="feature-img">
+                    <div class="feature-body">
+                        <h3>Recherche et Proposition</h3>
+                        <p>Les conducteurs peuvent publier un trajet en précisant l'heure, le véhicule et le nombre de places. Les passagers disposent d'un moteur de recherche avec filtres pour trouver le trajet qui correspond à leurs horaires.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <img src="/img/campusgo/campusgo_trajet.webp" alt="Tableau de bord utilisateur" class="feature-img">
+                    <div class="feature-body">
+                        <h3>Dashboard Personnalisé</h3>
+                        <p>Chaque utilisateur dispose d'un espace pour suivre ses réservations (passées et à venir), consulter l'historique de ses trajets et gérer ses annulations.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <img src="/img/campusgo/campusgo_profil.webp" alt="Gestion du profil" class="feature-img">
+                    <div class="feature-body">
+                        <h3>Profil et Véhicules</h3>
+                        <p>L'utilisateur peut enregistrer plusieurs véhicules et définir ses préférences de voyage (musique, discussion, tolérance au tabac ou animaux) pour un covoiturage optimal.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <img src="/img/campusgo/campusgo_admin.webp" alt="Système d'administration" class="feature-img">
+                    <div class="feature-body">
+                        <h3>Système d'Avis & Modération</h3>
+                        <p>Un système de notation réciproque garantit la confiance. Les comptes ayant des droits d'administration peuvent modérer les trajets et superviser la plateforme.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="case-section">
+            <div class="case-text full-width text-center">
+                <h2><span class="highlight-purple">04.</span> Défis Techniques & Bilan</h2>
+                <p class="max-w-800 mx-auto">Ce projet a été un véritable défi technique et humain. Techniquement, la prise en main du routage de <strong>Laravel</strong> a demandé un temps d'adaptation par rapport au PHP natif. Organisationnellement, nous avons dû apprendre à gérer les conflits de fusion sur <strong>Git</strong> (merge conflicts) et à synchroniser le travail de l'équipe (5 développeurs) pour maintenir un rythme cohérent.</p>
+                <p class="max-w-800 mx-auto mt-20">Aujourd'hui, <strong>Campus'Go</strong> est une plateforme fonctionnelle qui répond au cahier des charges initial. Nous sommes fiers de cette solution, qui pourrait à l'avenir s'enrichir d'une application mobile native ou d'un module de paiement en ligne.</p>
+                
+                <div class="mt-40">
+                    <a href="https://github.com/votre-pseudo/campusgo" target="_blank" class="btn btn-primary"><i class="fa-brands fa-github"></i> Consulter le code source sur GitHub</a>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <footer class="footer" id="footer-container"></footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

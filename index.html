@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil | Gabriel Roger</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        const theme = localStorage.getItem('portfolio-theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+    </script>
+</head>
+<body>
+
+    <header class="header" id="header-container"></header>
+
+    <section id="hero" class="hero">
+        <div class="badge">Développeur • Designer • Créatif</div>
+        <h1>Bonjour, je suis <span class="highlight-purple">Gabriel Roger</span></h1>
+        <p class="subtitle">Je crée des expériences numériques élégantes et fonctionnelles qui transforment les idées en réalité.</p>
+        <div class="hero-buttons">
+            <a href="contact.html" class="btn btn-primary">Me contacter</a>
+            <a href="projets.html" class="btn btn-secondary">Voir mes projets</a>
+            <a href="piece_jointe/CV_ROGER_GABRIEL.pdf" download class="btn btn-secondary" style="border-color: var(--purple-main); color: var(--text-main);">
+                <i class="fa-solid fa-download"></i> Mon CV
+            </a>
+        </div>
+        <div class="social-links">
+            <a href="#"><i class="fa-brands fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/gabriel-roger-bb9079386" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+    </section>
+
+    <section class="about">
+        <h2 class="section-title">À propos de <span class="highlight-purple">moi</span><span class="underline"></span></h2>
+        <div class="about-container">
+            <div class="about-text">
+                <p>Étudiant en BUT Informatique (Conception & Développement) et futur étudiant à la Normandie Web School en cursus Chef de Projets Digitaux, je combine rigueur technique et créativité.</p>
+                <p>Mon objectif est de concevoir des interfaces qui ne sont pas seulement esthétiques, mais aussi hautement fonctionnelles, en alliant maîtrise du code et design d'expérience utilisateur (UX/UI).</p>
+            </div>
+            <div class="skills-card">
+                <h3>Compétences clés</h3>
+                <ul>
+                    <li><span class="dot-list"></span><strong>Développement :</strong> PHP, Laravel, C#, Python, JS</li>
+                    <li><span class="dot-list"></span><strong>Bases de données :</strong> SQL, MariaDB, MySQL</li>
+                    <li><span class="dot-list"></span><strong>Réseaux & Systèmes :</strong> Debian, Proxmox, pfSense</li>
+                    <li><span class="dot-list"></span><strong>Design UI/UX :</strong> Figma, Adobe XD</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section class="passions-section">
+        <h2 class="section-title">Mes <span class="highlight-purple">Passions</span><span class="underline"></span></h2>
+        
+        <div class="passions-grid">
+            <div class="passion-card">
+                <div class="passion-icon">
+                    <i class="fa-solid fa-gears"></i>
+                </div>
+                <h3>Mécanique & F1</h3>
+                <p>Passionné par la mécanique et grand amateur de sports automobiles, tout particulièrement de Formule 1.</p>
+            </div>
+
+            <div class="passion-card">
+                <div class="passion-icon">
+                    <i class="fa-solid fa-microchip"></i>
+                </div>
+                <h3>Informatique</h3>
+                <p>Au-delà de mes études, l'informatique en général et les nouvelles technologies sont une véritable passion au quotidien.</p>
+            </div>
+
+            <div class="passion-card">
+                <div class="passion-icon">
+                    <i class="fa-solid fa-gamepad"></i>
+                </div>
+                <h3>Jeux</h3>
+                <p>Amateur de jeux, un excellent moyen d'allier détente, réflexion stratégique et esprit d'équipe.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="latest-project">
+        <h2 class="section-title">Dernier <span class="highlight-purple">Projet</span><span class="underline"></span></h2>
+        
+        <div id="container-dernier-projet"></div>
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="projets.html" class="btn btn-secondary">Voir tous mes projets <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+    </section>
+    
+    <footer class="footer" id="footer-container"></footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

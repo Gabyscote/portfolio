@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projets | Gabriel Roger</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        const theme = localStorage.getItem('portfolio-theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+    </script>
+</head>
+<body class="page-padding">
+
+    <header class="header" id="header-container"></header>
+
+    <section class="projects-page">
+        <h1 class="section-title">Mes <span class="highlight-purple">Projets</span><span class="underline"></span></h1>
+        
+        <div class="tabs-menu">
+            <button class="tab-btn active" onclick="openTab('info')">Projets Informatique</button>
+            <button class="tab-btn" onclick="openTab('nws')">Projets Normandie Web School</button>
+        </div>
+
+        <div id="info" class="tab-content active">
+            <div id="container-projets-info"></div>
+        </div>
+
+        <div id="nws" class="tab-content">
+            <div class="project-showcase showcase-margin">
+                <div class="project-media" style="background: var(--bg-card); display: flex; align-items: center; justify-content: center; border: 2px dashed var(--border-color); border-radius: 12px; min-height: 300px;">
+                    <div style="text-align: center; color: var(--text-muted);">
+                        <i class="fa-solid fa-hourglass-half fa-3x" style="margin-bottom: 15px; color: var(--purple-main);"></i>
+                        <p>En attente de réalisation</p>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <span class="project-badge"><i class="fa-regular fa-calendar"></i> Septembre 2026 • Alternance NWS</span>
+                    <h3>Projets à venir...</h3>
+                    <p>Cet espace accueillera les projets de design UI/UX et de gestion de projet réalisés dans le cadre de ma future formation à la Normandie Web School.</p>
+                    <div class="tech-tags">
+                        <span>Gestion de Projet</span><span>UI / UX</span><span>Management</span>
+                    </div>
+                    <button class="btn btn-secondary btn-margin-top" disabled style="opacity: 0.5; cursor: not-allowed;">Bientôt disponible</button>
+                </div>
+            </div>
+        </div>
+
+    <footer class="footer" id="footer-container"></footer>
+
+    <div id="modal-ui" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('modal-ui')">&times;</span>
+            <div class="modal-header">
+                <span class="project-badge">Design UI/UX</span>
+                <h2>Prototypage d'Application</h2>
+            </div>
+            <div class="modal-body">
+                <p>Les détails complets de cette mission créative seront bientôt disponibles. (Espace prêt à être rempli avec vos travaux de la Normandie Web School).</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        function openTab(tabName) {
+            let contents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < contents.length; i++) contents[i].classList.remove("active");
+            let buttons = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < buttons.length; i++) buttons[i].classList.remove("active");
+            document.getElementById(tabName).classList.add("active");
+            event.currentTarget.classList.add("active");
+        }
+
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) { modal.style.display = 'block'; document.body.style.overflow = 'hidden'; }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) { modal.style.display = 'none'; document.body.style.overflow = 'auto'; }
+        }
+
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none'; document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>

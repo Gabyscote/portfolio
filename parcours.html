@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Parcours | Gabriel Roger</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        const theme = localStorage.getItem('portfolio-theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+    </script>
+</head>
+<body class="page-padding">
+
+    <header class="header" id="header-container"></header>
+
+    <section class="timeline-page">
+        <h1 class="section-title">Mon <span class="highlight-purple">Parcours</span><span class="underline"></span></h1>
+        <p style="text-align: center; color: var(--text-muted); max-width: 600px; margin: 0 auto 50px auto;">
+            Découvrez mon évolution, mêlant cursus académique, expériences sur le terrain et projets de développement concrets.
+        </p>
+
+        <div class="timeline" id="container-parcours"></div>
+        
+        <div style="text-align: center; margin-top: 60px;">
+            <a href="CV_Roger_Gabriel.pdf" download class="btn btn-primary">
+                <i class="fa-solid fa-download"></i> Télécharger la version PDF
+            </a>
+        </div>
+
+    </section>
+
+    <footer class="footer" id="footer-container"></footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
