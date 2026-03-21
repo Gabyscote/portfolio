@@ -814,3 +814,70 @@ a {
 .contact-page {
     padding: 120px 5% 100px 5%;
 }
+
+/* ==========================================================================
+   OPTIMISATION BOUTONS HERO (CV & LINKEDIN)
+   ========================================================================== */
+
+/* Conteneur pour aligner les deux boutons d'action */
+.action-buttons-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center; /* Centre les boutons sur PC */
+    flex-wrap: wrap; /* Permet de passer à la ligne sur mobile */
+    width: 100%;
+    margin-top: 10px; /* Aligne visuellement avec les boutons du haut */
+}
+
+/* Style commun pour les boutons d'action (CV & LinkedIn) */
+.btn-cv,
+.btn-linkedin {
+    background: transparent;
+    border: 2px solid var(--purple-main); /* Bordure violette par défaut */
+    color: var(--text-main);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px; /* Espace entre le logo et le texte */
+    transition: all 0.3s ease;
+}
+
+/* Effet au survol pour le bouton CV */
+.btn-cv:hover {
+    background: var(--purple-main);
+    color: white;
+    transform: translateY(-3px);
+}
+
+/* Style spécifique et survol pour le bouton LinkedIn (Bleu LinkedIn) */
+.btn-linkedin {
+    border-color: #0077b5; /* Couleur officielle LinkedIn */
+    color: #0077b5;
+}
+
+.btn-linkedin:hover {
+    background: #0077b5;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 119, 181, 0.3);
+}
+
+/* Assure que les icônes ont la bonne taille */
+.action-buttons-group i {
+    font-size: 1.1rem;
+}
+
+/* --- RESPONSIVE MOBILE --- */
+@media (max-width: 768px) {
+    .action-buttons-group {
+        flex-direction: column; /* Empile les boutons sur mobile */
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .btn-cv,
+    .btn-linkedin {
+        width: 100%; /* Les boutons prennent toute la largeur sur mobile */
+        justify-content: center; /* Centre le texte à l'intérieur */
+        max-width: 300px; /* Empêche qu'ils soient trop larges */
+    }
+}
