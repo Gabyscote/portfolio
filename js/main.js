@@ -33,7 +33,7 @@ const mesProjets = [
         technos: ["C#", "WinForms", ".NET", "SQL"],
         lien: "metro.html",
         dossierImages: "img/metro/",
-        images: "metro_accueil.webp, metro_bd.webp, metro_arbre.webp, metro_reunion.webp"
+        images: "metro_accueil.webp, metro_bd.webp"
     }
 ];
 
@@ -180,10 +180,12 @@ function afficherContenuDynamique() {
 // ==========================================================================
 async function loadComponent(elementId, filePath) {
     try {
+        const element = document.getElementById(elementId);
+        if (!element) return;
         const response = await fetch(filePath);
         if (!response.ok) throw new Error(`Erreur: ${filePath}`);
         const data = await response.text();
-        document.getElementById(elementId).innerHTML = data;
+        element.innerHTML = data;
     } catch (error) {
         console.error(error);
     }
@@ -302,7 +304,6 @@ function initManualCarousels() {
         const folder = carousel.getAttribute('data-folder');
         const photos = carousel.getAttribute('data-photos').split(',').map(photo => photo.trim());
 
-        // 1. Création des images
         photos.forEach((photo, index) => {
             const img = document.createElement('img');
             img.src = folder + photo;
@@ -311,7 +312,6 @@ function initManualCarousels() {
             carousel.appendChild(img);
         });
 
-        // 2. Création des boutons uniquement s'il y a plus d'une image
         if (photos.length > 1) {
             const prevBtn = document.createElement('button');
             prevBtn.className = 'carousel-control prev';
@@ -324,14 +324,12 @@ function initManualCarousels() {
             carousel.appendChild(prevBtn);
             carousel.appendChild(nextBtn);
 
-            // 3. Logique de défilement
             let currentIndex = 0;
             const slides = carousel.querySelectorAll('.manual-slide');
 
             function showSlide(index) {
                 slides[currentIndex].classList.remove('active');
                 currentIndex = index;
-                // Boucle (revenir au début ou à la fin)
                 if (currentIndex >= slides.length) currentIndex = 0;
                 if (currentIndex < 0) currentIndex = slides.length - 1;
                 slides[currentIndex].classList.add('active');
@@ -343,7 +341,6 @@ function initManualCarousels() {
     });
 }
 
-// NOUVEAU : Fonctionnalité de zoom sur image (Lightbox)
 function initLightbox() {
     const lightbox = document.createElement('div');
     lightbox.id = 'lightbox';
@@ -355,7 +352,6 @@ function initLightbox() {
 
     const lightboxImg = document.getElementById('lightbox-img');
     
-    // Ajoute le clic sur toutes les images de la page de détail
     document.addEventListener('click', (e) => {
         if (e.target.tagName === 'IMG' && (e.target.closest('.case-image') || e.target.closest('.feature-img') || e.target.classList.contains('feature-img'))) {
             lightbox.style.display = 'flex';

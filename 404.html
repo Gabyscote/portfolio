@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page introuvable | Gabriel Roger</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        const theme = localStorage.getItem('portfolio-theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+    </script>
+</head>
+<body class="page-padding">
+
+    <header class="header" id="header-container"></header>
+
+    <section class="hero" style="min-height: 70vh;">
+        <div class="hero-content">
+            <h1 style="font-size: 6rem; color: var(--purple-main); margin-bottom: 0;">404</h1>
+            <h2 style="font-size: 2rem; margin-bottom: 20px;">Oups ! Page introuvable.</h2>
+            <p class="subtitle" style="margin-bottom: 40px;">Il semblerait que le lien que vous cherchez n'existe plus ou ait été déplacé.</p>
+            
+            <a href="index.html" class="btn btn-primary"><i class="fa-solid fa-house" style="margin-right: 8px;"></i> Retour à l'accueil</a>
+        </div>
+    </section>
+
+    <footer class="footer" id="footer-container"></footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
