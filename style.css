@@ -819,38 +819,39 @@ a {
    OPTIMISATION BOUTONS HERO (CV & LINKEDIN)
    ========================================================================== */
 
-/* Conteneur pour aligner les deux boutons d'action */
 .action-buttons-group {
     display: flex;
     gap: 15px;
-    justify-content: center; /* Centre les boutons sur PC */
-    flex-wrap: wrap; /* Permet de passer à la ligne sur mobile */
+    justify-content: center;
+    flex-wrap: wrap;
     width: 100%;
-    margin-top: 10px; /* Aligne visuellement avec les boutons du haut */
+    margin-top: 10px;
 }
 
-/* Style commun pour les boutons d'action (CV & LinkedIn) */
+/* Style de base (Version Bureau) */
 .btn-cv,
 .btn-linkedin {
     background: transparent;
-    border: 2px solid var(--purple-main); /* Bordure violette par défaut */
+    border: 2px solid var(--purple-main);
     color: var(--text-main);
     display: inline-flex;
     align-items: center;
-    gap: 10px; /* Espace entre le logo et le texte */
+    gap: 10px;
+    padding: 12px 25px; /* Aligné sur tes autres boutons */
+    border-radius: 8px;
+    font-weight: 500;
     transition: all 0.3s ease;
+    text-decoration: none;
 }
 
-/* Effet au survol pour le bouton CV */
 .btn-cv:hover {
     background: var(--purple-main);
     color: white;
     transform: translateY(-3px);
 }
 
-/* Style spécifique et survol pour le bouton LinkedIn (Bleu LinkedIn) */
 .btn-linkedin {
-    border-color: #0077b5; /* Couleur officielle LinkedIn */
+    border-color: #0077b5;
     color: #0077b5;
 }
 
@@ -858,26 +859,31 @@ a {
     background: #0077b5;
     color: white;
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 119, 181, 0.3);
 }
 
-/* Assure que les icônes ont la bonne taille */
-.action-buttons-group i {
-    font-size: 1.1rem;
-}
-
-/* --- RESPONSIVE MOBILE --- */
+/* --- ADAPTATION MOBILE (Même style que Contact/Projets) --- */
 @media (max-width: 768px) {
-    .action-buttons-group {
-        flex-direction: column; /* Empile les boutons sur mobile */
+    /* On force le conteneur à empiler les éléments */
+    .hero-buttons {
+        display: flex;
+        flex-direction: column;
         align-items: center;
-        gap: 10px;
+        gap: 15px;
     }
-    
+
+    .action-buttons-group {
+        flex-direction: column;
+        margin-top: 0;
+        gap: 15px; /* Même espacement que les boutons du haut */
+    }
+
+    /* On aligne la largeur sur les boutons .btn standards */
     .btn-cv,
-    .btn-linkedin {
-        width: 100%; /* Les boutons prennent toute la largeur sur mobile */
-        justify-content: center; /* Centre le texte à l'intérieur */
-        max-width: 300px; /* Empêche qu'ils soient trop larges */
+    .btn-linkedin,
+    .hero-buttons .btn {
+        width: 100%;
+        max-width: 350px; /* Largeur maximale pour ne pas être trop immense sur grandes tablettes */
+        justify-content: center;
+        box-sizing: border-box; /* Évite les débordements */
     }
 }
