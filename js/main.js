@@ -203,7 +203,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     afficherContenuDynamique(); 
     initScrollAnimations();
     initLightbox();
-    initManualCarousels();
 });
 
 function initTheme() {
@@ -293,52 +292,6 @@ function initScrollAnimations() {
     }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-}
-// ==========================================================================
-// CAROUSEL MANUEL (AVEC FLÈCHES)
-// ==========================================================================
-function initManualCarousels() {
-    const carousels = document.querySelectorAll('.manual-carousel');
-    
-    carousels.forEach(carousel => {
-        const folder = carousel.getAttribute('data-folder');
-        const photos = carousel.getAttribute('data-photos').split(',').map(photo => photo.trim());
-
-        photos.forEach((photo, index) => {
-            const img = document.createElement('img');
-            img.src = folder + photo;
-            img.className = 'manual-slide';
-            if (index === 0) img.classList.add('active');
-            carousel.appendChild(img);
-        });
-
-        if (photos.length > 1) {
-            const prevBtn = document.createElement('button');
-            prevBtn.className = 'carousel-control prev';
-            prevBtn.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
-
-            const nextBtn = document.createElement('button');
-            nextBtn.className = 'carousel-control next';
-            nextBtn.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
-
-            carousel.appendChild(prevBtn);
-            carousel.appendChild(nextBtn);
-
-            let currentIndex = 0;
-            const slides = carousel.querySelectorAll('.manual-slide');
-
-            function showSlide(index) {
-                slides[currentIndex].classList.remove('active');
-                currentIndex = index;
-                if (currentIndex >= slides.length) currentIndex = 0;
-                if (currentIndex < 0) currentIndex = slides.length - 1;
-                slides[currentIndex].classList.add('active');
-            }
-
-            prevBtn.addEventListener('click', () => showSlide(currentIndex - 1));
-            nextBtn.addEventListener('click', () => showSlide(currentIndex + 1));
-        }
-    });
 }
 
 function initLightbox() {
