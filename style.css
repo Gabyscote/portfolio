@@ -397,7 +397,7 @@ a {
 }
 
 .hero h1 { font-size: 4rem; line-height: 1.2; margin-bottom: 20px; }
-.hero .subtitle { color: var(--text-muted); font-size: 1.15rem; margin: 0 auto 40px auto; max-width: 600px; line-height: 1.6; }
+.hero .subtitle { color: var(--text-muted); font-size: 1.15rem; margin: 0 auto 20px auto; /*max-width: 600px;*/ line-height: 1.6; }
 .hero-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
 
 .social-links-center {
