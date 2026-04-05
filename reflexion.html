@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réflexions & Références | Gabriel Roger</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        const theme = localStorage.getItem('portfolio-theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+    </script>
+</head>
+<body>
+
+    <header class="header" id="header-container"></header>
+
+    <section class="contact-page" style="padding-top: 120px; min-height: 80vh;">
+        <h1 class="section-title">Réflexion & <span class="highlight-purple">Références</span><span class="underline"></span></h1>
+        
+        <div style="max-width: 800px; margin: 0 auto 60px auto; background-color: var(--bg-card); padding: 40px; border-radius: 15px; border: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <h2 style="margin-bottom: 25px; color: var(--text-main); font-size: 1.8rem;"><i class="fa-solid fa-brain highlight-purple"></i> Prise de recul sur mon parcours</h2>
+            
+            <p style="color: var(--text-muted); line-height: 1.8; margin-bottom: 20px;">
+                En entrant en BUT Informatique à l'IUT d'Amiens, je voyais le développement comme une simple suite d'instructions logiques. Ces deux premières années m'ont prouvé le contraire. J'ai compris que l'informatique n'est qu'un outil au service d'un besoin humain réel.
+            </p>
+            
+            <p style="color: var(--text-muted); line-height: 1.8; margin-bottom: 20px;">
+                <strong><span class="highlight-purple">Mes plus grands défis :</span></strong> Le passage au travail en équipe (sur des projets ambitieux comme Campus'Go ou le Métro de Tokyo) a été une véritable claque formatrice. Apprendre à structurer une base de code à plusieurs, à communiquer ses blocages, et à faire des compromis sur Git m'a fait grandir en autonomie et en maturité professionnelle.
+            </p>
+            
+            <p style="color: var(--text-muted); line-height: 1.8;">
+                <strong><span class="highlight-purple">Mon évolution :</span></strong> Lors de mon stage chez JLM Solution Informatique, ma passion pour l'UI/UX s'est confirmée. Je ne veux plus seulement être celui qui "fait marcher le programme", mais celui qui réfléchit à "pourquoi l'outil est fait ainsi et comment l'utilisateur va l'adopter". C'est cette réflexion qui motive aujourd'hui mon ambition de devenir Chef de Projet Digital.
+            </p>
+        </div>
+
+        <div style="max-width: 900px; margin: 0 auto; padding-bottom: 50px;">
+            <h2 class="text-center" style="margin-bottom: 40px;"><i class="fa-solid fa-handshake highlight-purple"></i> Ce qu'ils disent de moi</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                
+                <div style="background-color: var(--bg-card-light); padding: 30px; border-radius: 12px; border-left: 5px solid var(--purple-main); position: relative;">
+                    <i class="fa-solid fa-quote-right" style="position: absolute; top: 20px; right: 20px; font-size: 2rem; color: var(--purple-glow); opacity: 0.5;"></i>
+                    <p style="font-style: italic; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px;">
+                        "Gabriel a su faire preuve d'une grande adaptabilité lors de la refonte de notre ERP. Sa capacité à se mettre à la place des opérateurs pour repenser l'ergonomie de l'interface a été un vrai plus pour l'entreprise."
+                    </p>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--purple-main); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">T</div>
+                        <div>
+                            <h4 style="margin: 0; color: var(--text-main); font-size: 1rem;">Tuteur de stage</h4>
+                            <span style="font-size: 0.85rem; color: var(--purple-main);">JLM Solution Informatique</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background-color: var(--bg-card-light); padding: 30px; border-radius: 12px; border-left: 5px solid var(--purple-main); position: relative;">
+                    <i class="fa-solid fa-quote-right" style="position: absolute; top: 20px; right: 20px; font-size: 2rem; color: var(--purple-glow); opacity: 0.5;"></i>
+                    <p style="font-style: italic; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px;">
+                        "Un étudiant investi, curieux et méthodique. Dans les SAE de groupe, Gabriel prend naturellement un rôle d'organisation et s'assure que le rendu final est toujours soigné visuellement et techniquement."
+                    </p>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--purple-main); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">E</div>
+                        <div>
+                            <h4 style="margin: 0; color: var(--text-main); font-size: 1rem;">Enseignant(e)</h4>
+                            <span style="font-size: 0.85rem; color: var(--purple-main);">IUT d'Amiens</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 20px; font-style: italic;">(N'hésite pas à modifier ces citations avec de vrais retours que tu as pu avoir !)</p>
+        </div>
+    </section>
+
+    <footer class="footer" id="footer-container"></footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
