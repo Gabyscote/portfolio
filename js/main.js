@@ -359,3 +359,39 @@ window.addEventListener('scroll', () => {
         }
     }
 });
+// ==========================================================================
+// F1 ALÉATOIRE AU CHARGEMENT DE LA PAGE
+// ==========================================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Ton super dossier f1
+    const imgFolder = 'img/f1/';
+    
+    // Tes deux premières voitures (tu pourras en ajouter d'autres)
+    const f1Cars = [
+        'Ferrari.png',
+        'Redbull.png',
+        'Mercedes.png',
+        'McLaren.png',
+        'Williams.png',
+        'Aston.png',
+        'Alpine.png'
+    ];
+
+    // On crée un petit "radar" qui cherche le header
+    const waitForF1 = setInterval(() => {
+        const f1ImgElement = document.getElementById('f1-car');
+        
+        if (f1ImgElement) {
+            // Dès qu'il trouve la voiture, on coupe le radar !
+            clearInterval(waitForF1);
+            
+            // On s'assure que tu as bien mis la balise <IMG>
+            if (f1ImgElement.tagName === 'IMG') {
+                const randomIndex = Math.floor(Math.random() * f1Cars.length);
+                f1ImgElement.src = imgFolder + f1Cars[randomIndex];
+                f1ImgElement.style.display = 'block';
+            }
+        }
+    }, 100); // Il vérifie toutes les 100 millisecondes
+});

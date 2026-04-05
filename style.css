@@ -244,12 +244,22 @@ a {
     transition: background-color 0.4s ease, border-color 0.4s ease;
 }
 
-.logo {
-    font-size: 1.5rem;
-    font-weight: 600;
+/* --- LOGO IMAGE --- */
+.logo-link {
+    display: flex;
+    align-items: center;
 }
 
-.logo .dot { color: var(--yellow-accent); }
+.site-logo {
+    height: 45px; /* Tu pourras ajuster cette taille selon ton image */
+    width: auto;
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 2px 5px rgba(139, 92, 246, 0.2)); /* Petite ombre violette subtile */
+}
+
+.site-logo:hover {
+    transform: scale(1.05); /* Petit effet de zoom au survol */
+}
 
 .nav-links {
     position: absolute;
@@ -288,7 +298,6 @@ a {
 .footer {
     background-color: var(--footer-bg);
     padding: 80px 5% 30px 5%;
-    margin-top: 50px;
     transition: background-color 0.4s ease;
 }
 
@@ -957,15 +966,16 @@ a {
 /* La voiture de course */
 .f1-car {
     position: absolute;
-    /* La voiture dépasse de 15px, ce qui comble exactement le vide laissé par la piste */
-    right: -27px; 
-    top: -17px; /* Hauteur ajustée pour que les roues posent sur la ligne */
-    font-size: 24px;
-    line-height: 1;
-    transform: scaleX(-1); /* Retourne la voiture vers la droite */
+    /* Ajuste la position pour que le nez tire la ligne */
+    right: -40px; 
+    /* Ajuste la hauteur pour que les roues touchent la ligne */
+    top: -15px; 
+    /* Force une taille fixe pour que toutes les F1 aient le même rendu */
+    width: 100px; 
+    height: auto;
     transition: opacity 0.2s ease;
+    z-index: 1001;
 }
-
 /* Le drapeau à damier */
 .checkered-flag {
     position: absolute;
