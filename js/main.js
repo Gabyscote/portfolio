@@ -323,3 +323,39 @@ function initLightbox() {
         if (e.target === lightbox) closeLightbox();
     });
 }
+
+// ==========================================================================
+// ANIMATION SCROLL : F1
+// ==========================================================================
+window.addEventListener('scroll', () => {
+    // 1. On calcule la distance scrollée depuis le haut
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    
+    // 2. On calcule la hauteur totale scrollable de la page
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    
+    // 3. On en déduit le pourcentage d'avancement
+    let scrolled = (winScroll / height) * 100;
+    
+    // Évite les petits bugs si la page est trop courte
+    if (isNaN(scrolled)) scrolled = 0;
+
+    // Récupération des éléments HTML
+    const progressBar = document.getElementById("f1-progress-bar");
+    const f1Car = document.getElementById("f1-car");
+    const finishFlag = document.getElementById("finish-flag");
+
+    if (progressBar && f1Car && finishFlag) {
+        // On fait avancer la largeur de la ligne
+        progressBar.style.width = scrolled + "%";
+        
+        // On vérifie si on a franchi la ligne d'arrivée (tout en bas)
+        if (scrolled >= 99) {
+            f1Car.classList.add("hide");      // Cache la F1
+            finishFlag.classList.add("show"); // Montre le drapeau
+        } else {
+            f1Car.classList.remove("hide");      // Remet la F1
+            finishFlag.classList.remove("show"); // Cache le drapeau
+        }
+    }
+});
