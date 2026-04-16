@@ -370,7 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'Ferrari.png',
         'Redbull.png',
         'Mercedes.png',
-        'McLaren.png',
+        'Mclaren.png',
         'Williams.png',
         'Aston.png',
         'Alpine.png'
