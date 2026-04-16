@@ -114,7 +114,7 @@ function genererTemplateProjet(projet, isReverse) {
     const tagsHtml = projet.technos.map(tech => `<span>${tech}</span>`).join('');
     const reverseClass = isReverse ? 'reverse' : ''; 
     return `
-        <div class="project-showcase showcase-margin ${reverseClass} reveal">
+        <div class="project-showcase showcase-margin ${reverseClass}">
             <div class="project-media">
                 <div class="carousel auto-carousel" data-folder="${projet.dossierImages}" data-photos="${projet.images}"></div>
             </div>
@@ -210,17 +210,16 @@ function initTheme() {
     const icon = themeToggle.querySelector('i');
     const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
-    icon.className = savedTheme === 'light' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    icon.className = savedTheme === 'light' ? 'fa-solid fa-lightbulb' : 'fa-regular fa-lightbulb';
 
     themeToggle.addEventListener('click', () => {
         const currentTheme = document.documentElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('portfolio-theme', newTheme);
-        icon.className = newTheme === 'light' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        icon.className = newTheme === 'light' ? 'fa-solid fa-lightbulb' : 'fa-regular fa-lightbulb';
     });
 }
-
 function initActiveLinks() {
     let currentPath = window.location.pathname.split('/').pop();
     if (currentPath === '') currentPath = 'index.html';
@@ -271,13 +270,13 @@ function initCarousels() {
 }
 
 function initScrollAnimations() {
-    const elementsToReveal = document.querySelectorAll('.section-title, .about-text, .skills-card, .passion-card, .case-section, .feature-card, .project-showcase');
+    const elementsToReveal = document.querySelectorAll('.section-title, .about-text, .skills-card, .split-row, .case-section, .feature-card');
     
     elementsToReveal.forEach((el, index) => {
         if (!el.classList.contains('reveal')) {
             el.classList.add('reveal');
         }
-        if (el.classList.contains('passion-card') || el.classList.contains('feature-card')) {
+        if (el.classList.contains('split-row') || el.classList.contains('feature-card')) {
             el.style.transitionDelay = `${(index % 3) * 0.15}s`;
         }
     });
@@ -285,12 +284,11 @@ function initScrollAnimations() {
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('active');
+                entry.target.classList.add('active'); // Fait apparaître l'élément
                 observer.unobserve(entry.target);
             }
         });
     }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
-
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 }
 
