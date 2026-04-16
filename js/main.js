@@ -322,50 +322,47 @@ function initLightbox() {
     });
 }
 
-// ==========================================================================
 // ANIMATION SCROLL : F1
-// ==========================================================================
-window.addEventListener('scroll', () => {
-    // 1. On calcule la distance scrollée depuis le haut
+function updateF1Progress() {
     const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-    
-    // 2. On calcule la hauteur totale scrollable de la page
     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     
-    // 3. On en déduit le pourcentage d'avancement
-    let scrolled = (winScroll / height) * 100;
-    
-    // Évite les petits bugs si la page est trop courte
-    if (isNaN(scrolled)) scrolled = 0;
-
-    // Récupération des éléments HTML
     const progressBar = document.getElementById("f1-progress-bar");
     const f1Car = document.getElementById("f1-car");
     const finishFlag = document.getElementById("finish-flag");
+    const progressContainer = document.querySelector(".scroll-progress-container");
 
-    if (progressBar && f1Car && finishFlag) {
-        // On fait avancer la largeur de la ligne
+    if (progressBar && f1Car && finishFlag && progressContainer) {
+        
+        if (height <= 0) {
+            progressContainer.style.display = "none";
+            return; 
+        } else {
+            progressContainer.style.display = "block"; 
+        }
+
+        let scrolled = (winScroll / height) * 100;
+        if (isNaN(scrolled)) scrolled = 0;
+
         progressBar.style.width = scrolled + "%";
         
-        // On vérifie si on a franchi la ligne d'arrivée (tout en bas)
         if (scrolled >= 99) {
-            f1Car.classList.add("hide");      // Cache la F1
-            finishFlag.classList.add("show"); // Montre le drapeau
+            f1Car.classList.add("hide");
+            finishFlag.classList.add("show");
         } else {
-            f1Car.classList.remove("hide");      // Remet la F1
-            finishFlag.classList.remove("show"); // Cache le drapeau
+            f1Car.classList.remove("hide");
+            finishFlag.classList.remove("show");
         }
     }
-});
-// ==========================================================================
+}
+
+window.addEventListener('scroll', updateF1Progress);
+
 // F1 ALÉATOIRE AU CHARGEMENT DE LA PAGE
-// ==========================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Ton super dossier f1
     const imgFolder = 'img/f1/';
     
-    // Tes deux premières voitures (tu pourras en ajouter d'autres)
     const f1Cars = [
         'Ferrari.png',
         'Redbull.png',
@@ -376,20 +373,19 @@ document.addEventListener('DOMContentLoaded', () => {
         'Alpine.png'
     ];
 
-    // On crée un petit "radar" qui cherche le header
     const waitForF1 = setInterval(() => {
         const f1ImgElement = document.getElementById('f1-car');
         
         if (f1ImgElement) {
-            // Dès qu'il trouve la voiture, on coupe le radar !
             clearInterval(waitForF1);
             
-            // On s'assure que tu as bien mis la balise <IMG>
             if (f1ImgElement.tagName === 'IMG') {
                 const randomIndex = Math.floor(Math.random() * f1Cars.length);
                 f1ImgElement.src = imgFolder + f1Cars[randomIndex];
                 f1ImgElement.style.display = 'block';
             }
+            
+            setTimeout(updateF1Progress, 50); 
         }
-    }, 100); // Il vérifie toutes les 100 millisecondes
+    }, 100); 
 });
