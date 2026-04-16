@@ -322,23 +322,28 @@ function initLightbox() {
     });
 }
 
-// ==========================================================================
 // ANIMATION SCROLL : F1
-// ==========================================================================
-
-// 1. On isole la logique mathématique dans une fonction nommée
 function updateF1Progress() {
     const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    let scrolled = (winScroll / height) * 100;
     
-    if (isNaN(scrolled)) scrolled = 0;
-
     const progressBar = document.getElementById("f1-progress-bar");
     const f1Car = document.getElementById("f1-car");
     const finishFlag = document.getElementById("finish-flag");
+    const progressContainer = document.querySelector(".scroll-progress-container");
 
-    if (progressBar && f1Car && finishFlag) {
+    if (progressBar && f1Car && finishFlag && progressContainer) {
+        
+        if (height <= 0) {
+            progressContainer.style.display = "none";
+            return; 
+        } else {
+            progressContainer.style.display = "block"; 
+        }
+
+        let scrolled = (winScroll / height) * 100;
+        if (isNaN(scrolled)) scrolled = 0;
+
         progressBar.style.width = scrolled + "%";
         
         if (scrolled >= 99) {
@@ -351,12 +356,9 @@ function updateF1Progress() {
     }
 }
 
-// 2. On appelle cette fonction à chaque fois qu'on scrolle
 window.addEventListener('scroll', updateF1Progress);
 
-// ==========================================================================
-// F1 ALÉATOIRE & INITIALISATION AU CHARGEMENT
-// ==========================================================================
+// F1 ALÉATOIRE AU CHARGEMENT DE LA PAGE
 
 document.addEventListener('DOMContentLoaded', () => {
     const imgFolder = 'img/f1/';
@@ -383,9 +385,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 f1ImgElement.style.display = 'block';
             }
             
-            // 3. LA CORRECTION MAGIQUE : On force l'actualisation de la barre 
-            // dès que le header est injecté, même si l'utilisateur n'a pas encore scrollé !
             setTimeout(updateF1Progress, 50); 
         }
-    }, 100);
+    }, 100); 
 });
