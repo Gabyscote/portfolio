@@ -46,7 +46,7 @@ const monParcours = [
         categorie: "Formation",
         classeCat: "cat-edu",
         titre: "Normandie Web School (NWS)",
-        description: "Début prévu du cursus Chef de Projets Digitaux (en alternance). Poursuite de mon apprentissage vers l'UI/UX et la gestion d'équipe.",
+        description: "Poursuite de mon apprentissage vers l'UI/UX et la gestion d'équipe.",
         lien: null
     },
     {
@@ -62,15 +62,15 @@ const monParcours = [
         categorie: "Projet Universitaire",
         classeCat: "cat-proj",
         titre: "Campus'Go",
-        description: "Conception d'une plateforme web de covoiturage étudiant sous Laravel 11 et Tailwind CSS. Mise en place d'une base de données complexe.",
+        description: "Conception d'une plateforme web de covoiturage étudiant sous Laravel et Tailwind CSS. Mise en place d'une base de données.",
         lien: "campusgo.html"
     },
     {
-        date: "Été 2025",
+        date: "Étés 2025 & 2026",
         categorie: "Job d'été",
         classeCat: "cat-pro",
         titre: "Ouvrier chez VCS",
-        description: "Emploi d'un mois et demi chez Vallée Construction Services, spécialisé en couverture, bardage et étanchéité de toiture. Apprentissage du travail manuel et de la rigueur sur chantier.",
+        description: "Emploi saisonnier reconduit sur deux années consécutives chez Vallée Construction Services, spécialisé en couverture, bardage et étanchéité de toiture. Apprentissage du travail manuel et de la rigueur sur chantier.",
         lien: null
     },
     {
@@ -78,7 +78,7 @@ const monParcours = [
         categorie: "Projet Universitaire",
         classeCat: "cat-proj",
         titre: "Application Métro de Tokyo",
-        description: "Développement d'un logiciel lourd (C# WinForms) en architecture N-Tiers pour gérer un réseau de transports en commun, avec conception de l'UI/UX.",
+        description: "Développement d'un logiciel lourd (C# WinForms) pour gérer un réseau de transports en commun, avec conception de l'UI/UX.",
         lien: "metro.html"
     },
     {

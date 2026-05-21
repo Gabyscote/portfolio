@@ -1001,6 +1001,7 @@ a {
     border-left: 4px solid var(--purple-main);
     box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 130px;
 }
 
 .split-row:hover {
