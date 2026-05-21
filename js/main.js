@@ -203,7 +203,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     afficherContenuDynamique();
     initScrollAnimations();
     initLightbox();
-    initF1();
     initVisualEnhancements(); // ← toutes les améliorations visuelles
 });
 
@@ -324,56 +323,6 @@ function initLightbox() {
     });
 }
 
-// ANIMATION SCROLL : F1
-function updateF1Progress() {
-    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    
-    const progressBar = document.getElementById("f1-progress-bar");
-    const f1Car = document.getElementById("f1-car");
-    const finishFlag = document.getElementById("finish-flag");
-    const progressContainer = document.querySelector(".scroll-progress-container");
-
-    if (progressBar && f1Car && finishFlag && progressContainer) {
-        
-        if (height <= 0) {
-            progressContainer.style.display = "none";
-            return; 
-        } else {
-            progressContainer.style.display = "block"; 
-        }
-
-        let scrolled = (winScroll / height) * 100;
-        if (isNaN(scrolled)) scrolled = 0;
-
-        progressBar.style.width = scrolled + "%";
-        
-        if (scrolled >= 99) {
-            f1Car.classList.add("hide");
-            finishFlag.classList.add("show");
-        } else {
-            f1Car.classList.remove("hide");
-            finishFlag.classList.remove("show");
-        }
-    }
-}
-
-window.addEventListener('scroll', updateF1Progress);
-
-// ==========================================================================
-// F1 — init propre
-// ==========================================================================
-function initF1() {
-    const imgFolder = 'img/f1/';
-    const f1Cars = ['Ferrari.png','Redbull.png','Mercedes.png','Mclaren.png','Williams.png','Aston.png','Alpine.png'];
-    const f1ImgElement = document.getElementById('f1-car');
-    if (f1ImgElement && f1ImgElement.tagName === 'IMG') {
-        const randomIndex = Math.floor(Math.random() * f1Cars.length);
-        f1ImgElement.src = imgFolder + f1Cars[randomIndex];
-        f1ImgElement.style.display = 'block';
-    }
-    setTimeout(updateF1Progress, 50);
-}
 // ==========================================================================
 // AMÉLIORATIONS VISUELLES
 // ==========================================================================
@@ -678,6 +627,28 @@ function initParticles() {
     });
 }
 
+function updateScrollProgress() {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    
+    const progressBar = document.getElementById("scroll-progress-bar"); // ID mis à jour
+    const progressContainer = document.querySelector(".scroll-progress-container");
+
+    if (progressBar && progressContainer) {
+        if (height <= 0) {
+            progressContainer.style.display = "none";
+            return; 
+        } else {
+            progressContainer.style.display = "block"; 
+        }
+
+        let scrolled = (winScroll / height) * 100;
+        if (isNaN(scrolled)) scrolled = 0;
+
+        progressBar.style.width = scrolled + "%";
+    }
+}
+
 // ------------------------------------------------------------------
 // INIT GLOBAL
 // ------------------------------------------------------------------
@@ -688,4 +659,5 @@ function initVisualEnhancements() {
     initSkillBars();
     initBackToTop();
     initParticles();
+    window.addEventListener("scroll", updateScrollProgress);
 }

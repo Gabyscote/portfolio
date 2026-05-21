@@ -910,7 +910,7 @@ a {
     padding: 120px 5% 100px 5%;
 }
 /* ==========================================================================
-   GRAIN DE FOLIE : BARRE DE PROGRESSION F1
+   BARRE DE PROGRESSION 
    ========================================================================== */
 
 .scroll-progress-container {
@@ -931,41 +931,6 @@ a {
     box-shadow: 0 0 10px var(--purple-main);
     border-radius: 0 2px 2px 0;
     /* Assure-toi de supprimer la ligne "min-width" s'il y en a une ici ! */
-}
-
-/* La voiture de course */
-.f1-car {
-    position: absolute;
-    /* Ajuste la position pour que le nez tire la ligne */
-    right: -40px; 
-    /* Ajuste la hauteur pour que les roues touchent la ligne */
-    top: -15px; 
-    /* Force une taille fixe pour que toutes les F1 aient le même rendu */
-    width: 100px; 
-    height: auto;
-    transition: opacity 0.2s ease;
-    z-index: 1001;
-}
-/* Le drapeau à damier */
-.checkered-flag {
-    position: absolute;
-    right: -5px; /* Même position que la voiture */
-    top: -15px;
-    font-size: 24px;
-    line-height: 1;
-    opacity: 0; /* Caché par défaut */
-    transform: scale(0.5);
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-/* Classes pour gérer l'arrivée (ajoutées en JS) */
-.f1-car.hide {
-    opacity: 0;
-}
-
-.checkered-flag.show {
-    opacity: 1;
-    transform: scale(1);
 }
 
 .about-me-split {
