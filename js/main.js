@@ -45,8 +45,8 @@ const monParcours = [
         date: "Septembre 2026",
         categorie: "Formation",
         classeCat: "cat-edu",
-        titre: "Normandie Web School (NWS)",
-        description: "Poursuite de mon apprentissage vers l'UI/UX et la gestion d'équipe.",
+        titre: "École spécialisée en UI/UX Design",
+        description: "Projet d'intégrer une école spécialisée pour poursuivre mon apprentissage vers l'UI/UX Design et la gestion de projet.",
         lien: null
     },
     {
