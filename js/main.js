@@ -3,6 +3,18 @@
 // ==========================================================================
 const mesProjets = [
     {
+        id: "crazyburgear",
+        date: "Semestre 4 - 2026",
+        type: "Projet Universitaire",
+        titre: "Crazy Burgear",
+        description: "Conception d'une plateforme e-commerce complète en architecture MVC (PHP/MySQL) sur le thème des animes.",
+        technos: ["PHP", "MySQL", "MVC", "HTML/CSS"],
+        lien: "crazyburgear.html",
+        lienVisite: "https://crazyburgear.alwaysdata.net/",
+        dossierImages: "img/crazyburgear/",
+        images: "crazyburgear_accueil.webp, crazyburgear_catalogue.webp, crazyburgear_backoffice.webp"
+    },
+    {
         id: "jlm",
         date: "Mars 2026",
         type: "Stage en Entreprise (8 semaines)",
@@ -21,6 +33,7 @@ const mesProjets = [
         description: "Développement d'une plateforme complète de covoiturage dédiée à la vie étudiante, intégrant la gestion des trajets, des véhicules et des profils utilisateurs.",
         technos: ["Laravel", "PHP", "Tailwind CSS", "MySQL"],
         lien: "campusgo.html",
+        lienVisite: "https://campusgo.alwaysdata.net/",
         dossierImages: "img/campusgo/",
         images: "campusgo_accueil.webp, campusgo_bd.webp, campusgo_profil.webp, campusgo_trajet.webp, campusgo_admin.webp"
     },
@@ -113,6 +126,21 @@ const monParcours = [
 function genererTemplateProjet(projet, isReverse) {
     const tagsHtml = projet.technos.map(tech => `<span>${tech}</span>`).join('');
     const reverseClass = isReverse ? 'reverse' : ''; 
+    
+    let boutonsHtml = '';
+    if (projet.lienVisite) {
+        boutonsHtml = `
+            <div class="project-actions" style="display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; align-self: flex-start;">
+                <a href="${projet.lien}" class="btn btn-secondary">Découvrir le projet <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="${projet.lienVisite}" target="_blank" rel="noopener noreferrer" class="btn btn-primary"><i class="fa-solid fa-globe"></i> Visiter le site</a>
+            </div>
+        `;
+    } else {
+        boutonsHtml = `
+            <a href="${projet.lien}" class="btn btn-primary btn-margin-top">Découvrir le projet <i class="fa-solid fa-arrow-right"></i></a>
+        `;
+    }
+
     return `
         <div class="project-showcase showcase-margin ${reverseClass}">
             <div class="project-media">
@@ -123,7 +151,7 @@ function genererTemplateProjet(projet, isReverse) {
                 <h3>${projet.titre}</h3>
                 <p>${projet.description}</p>
                 <div class="tech-tags">${tagsHtml}</div>
-                <a href="${projet.lien}" class="btn btn-primary btn-margin-top">Découvrir le projet <i class="fa-solid fa-arrow-right"></i></a>
+                ${boutonsHtml}
             </div>
         </div>
     `;
@@ -479,33 +507,6 @@ function initTiltEffect() {
     applyTilt('.feature-card',     8);
 }
 
-// ------------------------------------------------------------------
-// 4. COMPÉTENCES — restauration de l'affichage original en liste
-// ------------------------------------------------------------------
-function initSkillBars() {
-    const skillsCard = document.querySelector('.skills-card');
-    if (!skillsCard) return;
-
-    // On restaure simplement la liste originale avec les vrais contenus
-    const title = skillsCard.querySelector('h3');
-    skillsCard.innerHTML = '';
-    if (title) skillsCard.appendChild(title);
-
-    const skills = [
-        { cat: 'Développement',      items: 'PHP, Laravel, C#, Python, JS' },
-        { cat: 'Bases de données',   items: 'SQL, MariaDB, MySQL' },
-        { cat: 'Réseaux & Systèmes', items: 'Linux, Packet Tracer' },
-        { cat: 'Design UI/UX',       items: 'Figma, Canva' },
-    ];
-
-    const ul = document.createElement('ul');
-    skills.forEach(s => {
-        const li = document.createElement('li');
-        li.innerHTML = `<span class="dot-list"></span><strong>${s.cat} :</strong> ${s.items}`;
-        ul.appendChild(li);
-    });
-    skillsCard.appendChild(ul);
-}
 
 // ------------------------------------------------------------------
 // 7. BOUTON RETOUR EN HAUT
@@ -656,7 +657,6 @@ function initVisualEnhancements() {
     initCustomCursor();
     initTypingEffect();
     initTiltEffect();
-    initSkillBars();
     initBackToTop();
     initParticles();
     window.addEventListener("scroll", updateScrollProgress);
