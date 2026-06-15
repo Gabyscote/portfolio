@@ -432,7 +432,7 @@ function initTypingEffect() {
     if (!badge) return;
 
     const phrases = [
-        'Développeur & Futur Chef de Projets',
+        'Étudiant UX/UI Designer & Développeur',
         'Passionné d\'UI/UX Design',
         'En recherche d\'alternance 2026'
     ];
