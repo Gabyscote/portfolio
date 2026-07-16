@@ -1,11 +1,18 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Étude de cas sur le projet Crazy Burgear, une plateforme e-commerce d'architecture logicielle.">
-    <title>Crazy Burgear - Étude de cas | Gabriel Roger</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description" content="Ã‰tude de cas sur le projet Crazy Burgear, une plateforme e-commerce d'architecture logicielle.">
+    <title>Crazy Burgear - Ã‰tude de cas | Gabriel Roger</title>
+    <meta property="og:title" content="Gabriel Roger | Portfolio UX/UI">
+    <meta property="og:description" content="Étudiant en BUT Informatique et futur étudiant en UI/UX Design. Découvrez mon parcours et mes projets.">
+    <meta property="og:image" content="https://mon-portfolio.fr/img/og-preview.png">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fr_FR">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="img/logo.png" type="image/png">
@@ -21,101 +28,107 @@
     <section class="case-study-hero">
         <div class="case-study-header">
             <a href="projets.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Retour aux projets</a>
-            <span class="project-badge mt-20">Projet Universitaire (R4-1)</span>
+            <span class="tag mt-20">Projet Universitaire (R4-1)</span>
             <h1 class="case-title">Crazy Burgear : E-commerce & Architecture Logicielle</h1>
-            <p class="case-subtitle">Conception d'un site de vente en ligne fonctionnel et sécurisé, alliant rigueur technique et univers pop-culture.</p>
-            
-            <div class="tech-tags justify-center mt-20">
-                <span>PHP</span><span>Architecture MVC</span><span>MySQL</span><span>HTML/CSS</span><span>JavaScript</span>
+            <p class="case-subtitle">Conception d'un site de vente en ligne fonctionnel et sÃ©curisÃ©, alliant rigueur technique et univers pop-culture.</p>
+
+            <div class="tags-row justify-center mt-20">
+                <span class="tag">PHP</span><span class="tag">Architecture MVC</span><span class="tag">MySQL</span><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span>
             </div>
-            
-            <div style="margin-top: 30px;">
+
+            <div class="mt-40">
                 <a href="https://crazyburgear.alwaysdata.net/" target="_blank" rel="noopener noreferrer" class="btn btn-primary"><i class="fa-solid fa-globe"></i> Visiter le site en direct</a>
             </div>
         </div>
     </section>
 
     <section class="case-study-content">
-        
-        <div class="case-section">
-            <div class="case-text">
-                <h2><span class="highlight-purple">01.</span> La Genèse de l'Histoire</h2>
-                <p>Réalisé lors de mon 4ème semestre en BUT Informatique (module R4-1), <strong>Crazy Burgear</strong> répondait à un cahier des charges exigeant : développer un site e-commerce de A à Z en respectant des contraintes d'architecture logicielle strictes.</p>
-                <p>Pour rendre le défi technique plus captivant, j'ai imaginé un fast-food conceptuel proposant des burgers inspirés des univers d'animes cultes (One Piece, Naruto, SNK, Demon Slayer...). Derrière le fun de commander un "Chapeau de Paille" ou un "Kamehameha", se cache une véritable machinerie de traitement de données.</p>
-            </div>
-            <div class="case-image">
-                <img src="img/crazyburgear/crazyburgear_accueil.webp" alt="Page d'accueil de Crazy Burgear" class="shadow-img">
-            </div>
-        </div>
+        <nav class="case-rail" aria-label="Sommaire de l'Ã©tude de cas"></nav>
 
-        <div class="case-section reverse">
-            <div class="case-text">
-                <h2><span class="highlight-purple">02.</span> Architecture MVC & Base de données</h2>
-                <p>Le véritable cœur du projet réside dans son code. L'application a été entièrement construite sur une architecture <strong>Modèle-Vue-Contrôleur (MVC)</strong> "from scratch" en PHP, séparant distinctement la logique métier, l'accès aux données et l'affichage.</p>
-                <ul class="case-list">
-                    <li><i class="fa-solid fa-check text-purple"></i> <strong>Routage personnalisé :</strong> Un système de routeur gérant les requêtes HTTP (GET/POST) pour distribuer les actions aux bons contrôleurs.</li>
-                    <li><i class="fa-solid fa-check text-purple"></i> <strong>Sécurité absolue :</strong> Hashage des mots de passe, requêtes SQL systématiquement préparées contre les injections, et gestion sécurisée des sessions utilisateurs.</li>
-                </ul>
-            </div>
-            <div class="case-image">
-                <img src="img/crazyburgear/crazyburgear_mvc.webp" alt="Architecture MVC du projet" class="shadow-img">
-            </div>
-        </div>
+        <div class="case-blocks">
 
-        <div class="case-features">
-            <h2 class="text-center mb-40"><span class="highlight-purple">03.</span> Les Fonctionnalités Clés</h2>
-            
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <img src="img/crazyburgear/crazyburgear_catalogue.webp" alt="Catalogue des burgers" class="feature-img">
-                    <div class="feature-body">
-                        <h3>Catalogue & Filtres dynamiques</h3>
-                        <p>Affichage des burgers (Assaut bestial, Chidori...) filtrables par univers d'animes grâce à des requêtes SQL dynamiques croisant plusieurs tables.</p>
-                    </div>
+            <div class="case-section" data-step="01">
+                <div class="case-text">
+                    <h2><span class="step-index">01</span> La GenÃ¨se de l'Histoire</h2>
+                    <p>RÃ©alisÃ© lors de mon 4Ã¨me semestre en BUT Informatique (module R4-1), <strong>Crazy Burgear</strong> rÃ©pondait Ã  un cahier des charges exigeant : dÃ©velopper un site e-commerce de A Ã  Z en respectant des contraintes d'architecture logicielle strictes.</p>
+                    <p>Pour rendre le dÃ©fi technique plus captivant, j'ai imaginÃ© un fast-food conceptuel proposant des burgers inspirÃ©s des univers d'animes cultes (One Piece, Naruto, SNK, Demon Slayer...). DerriÃ¨re le fun de commander un "Chapeau de Paille" ou un "Kamehameha", se cache une vÃ©ritable machinerie de traitement de donnÃ©es.</p>
                 </div>
-
-                <div class="feature-card">
-                    <img src="img/crazyburgear/crazyburgear_panier.webp" alt="Gestion du panier" class="feature-img">
-                    <div class="feature-body">
-                        <h3>Tunnel de Commande</h3>
-                        <p>Système de panier géré en session PHP, permettant l'ajout, la modification des quantités, et la validation via une simulation de paiement.</p>
-                    </div>
-                </div>
-
-                <div class="feature-card">
-                    <img src="img/crazyburgear/crazyburgear_compte.webp" alt="Espace client" class="feature-img">
-                    <div class="feature-body">
-                        <h3>Espace Client Personnalisé</h3>
-                        <p>Inscription, connexion, modification des données personnelles et suivi de l'historique et du statut des commandes passées.</p>
-                    </div>
-                </div>
-
-                <div class="feature-card">
-                    <img src="img/crazyburgear/crazyburgear_backoffice.webp" alt="Back-office administrateur" class="feature-img">
-                    <div class="feature-body">
-                        <h3>Back-Office Administrateur</h3>
-                        <p>Interface de gestion sécurisée (CRUD) réservée au staff pour ajouter de nouveaux produits, gérer le stock, et faire évoluer les statuts de préparation des commandes.</p>
-                    </div>
+                <div class="case-image">
+                    <img src="img/crazyburgear/crazyburgear_accueil.webp" alt="Page d'accueil de Crazy Burgear" class="shadow-img">
                 </div>
             </div>
-        </div>
 
-        <div class="case-section">
-            <div class="case-text full-width">
-                <h2 class="text-center"><span class="highlight-purple">04.</span> Les Obstacles Surmontés et le Lien avec mon BUT</h2>
-                <p class="max-w-800 mx-auto text-center mb-20">Le passage d'un code PHP procédural "classique" à une architecture MVC stricte a été le défi majeur de ce projet. Il a fallu penser l'application en objets, gérer proprement les espaces de noms et concevoir une base de données MySQL parfaitement normalisée pour relier les clients, les commandes, les lignes de commandes et les produits.</p>
-                
-                <div style="background-color: var(--bg-card-light); padding: 30px; border-radius: 15px; max-width: 800px; margin: 40px auto; border-left: 5px solid var(--purple-main);">
-                    <h3 style="margin-bottom: 15px;"><i class="fa-solid fa-bullseye" style="margin-right: 8px;"></i> Compétences validées</h3>
-                    <ul style="list-style-type: none; padding-left: 0;">
-                        <li style="margin-bottom: 10px;"><strong><i class="fa-solid fa-circle-check" style="color: #10b981; margin-right: 8px;"></i> Réaliser :</strong> Développer une application informatique complexe en respectant un patron de conception (Design Pattern MVC).</li>
-                        <li style="margin-bottom: 10px;"><strong><i class="fa-solid fa-circle-check" style="color: #10b981; margin-right: 8px;"></i> Optimiser :</strong> Sécuriser l'application face aux failles courantes (XSS, SQLi, CSRF) et structurer les données.</li>
-                        <li><strong><i class="fa-solid fa-circle-check" style="color: #10b981; margin-right: 8px;"></i> Administrer :</strong> Création d'une interface back-office pour la gestion des flux de l'entreprise.</li>
+            <div class="case-section reverse" data-step="02">
+                <div class="case-text">
+                    <h2><span class="step-index">02</span> Architecture MVC & Base de donnÃ©es</h2>
+                    <p>Le vÃ©ritable cÅ“ur du projet rÃ©side dans son code. L'application a Ã©tÃ© entiÃ¨rement construite sur une architecture <strong>ModÃ¨le-Vue-ContrÃ´leur (MVC)</strong> "from scratch" en PHP, sÃ©parant distinctement la logique mÃ©tier, l'accÃ¨s aux donnÃ©es et l'affichage.</p>
+                    <ul class="case-list">
+                        <li><i class="fa-solid fa-check text-purple"></i> <strong>Routage personnalisÃ© :</strong> Un systÃ¨me de routeur gÃ©rant les requÃªtes HTTP (GET/POST) pour distribuer les actions aux bons contrÃ´leurs.</li>
+                        <li><i class="fa-solid fa-check text-purple"></i> <strong>SÃ©curitÃ© absolue :</strong> Hashage des mots de passe, requÃªtes SQL systÃ©matiquement prÃ©parÃ©es contre les injections, et gestion sÃ©curisÃ©e des sessions utilisateurs.</li>
                     </ul>
                 </div>
+                <div class="case-image">
+                    <img src="img/crazyburgear/crazyburgear_mvc.webp" alt="Architecture MVC du projet" class="shadow-img">
+                </div>
             </div>
-        </div>
 
+            <div class="case-features" data-step="03">
+                <div class="section-heading">
+                    <h2><span class="step-index">03</span> Les FonctionnalitÃ©s ClÃ©s</h2>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <img src="img/crazyburgear/crazyburgear_catalogue.webp" alt="Catalogue des burgers" class="feature-img">
+                        <div class="feature-body">
+                            <h3>Catalogue & Filtres dynamiques</h3>
+                            <p>Affichage des burgers (Assaut bestial, Chidori...) filtrables par univers d'animes grÃ¢ce Ã  des requÃªtes SQL dynamiques croisant plusieurs tables.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <img src="img/crazyburgear/crazyburgear_panier.webp" alt="Gestion du panier" class="feature-img">
+                        <div class="feature-body">
+                            <h3>Tunnel de Commande</h3>
+                            <p>SystÃ¨me de panier gÃ©rÃ© en session PHP, permettant l'ajout, la modification des quantitÃ©s, et la validation via une simulation de paiement.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <img src="img/crazyburgear/crazyburgear_compte.webp" alt="Espace client" class="feature-img">
+                        <div class="feature-body">
+                            <h3>Espace Client PersonnalisÃ©</h3>
+                            <p>Inscription, connexion, modification des donnÃ©es personnelles et suivi de l'historique et du statut des commandes passÃ©es.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <img src="img/crazyburgear/crazyburgear_backoffice.webp" alt="Back-office administrateur" class="feature-img">
+                        <div class="feature-body">
+                            <h3>Back-Office Administrateur</h3>
+                            <p>Interface de gestion sÃ©curisÃ©e (CRUD) rÃ©servÃ©e au staff pour ajouter de nouveaux produits, gÃ©rer le stock, et faire Ã©voluer les statuts de prÃ©paration des commandes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-section centered" data-step="04">
+                <div class="case-text centered">
+                    <h2 class="text-center"><span class="step-index">04</span> Les Obstacles SurmontÃ©s et le Lien avec mon BUT</h2>
+                    <p class="text-center mb-40">Le passage d'un code PHP procÃ©dural "classique" Ã  une architecture MVC stricte a Ã©tÃ© le dÃ©fi majeur de ce projet. Il a fallu penser l'application en objets, gÃ©rer proprement les espaces de noms et concevoir une base de donnÃ©es MySQL parfaitement normalisÃ©e pour relier les clients, les commandes, les lignes de commandes et les produits.</p>
+
+                    <div class="skills-box">
+                        <h3><i class="fa-solid fa-bullseye"></i> CompÃ©tences validÃ©es</h3>
+                        <ul>
+                            <li><i class="fa-solid fa-circle-check"></i><strong>RÃ©aliser :</strong> DÃ©velopper une application informatique complexe en respectant un patron de conception (Design Pattern MVC).</li>
+                            <li><i class="fa-solid fa-circle-check"></i><strong>Optimiser :</strong> SÃ©curiser l'application face aux failles courantes (XSS, SQLi, CSRF) et structurer les donnÃ©es.</li>
+                            <li><i class="fa-solid fa-circle-check"></i><strong>Administrer :</strong> CrÃ©ation d'une interface back-office pour la gestion des flux de l'entreprise.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </section>
 
     <footer class="footer" id="footer-container"></footer>
@@ -123,3 +136,4 @@
     <script src="js/main.js"></script>
 </body>
 </html>
+

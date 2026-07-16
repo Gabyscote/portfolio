@@ -1,11 +1,18 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Bienvenue sur mon portfolio ! Je suis Gabriel Roger, développeur web full-stack.">
+    <meta name="description" content="Bienvenue sur mon portfolio ! Je suis Gabriel Roger, Ã©tudiant en BUT Informatique en reconversion vers le design d'interfaces UX/UI.">
     <title>Accueil | Gabriel Roger</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="Gabriel Roger | Portfolio UX/UI">
+    <meta property="og:description" content="Étudiant en BUT Informatique et futur étudiant en UI/UX Design. Découvrez mon parcours et mes projets.">
+    <meta property="og:image" content="https://mon-portfolio.fr/img/og-preview.png">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fr_FR">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="img/logo.png" type="image/png">
@@ -20,23 +27,28 @@
 
     <section id="hero" class="hero">
         <div class="hero-container">
-            
+
             <div class="hero-text-content">
-                <div class="badge">Étudiant UX/UI Designer & Développeur</div>
-                
-                <h1>Bonjour, je suis <span class="highlight-purple">Gabriel Roger</span></h1>
-                
-                <p class="subtitle">Étudiant en BUT Informatique en pleine reconversion vers le design d'interfaces (UX/UI), je combine une solide base technique en développement web et une réelle sensibilité pour l'expérience utilisateur. Je me place du côté de l'utilisateur pour concevoir des interfaces intuitives, esthétiques et fonctionnelles.</p>
-                <p style="font-weight: 600; color: var(--purple-main); margin-bottom: 30px;">
-                    <i class="fa-solid fa-bullseye" style="margin-right: 8px;"></i>Objectif : Recherche une alternance en UX/UI Design pour la rentrée 2026, dans le cadre de ma formation Designer Numérique (Bac+3, RNCP niveau 6) à Need For School.
-                </p>
-                
+                <span class="badge">Ã‰tudiant en reconversion vers l'UI/UX</span>
+
+                <h1 data-lines="Bonjour, je suis|<em>Gabriel Roger</em>"></h1>
+
+                <p class="subtitle">Ã‰tudiant en BUT Informatique en pleine reconversion vers le design d'interfaces (UX/UI), je combine une solide base technique en dÃ©veloppement web et une rÃ©elle sensibilitÃ© pour l'expÃ©rience utilisateur. Je me place du cÃ´tÃ© de l'utilisateur pour concevoir des interfaces intuitives, esthÃ©tiques et fonctionnelles.</p>
+
+                <div class="objective-card">
+                    <div class="objective-icon"><i class="fa-solid fa-crosshairs"></i></div>
+                    <div class="objective-text">
+                        <strong>Objectif : Alternance UX/UI Design (RentrÃ©e 2026)</strong>
+                        <span>Designer NumÃ©rique (Bac+3) â€” Need For School</span>
+                    </div>
+                </div>
+
                 <div class="hero-actions">
                     <div class="hero-buttons">
                         <a href="contact.html" class="btn btn-primary">Me contacter</a>
                         <a href="projets.html" class="btn btn-secondary">Mes projets</a>
                     </div>
-                    
+
                     <div class="hero-socials">
                         <a href="piece_jointe/CV_ROGER_GABRIEL.pdf" target="_blank" rel="noopener noreferrer" class="social-link">
                             <i class="fa-solid fa-file-pdf"></i> Voir mon CV
@@ -49,32 +61,53 @@
                 </div>
             </div>
 
-            <div class="hero-image-content">
+            <div class="hero-portrait">
                 <img src="img/accueil/profil.jpg" alt="Gabriel Roger - Portrait Professionnel">
             </div>
 
         </div>
 
-        <a href="#about" class="scroll-down-arrow" aria-label="Défiler vers le bas">
+        <a href="#about" class="scroll-down-arrow" aria-label="DÃ©filer vers le bas">
             <i class="fa-solid fa-chevron-down"></i>
         </a>
     </section>
 
     <section class="about" id="about">
-        <h2 class="section-title">À propos de <span class="highlight-purple">moi</span><span class="underline"></span></h2>
         <div class="about-container">
             <div class="about-text">
-                <p>Étudiant en BUT Informatique (parcours Conception & Développement, Bac+2 validé) et futur étudiant en école de design (Designer Numérique, spécialité UI/UX), je combine rigueur technique et créativité.</p>
-                <p>Mon objectif est de concevoir des interfaces qui ne sont pas seulement esthétiques, mais aussi hautement fonctionnelles, en alliant maîtrise du code et design d'expérience utilisateur (UX/UI).</p>
+                <span class="eyebrow">Ã€ propos</span>
+                <h2>Du code Ã  <em>l'interface</em></h2>
+                <p>Ã‰tudiant en BUT Informatique (parcours Conception & DÃ©veloppement, Bac+2 validÃ©) et futur Ã©tudiant en Ã©cole de design (Designer NumÃ©rique, spÃ©cialitÃ© UI/UX), je combine rigueur technique et crÃ©ativitÃ©.</p>
+                <p>Mon objectif est de concevoir des interfaces qui ne sont pas seulement esthÃ©tiques, mais aussi hautement fonctionnelles, en alliant maÃ®trise du code et design d'expÃ©rience utilisateur (UX/UI).</p>
             </div>
-            
+
             <div class="skills-card">
-                <h3>Mes Compétences</h3>
-                <ul>
-                    <li><span class="dot-list"></span><strong>Design UI/UX :</strong> Figma, Canva, notions d'ergonomie et d'architecture de l'information</li>
-                    <li><span class="dot-list"></span><strong>Développement :</strong> PHP, Laravel, C#, Python, JS</li>
-                    <li><span class="dot-list"></span><strong>Bases de données :</strong> SQL, MariaDB, MySQL</li>
-                    <li><span class="dot-list"></span><strong>Réseaux & Systèmes :</strong> Linux, Packet Tracer</li>          
+                <h3>CompÃ©tences</h3>
+                <ul class="skills-list">
+                    <li>
+                        <div class="skill-header">
+                            <i class="fa-solid fa-pen-nib text-purple"></i> <strong>Design UI/UX</strong>
+                        </div>
+                        <span class="skill-desc">Figma, Canva, notions d'ergonomie et d'architecture de l'information</span>
+                    </li>
+                    <li>
+                        <div class="skill-header">
+                            <i class="fa-solid fa-code text-purple"></i> <strong>DÃ©veloppement</strong>
+                        </div>
+                        <span class="skill-desc">PHP, Laravel, C#, Python, Java</span>
+                    </li>
+                    <li>
+                        <div class="skill-header">
+                            <i class="fa-solid fa-database text-purple"></i> <strong>Bases de donnÃ©es</strong>
+                        </div>
+                        <span class="skill-desc">SQL, MariaDB, MySQL</span>
+                    </li>
+                    <li>
+                        <div class="skill-header">
+                            <i class="fa-solid fa-server text-purple"></i> <strong>RÃ©seaux & SystÃ¨mes</strong>
+                        </div>
+                        <span class="skill-desc">Linux, Packet Tracer</span>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -84,58 +117,56 @@
         <div class="split-container">
 
             <div class="split-column">
-                <h2 class="section-title" style="text-align: left; font-size: 2rem;">Ma <span class="highlight-purple">Personnalité</span></h2>
-                <div class="underline" style="margin: 10px 0 30px 0; width: 40px;"></div>
-
-                <div class="split-list">
-                    <div class="split-row reveal">
+                <span class="eyebrow">CaractÃ¨re</span>
+                <h2 class="mt-20">Ma <em>personnalitÃ©</em></h2>
+                <div class="split-list mt-40">
+                    <div class="split-row">
                         <div class="row-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
                         <div class="row-content">
                             <h3>Mes valeurs</h3>
-                            <p>L'écoute (essentiel pour l'expérience utilisateur !), la rigueur, et l'esprit d'équipe.</p>
+                            <p>L'Ã©coute (essentiel pour l'expÃ©rience utilisateur !), la rigueur, et l'esprit d'Ã©quipe.</p>
                         </div>
                     </div>
-                    <div class="split-row reveal" style="transition-delay: 0.15s;">
+                    <div class="split-row">
                         <div class="row-icon"><i class="fa-solid fa-brain"></i></div>
                         <div class="row-content">
-                            <h3>Mes qualités</h3>
+                            <h3>Mes qualitÃ©s</h3>
                             <p>Curieux de nature, polyvalent, sociable.</p>
                         </div>
                     </div>
-                    <div class="split-row reveal" style="transition-delay: 0.3s;">
+                    <div class="split-row">
                         <div class="row-icon"><i class="fa-solid fa-rocket"></i></div>
                         <div class="row-content">
                             <h3>Mon ambition</h3>
-                            <p>Devenir un designer capable de penser le produit dans sa globalité, du code à l'interface.</p>
+                            <p>Devenir un designer capable de penser le produit dans sa globalitÃ©, du code Ã  l'interface.</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="split-column">
-                <h2 class="section-title" style="text-align: left; font-size: 2rem;">Mes <span class="highlight-purple">Passions</span></h2>
-                <div class="underline" style="margin: 10px 0 30px 0; width: 40px;"></div>
-
-                <div class="split-list">
-                    <div class="split-row reveal">
+                <span class="eyebrow">En dehors</span>
+                <h2 class="mt-20">Mes <em>passions</em></h2>
+                <div class="split-list mt-40">
+                    <div class="split-row">
                         <div class="row-icon"><i class="fa-solid fa-flag-checkered"></i></div>
                         <div class="row-content">
                             <h3>F1</h3>
-                            <p>Grand amateur de sports automobiles, tout particulièrement de Formule 1.</p>
+                            <p>Grand amateur de sports automobiles, tout particuliÃ¨rement de Formule 1.</p>
                         </div>
                     </div>
-                    <div class="split-row reveal" style="transition-delay: 0.15s;">
+                    <div class="split-row">
                         <div class="row-icon"><i class="fa-solid fa-microchip"></i></div>
                         <div class="row-content">
                             <h3>Informatique</h3>
-                            <p>Plus qu'un simple domaine d'études, c'est une véritable passion au quotidien.</p>
+                            <p>Plus qu'un simple domaine d'Ã©tudes, c'est une vÃ©ritable passion au quotidien.</p>
                         </div>
                     </div>
-                    <div class="split-row reveal" style="transition-delay: 0.3s;">
+                    <div class="split-row">
                         <div class="row-icon"><i class="fa-solid fa-gamepad"></i></div>
                         <div class="row-content">
-                            <h3>Jeux vidéo</h3>
-                            <p>Un passe-temps idéal pour me détendre, relever des défis et partager des moments entre amis.</p>
+                            <h3>Jeux vidÃ©o</h3>
+                            <p>Un passe-temps idÃ©al pour me dÃ©tendre, relever des dÃ©fis et partager des moments entre amis.</p>
                         </div>
                     </div>
                 </div>
@@ -145,17 +176,21 @@
     </section>
 
     <section class="latest-project">
-        <h2 class="section-title">Dernier <span class="highlight-purple">Projet</span><span class="underline"></span></h2>
-        
+        <div class="section-heading">
+            <span class="eyebrow justify-center">RÃ©cent</span>
+            <h2>Dernier <em>projet</em></h2>
+        </div>
+
         <div id="container-dernier-projet"></div>
-        
-        <div style="text-align: center; margin-top: 40px;">
+
+        <div class="text-center mt-40">
             <a href="projets.html" class="btn btn-secondary">Voir tous mes projets <i class="fa-solid fa-arrow-right"></i></a>
         </div>
     </section>
-    
+
     <footer class="footer" id="footer-container"></footer>
 
     <script src="js/main.js"></script>
 </body>
 </html>
+

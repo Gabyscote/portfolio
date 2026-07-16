@@ -1,11 +1,18 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Découvrez mon parcours académique et professionnel.">
+    <meta name="description" content="DÃ©couvrez mon parcours acadÃ©mique et professionnel.">
     <title>Mon Parcours | Gabriel Roger</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="Gabriel Roger | Portfolio UX/UI">
+    <meta property="og:description" content="Étudiant en BUT Informatique et futur étudiant en UI/UX Design. Découvrez mon parcours et mes projets.">
+    <meta property="og:image" content="https://mon-portfolio.fr/img/og-preview.png">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fr_FR">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="img/logo.png" type="image/png">
@@ -19,25 +26,27 @@
     <header class="header" id="header-container"></header>
 
     <section class="timeline-page">
-        <h1 class="section-title">Mon <span class="highlight-purple">Parcours</span><span class="underline"></span></h1>
-        <p style="text-align: center; color: var(--text-muted); max-width: 600px; margin: 0 auto 50px auto;">
-            Découvrez mon évolution, mêlant cursus académique, expériences sur le terrain et projets de développement concrets.
-        </p>
-        
-        <div style="text-align: center; margin-top: 60px;">
+        <div class="section-heading">
+            <span class="eyebrow justify-center">Chronologie</span>
+            <h2>Mon <em>parcours</em></h2>
+            <p class="lede">Formations, expÃ©riences de terrain et projets concrets â€” dans l'ordre oÃ¹ ils se sont produits.</p>
+        </div>
+
+        <div class="text-center mt-40">
             <a href="piece_jointe/CV_ROGER_GABRIEL.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
                 <i class="fa-solid fa-file-pdf"></i> Consulter mon CV
             </a>
         </div>
 
-        <div class="timeline-legend" style="display: flex; justify-content: center; gap: 20px; margin: 50px auto 10px auto; flex-wrap: wrap;">
-            <span class="timeline-category cat-edu" style="margin-bottom: 0;"><i class="fa-solid fa-graduation-cap" style="margin-right: 6px;"></i> Formations & Diplômes</span>
-            <span class="timeline-category cat-pro" style="margin-bottom: 0;"><i class="fa-solid fa-briefcase" style="margin-right: 6px;"></i> Expériences Pro / Stages</span>
-            <span class="timeline-category cat-proj" style="margin-bottom: 0;"><i class="fa-solid fa-code" style="margin-right: 6px;"></i> Projets Universitaires</span>
+        <div class="timeline-legend">
+            <button class="tab-btn active" data-filter="all"><i class="fa-solid fa-list"></i> Tout afficher</button>
+            <button class="tab-btn" data-filter="cat-edu"><i class="fa-solid fa-graduation-cap"></i> Formations & DiplÃ´mes</button>
+            <button class="tab-btn" data-filter="cat-pro"><i class="fa-solid fa-briefcase"></i> ExpÃ©riences Pro / Stages</button>
+            <button class="tab-btn" data-filter="cat-proj"><i class="fa-solid fa-code"></i> Projets Universitaires</button>
         </div>
 
         <div class="timeline" id="container-parcours"></div>
-        
+
     </section>
 
     <footer class="footer" id="footer-container"></footer>
@@ -45,3 +54,4 @@
     <script src="js/main.js"></script>
 </body>
 </html>
+

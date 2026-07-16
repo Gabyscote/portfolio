@@ -1,11 +1,18 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content=" Étude de cas sur le projet d'optimisation et de gestion du métro de Tokyo, un projet transversal alliant conception de bases de données, développement logiciel et gestion de projet innovante.">
-    <title>Métro de Tokyo - Étude de cas | Gabriel Roger</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description" content="Ã‰tude de cas sur le projet d'optimisation et de gestion du mÃ©tro de Tokyo, un projet transversal alliant conception de bases de donnÃ©es, dÃ©veloppement logiciel et gestion de projet innovante.">
+    <title>MÃ©tro de Tokyo - Ã‰tude de cas | Gabriel Roger</title>
+    <meta property="og:title" content="Gabriel Roger | Portfolio UX/UI">
+    <meta property="og:description" content="Étudiant en BUT Informatique et futur étudiant en UI/UX Design. Découvrez mon parcours et mes projets.">
+    <meta property="og:image" content="https://mon-portfolio.fr/img/og-preview.png">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fr_FR">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="img/logo.png" type="image/png">
@@ -21,78 +28,82 @@
     <section class="case-study-hero">
         <div class="case-study-header">
             <a href="projets.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Retour aux projets</a>
-            <span class="project-badge mt-20">Projet Transversal (SAE Semestre 2)</span>
-            <h1 class="case-title">Optimisation & Gestion du Métro de Tokyo</h1>
-            <p class="case-subtitle">Un projet complet alliant conception de bases de données, développement logiciel et gestion de projet innovante pour optimiser le réseau métropolitain de Tokyo.</p>
-            
-            <div class="tech-tags justify-center mt-20">
-                <span>C# WinForms</span><span>SQL / MariaDB</span><span>Looping (MCD)</span><span>UML / Figma</span><span>Gestion de Projet</span>
+            <span class="tag mt-20">Projet Transversal (SAE Semestre 2)</span>
+            <h1 class="case-title">Optimisation & Gestion du MÃ©tro de Tokyo</h1>
+            <p class="case-subtitle">Un projet complet alliant conception de bases de donnÃ©es, dÃ©veloppement logiciel et gestion de projet innovante pour optimiser le rÃ©seau mÃ©tropolitain de Tokyo.</p>
+
+            <div class="tags-row justify-center mt-20">
+                <span class="tag">C# WinForms</span><span class="tag">SQL / MariaDB</span><span class="tag">Looping (MCD)</span><span class="tag">UML / Figma</span><span class="tag">Gestion de Projet</span>
             </div>
         </div>
     </section>
 
     <section class="case-study-content">
-        
-        <div class="case-section">
-            <div class="case-text">
-                <h2><span class="highlight-purple">01.</span> Le Défi du Labyrinthe Souterrain</h2>
-                <p>Le réseau du métro de Tokyo est l'un des plus denses, tentaculaires et complexes au monde. Dans le cadre de notre SAE de semestre 2, on nous a lancé un défi fascinant : comment modéliser, gérer et optimiser informatiquement un tel monstre logistique ?</p>
-                <p>Ce projet n'était pas qu'un simple exercice de code, c'était une véritable plongée dans l'optimisation de ressources à grande échelle. L'objectif était de concevoir une application capable de gérer l'infrastructure, d'anticiper les temps de trajet (algorithme du plus court chemin) et d'assurer la maintenance du réseau, le tout en équipe.</p>
-            </div>
-            <div class="case-image">
-                <img src="img/metro/metro_accueil.webp" alt="Projet Global Metro" class="shadow-img">
-            </div>
-        </div>
+        <nav class="case-rail" aria-label="Sommaire de l'Ã©tude de cas"></nav>
 
-        <div class="case-section reverse">
-            <div class="case-text">
-                <h2><span class="highlight-purple">02.</span> Modélisation de la Base de Données</h2>
-                <p>Avant de coder l'application, il fallait structurer les données d'un des réseaux les plus complexes au monde. Je me suis particulièrement investi dans cette phase de conception :</p>
-                <p>J'ai coréalisé le <strong>Schéma Entité-Association (MCD)</strong> sur le logiciel <em>Looping</em>, en définissant les dépendances fonctionnelles, le dictionnaire de données et le modèle relationnel final. Ce travail rigoureux a permis de générer un script SQL (MariaDB) robuste, capable de gérer les lignes, les tronçons, les stations, les horaires et la tarification sans aucune redondance d'information.</p>
-            </div>
-            <div class="case-image">
-                <img src="img/metro/metro_bd.webp" alt="Schéma MCD Base de données" class="shadow-img">
-            </div>
-        </div>
+        <div class="case-blocks">
 
-        <div class="case-section">
-            <div class="case-text">
-                <h2><span class="highlight-purple">03.</span> Développement de l'Application (C#)</h2>
-                <p>L'étape suivante fut la création d'une application Desktop (Windows Forms) en architecture N-Tiers (Interface, Logique Métier, Accès BD) pour administrer ce réseau.</p>
-                <p>En tant que concepteur, j'ai élaboré l'<strong>arbre des tâches</strong> de l'application pour cartographier toutes les actions utilisateurs. J'ai également conseillé l'équipe sur la création des maquettes IHM interactives via <strong>Figma</strong>. L'application finale permettait aux administrateurs connectés de créer de nouvelles lignes, d'éditer des stations ou de calculer des itinéraires dynamiquement.</p>
-            </div>
-            <div class="case-image">
-                <img src="img/metro/metro_arbre.webp" alt="Arbre des Tâches et Maquettes" class="shadow-img">
-            </div>
-        </div>
-
-        <div class="case-section reverse">
-            <div class="case-text">
-                <h2><span class="highlight-purple">04.</span> L'Innovation : Smart Tokyo Metro</h2>
-                <p>Notre mission ne s'arrêtait pas à la gestion de l'existant. Nous devions proposer une innovation pour fluidifier le réseau. Après une analyse des faiblesses actuelles (complexité tarifaire, affluence monstre), nous avons conceptualisé <strong>Smart Tokyo Metro</strong>.</p>
-                <p>Il s'agit d'une application prédictive intégrant l'IA pour <strong>anticiper l'affluence en temps réel</strong> et proposer des itinéraires alternatifs ("Mode éviter la foule"). Nous avons poussé le concept jusqu'à l'estimation budgétaire de l'hébergement de cette solution sur des serveurs AWS EC2 (environ 4500€ à 6000€ par an) et son découpage en tâches de développement.</p>
-            </div>
-            <div class="case-image">
-                <img src="img/metro/metro_reunion.webp" alt="Présentation Smart Tokyo Metro" class="shadow-img">
-            </div>
-        </div>
-
-        <div class="case-section">
-            <div class="case-text full-width">
-                <h2 class="text-center"><span class="highlight-purple">05.</span> Gestion de Crise et Compétences Acquises</h2>
-                <p class="max-w-800 mx-auto text-center mb-20">Gérer un tel volume d'informations a mis notre équipe à rude épreuve. Ce projet transversal m'a confronté pour la première fois aux réalités brutes du travail en groupe : problèmes de communication, disparités d'implication et pression des délais. Pour ne pas sombrer, nous avons dû imposer une tenue rigoureuse d'un journal de bord et structurer nos échanges sur GitHub et Google Drive. J'y ai appris qu'un bon logiciel repose d'abord sur une équipe soudée et une analyse des besoins rigoureuse.</p>
-                
-                <div style="background-color: var(--bg-card-light); padding: 30px; border-radius: 15px; max-width: 800px; margin: 40px auto; border-left: 5px solid var(--purple-main);">
-                    <h3 style="margin-bottom: 15px;"><i class="fa-solid fa-bullseye" style="margin-right: 8px;"></i> Compétences validées</h3>
-                    <ul style="list-style-type: none; padding-left: 0;">
-                        <li style="margin-bottom: 10px;"><strong><i class="fa-solid fa-circle-check" style="color: #10b981; margin-right: 8px;"></i> Optimiser (Algorithmique) :</strong> Implémentation d'algorithmes de calcul du plus court chemin pour fluidifier le trafic des usagers.</li>
-                        <li style="margin-bottom: 10px;"><strong><i class="fa-solid fa-circle-check" style="color: #10b981; margin-right: 8px;"></i> Gérer des données :</strong> Création d'une base de données complexe et parfaitement modélisée pour supporter les milliers de stations et de lignes.</li>
-                        <li><strong><i class="fa-solid fa-circle-check" style="color: #10b981; margin-right: 8px;"></i> Collaborer (Travailler dans une équipe informatique) :</strong> Mise en place d'outils collaboratifs (GitHub), résolution de conflits internes et répartition équitable des tâches.</li>
-                    </ul>
+            <div class="case-section" data-step="01">
+                <div class="case-text">
+                    <h2><span class="step-index">01</span> Le DÃ©fi du Labyrinthe Souterrain</h2>
+                    <p>Le rÃ©seau du mÃ©tro de Tokyo est l'un des plus denses, tentaculaires et complexes au monde. Dans le cadre de notre SAE de semestre 2, on nous a lancÃ© un dÃ©fi fascinant : comment modÃ©liser, gÃ©rer et optimiser informatiquement un tel monstre logistique ?</p>
+                    <p>Ce projet n'Ã©tait pas qu'un simple exercice de code, c'Ã©tait une vÃ©ritable plongÃ©e dans l'optimisation de ressources Ã  grande Ã©chelle. L'objectif Ã©tait de concevoir une application capable de gÃ©rer l'infrastructure, d'anticiper les temps de trajet (algorithme du plus court chemin) et d'assurer la maintenance du rÃ©seau, le tout en Ã©quipe.</p>
+                </div>
+                <div class="case-image">
+                    <img src="img/metro/metro_accueil.webp" alt="Projet Global Metro" class="shadow-img">
                 </div>
             </div>
-        </div>
 
+            <div class="case-section reverse" data-step="02">
+                <div class="case-text">
+                    <h2><span class="step-index">02</span> ModÃ©lisation de la Base de DonnÃ©es</h2>
+                    <p>Avant de coder l'application, il fallait structurer les donnÃ©es d'un des rÃ©seaux les plus complexes au monde. Je me suis particuliÃ¨rement investi dans cette phase de conception :</p>
+                    <p>J'ai corÃ©alisÃ© le <strong>SchÃ©ma EntitÃ©-Association (MCD)</strong> sur le logiciel <em>Looping</em>, en dÃ©finissant les dÃ©pendances fonctionnelles, le dictionnaire de donnÃ©es et le modÃ¨le relationnel final. Ce travail rigoureux a permis de gÃ©nÃ©rer un script SQL (MariaDB) robuste, capable de gÃ©rer les lignes, les tronÃ§ons, les stations, les horaires et la tarification sans aucune redondance d'information.</p>
+                </div>
+                <div class="case-image">
+                    <img src="img/metro/metro_bd.webp" alt="SchÃ©ma MCD Base de donnÃ©es" class="shadow-img">
+                </div>
+            </div>
+
+            <div class="case-section" data-step="03">
+                <div class="case-text">
+                    <h2><span class="step-index">03</span> DÃ©veloppement de l'Application (C#)</h2>
+                    <p>L'Ã©tape suivante fut la crÃ©ation d'une application Desktop (Windows Forms) en architecture N-Tiers (Interface, Logique MÃ©tier, AccÃ¨s BD) pour administrer ce rÃ©seau.</p>
+                    <p>En tant que concepteur, j'ai Ã©laborÃ© l'<strong>arbre des tÃ¢ches</strong> de l'application pour cartographier toutes les actions utilisateurs. J'ai Ã©galement conseillÃ© l'Ã©quipe sur la crÃ©ation des maquettes IHM interactives via <strong>Figma</strong>. L'application finale permettait aux administrateurs connectÃ©s de crÃ©er de nouvelles lignes, d'Ã©diter des stations ou de calculer des itinÃ©raires dynamiquement.</p>
+                </div>
+                <div class="case-image">
+                    <img src="img/metro/metro_arbre.webp" alt="Arbre des TÃ¢ches et Maquettes" class="shadow-img">
+                </div>
+            </div>
+
+            <div class="case-section reverse" data-step="04">
+                <div class="case-text">
+                    <h2><span class="step-index">04</span> L'Innovation : Smart Tokyo Metro</h2>
+                    <p>Notre mission ne s'arrÃªtait pas Ã  la gestion de l'existant. Nous devions proposer une innovation pour fluidifier le rÃ©seau. AprÃ¨s une analyse des faiblesses actuelles (complexitÃ© tarifaire, affluence monstre), nous avons conceptualisÃ© <strong>Smart Tokyo Metro</strong>.</p>
+                    <p>Il s'agit d'une application prÃ©dictive intÃ©grant l'IA pour <strong>anticiper l'affluence en temps rÃ©el</strong> et proposer des itinÃ©raires alternatifs ("Mode Ã©viter la foule"). Nous avons poussÃ© le concept jusqu'Ã  l'estimation budgÃ©taire de l'hÃ©bergement de cette solution sur des serveurs AWS EC2 (environ 4500â‚¬ Ã  6000â‚¬ par an) et son dÃ©coupage en tÃ¢ches de dÃ©veloppement.</p>
+                </div>
+                <div class="case-image">
+                    <img src="img/metro/metro_reunion.webp" alt="PrÃ©sentation Smart Tokyo Metro" class="shadow-img">
+                </div>
+            </div>
+
+            <div class="case-section centered" data-step="05">
+                <div class="case-text centered">
+                    <h2 class="text-center"><span class="step-index">05</span> Gestion de Crise et CompÃ©tences Acquises</h2>
+                    <p class="text-center mb-40">GÃ©rer un tel volume d'informations a mis notre Ã©quipe Ã  rude Ã©preuve. Ce projet transversal m'a confrontÃ© pour la premiÃ¨re fois aux rÃ©alitÃ©s brutes du travail en groupe : problÃ¨mes de communication, disparitÃ©s d'implication et pression des dÃ©lais. Pour ne pas sombrer, nous avons dÃ» imposer une tenue rigoureuse d'un journal de bord et structurer nos Ã©changes sur GitHub et Google Drive. J'y ai appris qu'un bon logiciel repose d'abord sur une Ã©quipe soudÃ©e et une analyse des besoins rigoureuse.</p>
+
+                    <div class="skills-box">
+                        <h3><i class="fa-solid fa-bullseye"></i> CompÃ©tences validÃ©es</h3>
+                        <ul>
+                            <li><i class="fa-solid fa-circle-check"></i><strong>Optimiser (Algorithmique) :</strong> ImplÃ©mentation d'algorithmes de calcul du plus court chemin pour fluidifier le trafic des usagers.</li>
+                            <li><i class="fa-solid fa-circle-check"></i><strong>GÃ©rer des donnÃ©es :</strong> CrÃ©ation d'une base de donnÃ©es complexe et parfaitement modÃ©lisÃ©e pour supporter les milliers de stations et de lignes.</li>
+                            <li><i class="fa-solid fa-circle-check"></i><strong>Collaborer (Travailler dans une Ã©quipe informatique) :</strong> Mise en place d'outils collaboratifs (GitHub), rÃ©solution de conflits internes et rÃ©partition Ã©quitable des tÃ¢ches.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </section>
 
     <footer class="footer" id="footer-container"></footer>
@@ -100,3 +111,4 @@
     <script src="js/main.js"></script>
 </body>
 </html>
+

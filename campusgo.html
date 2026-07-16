@@ -1,11 +1,18 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Étude de cas sur le projet Campus'Go, une plateforme de covoiturage étudiant.">
-    <title>CampusGo - Étude de cas | Gabriel Roger</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description" content="Ã‰tude de cas sur le projet Campus'Go, une plateforme de covoiturage Ã©tudiant.">
+    <title>CampusGo - Ã‰tude de cas | Gabriel Roger</title>
+    <meta property="og:title" content="Gabriel Roger | Portfolio UX/UI">
+    <meta property="og:description" content="Étudiant en BUT Informatique et futur étudiant en UI/UX Design. Découvrez mon parcours et mes projets.">
+    <meta property="og:image" content="https://mon-portfolio.fr/img/og-preview.png">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fr_FR">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="img/logo.png" type="image/png">
@@ -21,101 +28,107 @@
     <section class="case-study-hero">
         <div class="case-study-header">
             <a href="projets.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Retour aux projets</a>
-            <span class="project-badge mt-20">Projet Universitaire (SAE 3)</span>
-            <h1 class="case-title">Campus'Go : Plateforme de Covoiturage Étudiant</h1>
-            <p class="case-subtitle">Une solution de mobilité sécurisée, économique et écologique dédiée aux étudiants et au personnel de l'IUT d'Amiens.</p>
-            
-            <div class="tech-tags justify-center mt-20">
-                <span>Laravel 11</span><span>PHP</span><span>Tailwind CSS</span><span>MySQL</span><span>Git</span>
+            <span class="tag mt-20">Projet Universitaire (SAE 3)</span>
+            <h1 class="case-title">Campus'Go : Plateforme de Covoiturage Ã‰tudiant</h1>
+            <p class="case-subtitle">Une solution de mobilitÃ© sÃ©curisÃ©e, Ã©conomique et Ã©cologique dÃ©diÃ©e aux Ã©tudiants et au personnel de l'IUT d'Amiens.</p>
+
+            <div class="tags-row justify-center mt-20">
+                <span class="tag">Laravel 11</span><span class="tag">PHP</span><span class="tag">Tailwind CSS</span><span class="tag">MySQL</span><span class="tag">Git</span>
             </div>
-            
-            <div style="margin-top: 30px;">
+
+            <div class="mt-40">
                 <a href="https://campusgo.alwaysdata.net/" target="_blank" rel="noopener noreferrer" class="btn btn-primary"><i class="fa-solid fa-globe"></i> Visiter le site en direct</a>
             </div>
         </div>
     </section>
 
     <section class="case-study-content">
-        
-        <div class="case-section">
-            <div class="case-text">
-                <h2><span class="highlight-purple">01.</span> La Genèse de l'Histoire</h2>
-                <p>L'histoire de Campus'Go commence par un constat simple et quotidien : observer les parkings de l'IUT d'Amiens saturés de voitures ne contenant souvent qu'une seule personne. Face à l'augmentation du coût de la vie étudiante et à l'urgence climatique, mon équipe et moi-même nous sommes lancés un défi : <strong>comment recréer du lien social tout en proposant une solution de mobilité concrète et locale ?</strong></p>
-                <p>Il ne s'agissait pas de recoder un simple "BlaBlaCar", mais de penser à notre échelle. Nous voulions créer un espace de confiance exclusif, sans commission, fait par des étudiants, pour des étudiants. C'est ainsi qu'est né le projet Campus'Go, une aventure humaine et technique de plusieurs mois.</p>
-            </div>
-            <div class="case-image">
-                <img src="img/campusgo/campusgo_accueil.webp" alt="Page d'accueil de CampusGo" class="shadow-img">
-            </div>
-        </div>
+        <nav class="case-rail" aria-label="Sommaire de l'Ã©tude de cas"></nav>
 
-        <div class="case-section reverse">
-            <div class="case-text">
-                <h2><span class="highlight-purple">02.</span> Architecture & Base de données</h2>
-                <p>Pour garantir la robustesse et la maintenabilité du projet, nous avons opté pour le framework <strong>Laravel</strong> (architecture MVC) couplé à une base de données <strong>MySQL</strong>. L'interface a été stylisée avec <strong>Tailwind CSS</strong> pour assurer un design responsive et moderne, respectant notre charte graphique (Beige et Vert nature).</p>
-                <ul class="case-list">
-                    <li><i class="fa-solid fa-check text-purple"></i> <strong>Modélisation stricte :</strong> Entités Utilisateur, Véhicule, Trajet, Avis, et Préférences.</li>
-                    <li><i class="fa-solid fa-check text-purple"></i> <strong>Sécurité :</strong> Hashage des mots de passe, requêtes préparées (protection anti-injections SQL) et respect du RGPD.</li>
-                </ul>
-            </div>
-            <div class="case-image">
-                <img src="img/campusgo/campusgo_bd.webp" alt="Architecture de l'application" class="shadow-img">
-            </div>
-        </div>
+        <div class="case-blocks">
 
-        <div class="case-features">
-            <h2 class="text-center mb-40"><span class="highlight-purple">03.</span> Les Fonctionnalités Clés</h2>
-            
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <img src="img/campusgo/campusgo_recherche.webp" alt="Recherche de trajets" class="feature-img">
-                    <div class="feature-body">
-                        <h3>Recherche et Proposition</h3>
-                        <p>Les conducteurs peuvent publier un trajet en précisant l'heure, le véhicule et le nombre de places. Les passagers disposent d'un moteur de recherche avec filtres pour trouver le trajet qui correspond à leurs horaires.</p>
-                    </div>
+            <div class="case-section" data-step="01">
+                <div class="case-text">
+                    <h2><span class="step-index">01</span> La GenÃ¨se de l'Histoire</h2>
+                    <p>L'histoire de Campus'Go commence par un constat simple et quotidien : observer les parkings de l'IUT d'Amiens saturÃ©s de voitures ne contenant souvent qu'une seule personne. Face Ã  l'augmentation du coÃ»t de la vie Ã©tudiante et Ã  l'urgence climatique, mon Ã©quipe et moi-mÃªme nous sommes lancÃ©s un dÃ©fi : <strong>comment recrÃ©er du lien social tout en proposant une solution de mobilitÃ© concrÃ¨te et locale ?</strong></p>
+                    <p>Il ne s'agissait pas de recoder un simple "BlaBlaCar", mais de penser Ã  notre Ã©chelle. Nous voulions crÃ©er un espace de confiance exclusif, sans commission, fait par des Ã©tudiants, pour des Ã©tudiants. C'est ainsi qu'est nÃ© le projet Campus'Go, une aventure humaine et technique de plusieurs mois.</p>
                 </div>
-
-                <div class="feature-card">
-                    <img src="img/campusgo/campusgo_trajet.webp" alt="Tableau de bord utilisateur" class="feature-img">
-                    <div class="feature-body">
-                        <h3>Dashboard Personnalisé</h3>
-                        <p>Chaque utilisateur dispose d'un espace pour suivre ses réservations (passées et à venir), consulter l'historique de ses trajets et gérer ses annulations.</p>
-                    </div>
-                </div>
-
-                <div class="feature-card">
-                    <img src="img/campusgo/campusgo_profil.webp" alt="Gestion du profil" class="feature-img">
-                    <div class="feature-body">
-                        <h3>Profil et Véhicules</h3>
-                        <p>L'utilisateur peut enregistrer plusieurs véhicules et définir ses préférences de voyage (musique, discussion, tolérance au tabac ou animaux) pour un covoiturage optimal.</p>
-                    </div>
-                </div>
-
-                <div class="feature-card">
-                    <img src="img/campusgo/campusgo_admin.webp" alt="Système d'administration" class="feature-img">
-                    <div class="feature-body">
-                        <h3>Système d'Avis & Modération</h3>
-                        <p>Un système de notation réciproque garantit la confiance. Les comptes ayant des droits d'administration peuvent modérer les trajets et superviser la plateforme.</p>
-                    </div>
+                <div class="case-image">
+                    <img src="img/campusgo/campusgo_accueil.webp" alt="Page d'accueil de CampusGo" class="shadow-img">
                 </div>
             </div>
-        </div>
 
-        <div class="case-section">
-            <div class="case-text full-width">
-                <h2 class="text-center"><span class="highlight-purple">04.</span> Les Obstacles Surmontés et le Lien avec mon BUT</h2>
-                <p class="max-w-800 mx-auto text-center mb-20">Comme dans tout projet d'envergure, le chemin n'a pas été linéaire. Notre premier grand obstacle a été l'apprentissage "sur le tas" du framework <strong>Laravel</strong>. Il a fallu repenser notre façon de coder, passer d'un PHP procédural à une architecture MVC stricte. Humainement, coordonner 5 développeurs avec des niveaux différents a exigé une grande capacité d'adaptation. Nous avons dû apprendre à gérer nos frustrations lors de conflits de fusion sur <strong>Git</strong> (merge conflicts) et mettre en place une communication quotidienne.</p>
-                
-                <div style="background-color: var(--bg-card-light); padding: 30px; border-radius: 15px; max-width: 800px; margin: 40px auto; border-left: 5px solid var(--purple-main);">
-                    <h3 style="margin-bottom: 15px;"><i class="fa-solid fa-bullseye" style="margin-right: 8px;"></i> Compétences validées</h3>
-                    <ul style="list-style-type: none; padding-left: 0;">
-                        <li style="margin-bottom: 10px;"><strong><i class="fa-solid fa-circle-check" style="color: #10b981; margin-right: 8px;"></i> Réaliser (Développer des applications) :</strong> Passage de la conception (maquettes) à la réalisation technique complète avec Laravel et MySQL.</li>
-                        <li style="margin-bottom: 10px;"><strong><i class="fa-solid fa-circle-check" style="color: #10b981; margin-right: 8px;"></i> Collaborer (Travailler dans une équipe informatique) :</strong> Utilisation de Git, répartition des tâches, communication et entraide pour surmonter les blocages techniques.</li>
-                        <li><strong><i class="fa-solid fa-circle-check" style="color: #10b981; margin-right: 8px;"></i> Optimiser :</strong> Sécurisation des requêtes SQL et structuration de la base de données pour une application fluide.</li>
+            <div class="case-section reverse" data-step="02">
+                <div class="case-text">
+                    <h2><span class="step-index">02</span> Architecture & Base de donnÃ©es</h2>
+                    <p>Pour garantir la robustesse et la maintenabilitÃ© du projet, nous avons optÃ© pour le framework <strong>Laravel</strong> (architecture MVC) couplÃ© Ã  une base de donnÃ©es <strong>MySQL</strong>. L'interface a Ã©tÃ© stylisÃ©e avec <strong>Tailwind CSS</strong> pour assurer un design responsive et moderne, respectant notre charte graphique (Beige et Vert nature).</p>
+                    <ul class="case-list">
+                        <li><i class="fa-solid fa-check text-purple"></i> <strong>ModÃ©lisation stricte :</strong> EntitÃ©s Utilisateur, VÃ©hicule, Trajet, Avis, et PrÃ©fÃ©rences.</li>
+                        <li><i class="fa-solid fa-check text-purple"></i> <strong>SÃ©curitÃ© :</strong> Hashage des mots de passe, requÃªtes prÃ©parÃ©es (protection anti-injections SQL) et respect du RGPD.</li>
                     </ul>
                 </div>
+                <div class="case-image">
+                    <img src="img/campusgo/campusgo_bd.webp" alt="Architecture de l'application" class="shadow-img">
+                </div>
             </div>
-        </div>
 
+            <div class="case-features" data-step="03">
+                <div class="section-heading">
+                    <h2><span class="step-index">03</span> Les FonctionnalitÃ©s ClÃ©s</h2>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <img src="img/campusgo/campusgo_recherche.webp" alt="Recherche de trajets" class="feature-img">
+                        <div class="feature-body">
+                            <h3>Recherche et Proposition</h3>
+                            <p>Les conducteurs peuvent publier un trajet en prÃ©cisant l'heure, le vÃ©hicule et le nombre de places. Les passagers disposent d'un moteur de recherche avec filtres pour trouver le trajet qui correspond Ã  leurs horaires.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <img src="img/campusgo/campusgo_trajet.webp" alt="Tableau de bord utilisateur" class="feature-img">
+                        <div class="feature-body">
+                            <h3>Dashboard PersonnalisÃ©</h3>
+                            <p>Chaque utilisateur dispose d'un espace pour suivre ses rÃ©servations (passÃ©es et Ã  venir), consulter l'historique de ses trajets et gÃ©rer ses annulations.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <img src="img/campusgo/campusgo_profil.webp" alt="Gestion du profil" class="feature-img">
+                        <div class="feature-body">
+                            <h3>Profil et VÃ©hicules</h3>
+                            <p>L'utilisateur peut enregistrer plusieurs vÃ©hicules et dÃ©finir ses prÃ©fÃ©rences de voyage (musique, discussion, tolÃ©rance au tabac ou animaux) pour un covoiturage optimal.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <img src="img/campusgo/campusgo_admin.webp" alt="SystÃ¨me d'administration" class="feature-img">
+                        <div class="feature-body">
+                            <h3>SystÃ¨me d'Avis & ModÃ©ration</h3>
+                            <p>Un systÃ¨me de notation rÃ©ciproque garantit la confiance. Les comptes ayant des droits d'administration peuvent modÃ©rer les trajets et superviser la plateforme.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-section centered" data-step="04">
+                <div class="case-text centered">
+                    <h2 class="text-center"><span class="step-index">04</span> Les Obstacles SurmontÃ©s et le Lien avec mon BUT</h2>
+                    <p class="text-center mb-40">Comme dans tout projet d'envergure, le chemin n'a pas Ã©tÃ© linÃ©aire. Notre premier grand obstacle a Ã©tÃ© l'apprentissage "sur le tas" du framework <strong>Laravel</strong>. Il a fallu repenser notre faÃ§on de coder, passer d'un PHP procÃ©dural Ã  une architecture MVC stricte. Humainement, coordonner 5 dÃ©veloppeurs avec des niveaux diffÃ©rents a exigÃ© une grande capacitÃ© d'adaptation. Nous avons dÃ» apprendre Ã  gÃ©rer nos frustrations lors de conflits de fusion sur <strong>Git</strong> (merge conflicts) et mettre en place une communication quotidienne.</p>
+
+                    <div class="skills-box">
+                        <h3><i class="fa-solid fa-bullseye"></i> CompÃ©tences validÃ©es</h3>
+                        <ul>
+                            <li><i class="fa-solid fa-circle-check"></i><strong>RÃ©aliser (DÃ©velopper des applications) :</strong> Passage de la conception (maquettes) Ã  la rÃ©alisation technique complÃ¨te avec Laravel et MySQL.</li>
+                            <li><i class="fa-solid fa-circle-check"></i><strong>Collaborer (Travailler dans une Ã©quipe informatique) :</strong> Utilisation de Git, rÃ©partition des tÃ¢ches, communication et entraide pour surmonter les blocages techniques.</li>
+                            <li><i class="fa-solid fa-circle-check"></i><strong>Optimiser :</strong> SÃ©curisation des requÃªtes SQL et structuration de la base de donnÃ©es pour une application fluide.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </section>
 
     <footer class="footer" id="footer-container"></footer>
@@ -123,3 +136,4 @@
     <script src="js/main.js"></script>
 </body>
 </html>
+

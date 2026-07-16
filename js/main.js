@@ -1,6 +1,22 @@
 // ==========================================================================
-// 1. BASE DE DONNÉES DES PROJETS
+// PORTFOLIO GABRIEL ROGER — v2
+// Sommaire :
+//   1. Données (projets, parcours)
+//   2. Générateurs de templates
+//   3. Chargement des partials (header/footer)
+//   4. Thème clair/sombre
+//   5. Navigation (liens actifs, menu mobile)
+//   6. Carrousels
+//   7. Révélation au scroll (restreinte)
+//   8. Rail numéroté des études de cas (signature)
+//   9. Lightbox
+//   10. Bouton retour en haut
+//   11. Init global
 // ==========================================================================
+
+/* --------------------------------------------------------------------------
+   1. DONNÉES
+   -------------------------------------------------------------------------- */
 const mesProjets = [
     {
         id: "crazyburgear",
@@ -50,16 +66,13 @@ const mesProjets = [
     }
 ];
 
-// ==========================================================================
-// 2. BASE DE DONNÉES DU PARCOURS (TIMELINE)
-// ==========================================================================
 const monParcours = [
     {
         date: "Septembre 2026",
         categorie: "Formation",
         classeCat: "cat-edu",
-        titre: "École spécialisée en UI/UX Design",
-        description: "Projet d'intégrer une école spécialisée pour poursuivre mon apprentissage vers l'UI/UX Design et la gestion de projet.",
+        titre: "Need for School (Rouen)",
+        description: "Intégration de l'école Need for School à Rouen pour poursuivre mon apprentissage vers l'UI/UX Design (titre RNCP de niveau 6).",
         lien: null
     },
     {
@@ -120,34 +133,27 @@ const monParcours = [
     }
 ];
 
-// ==========================================================================
-// 3. GÉNÉRATEURS DE TEMPLATES
-// ==========================================================================
+/* --------------------------------------------------------------------------
+   2. GÉNÉRATEURS DE TEMPLATES
+   -------------------------------------------------------------------------- */
 function genererTemplateProjet(projet, isReverse) {
-    const tagsHtml = projet.technos.map(tech => `<span>${tech}</span>`).join('');
-    const reverseClass = isReverse ? 'reverse' : ''; 
-    
-    let boutonsHtml = '';
-    if (projet.lienVisite) {
-        boutonsHtml = `
-            <div class="project-actions" style="display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; align-self: flex-start;">
+    const tagsHtml = projet.technos.map(t => `<span>${t}</span>`).join('');
+    const reverseClass = isReverse ? 'reverse' : '';
+
+    const boutonsHtml = projet.lienVisite
+        ? `<div class="project-actions">
                 <a href="${projet.lien}" class="btn btn-secondary">Découvrir le projet <i class="fa-solid fa-arrow-right"></i></a>
                 <a href="${projet.lienVisite}" target="_blank" rel="noopener noreferrer" class="btn btn-primary"><i class="fa-solid fa-globe"></i> Visiter le site</a>
-            </div>
-        `;
-    } else {
-        boutonsHtml = `
-            <a href="${projet.lien}" class="btn btn-primary btn-margin-top">Découvrir le projet <i class="fa-solid fa-arrow-right"></i></a>
-        `;
-    }
+           </div>`
+        : `<a href="${projet.lien}" class="btn btn-primary">Découvrir le projet <i class="fa-solid fa-arrow-right"></i></a>`;
 
     return `
-        <div class="project-showcase showcase-margin ${reverseClass}">
+        <div class="project-showcase showcase-margin ${reverseClass} reveal">
             <div class="project-media">
                 <div class="carousel auto-carousel" data-folder="${projet.dossierImages}" data-photos="${projet.images}"></div>
             </div>
             <div class="project-info">
-                <span class="project-badge"><i class="fa-regular fa-calendar"></i> ${projet.date} • ${projet.type}</span>
+                <span class="project-badge"><i class="fa-regular fa-calendar"></i> ${projet.date} — ${projet.type}</span>
                 <h3>${projet.titre}</h3>
                 <p>${projet.description}</p>
                 <div class="tech-tags">${tagsHtml}</div>
@@ -158,13 +164,12 @@ function genererTemplateProjet(projet, isReverse) {
 }
 
 function genererTemplateParcours(item) {
-    let lienHtml = '';
-    if (item.lien) {
-        lienHtml = `<a href="${item.lien}" style="color: var(--purple-main); font-size: 0.9rem; margin-top: 10px; display: inline-block; font-weight: 500;">Voir les détails <i class="fa-solid fa-arrow-right"></i></a>`;
-    }
+    const lienHtml = item.lien
+        ? `<a href="${item.lien}" class="link-draw">Voir les détails <i class="fa-solid fa-arrow-right"></i></a>`
+        : '';
 
     return `
-        <div class="timeline-item reveal">
+        <div class="timeline-item reveal" data-category="${item.classeCat}">
             <div class="timeline-dot"></div>
             <div class="timeline-content">
                 <span class="timeline-date">${item.date}</span>
@@ -183,481 +188,300 @@ function afficherContenuDynamique() {
     const containerParcours = document.getElementById('container-parcours');
 
     if (containerProjetsInfo) {
-        let htmlInfo = "";
-        mesProjets.forEach((projet, index) => {
-            htmlInfo += genererTemplateProjet(projet, index % 2 === 0);
-        });
-        containerProjetsInfo.innerHTML = htmlInfo;
+        containerProjetsInfo.innerHTML = mesProjets.map((p, i) => genererTemplateProjet(p, i % 2 === 0)).join('');
     }
     if (containerDernierProjet && mesProjets.length > 0) {
         containerDernierProjet.innerHTML = genererTemplateProjet(mesProjets[0], false);
     }
     if (containerParcours) {
-        let htmlParcours = "";
-        monParcours.forEach(item => {
-            htmlParcours += genererTemplateParcours(item);
-        });
-        containerParcours.innerHTML = htmlParcours;
+        containerParcours.innerHTML = monParcours.map(genererTemplateParcours).join('');
     }
-    
+
     initCarousels();
+    initScrollReveal();
+    initParcoursFilter();
 }
 
-// ==========================================================================
-// 4. FONCTIONS GLOBALES & UI
-// ==========================================================================
+/* --------------------------------------------------------------------------
+   3. CHARGEMENT DES PARTIALS
+   -------------------------------------------------------------------------- */
 async function loadComponent(elementId, filePath) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
     try {
-        const element = document.getElementById(elementId);
-        if (!element) return;
         const response = await fetch(filePath);
-        if (!response.ok) throw new Error(`Erreur: ${filePath}`);
-        const data = await response.text();
-        element.innerHTML = data;
+        if (!response.ok) throw new Error(`Impossible de charger ${filePath}`);
+        element.innerHTML = await response.text();
     } catch (error) {
         console.error(error);
     }
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener('DOMContentLoaded', async () => {
     await Promise.all([
-        loadComponent("header-container", "header.html"),
-        loadComponent("footer-container", "footer.html")
+        loadComponent('header-container', 'header.html'),
+        loadComponent('footer-container', 'footer.html')
     ]);
 
     initTheme();
     initActiveLinks();
     initMobileMenu();
     afficherContenuDynamique();
-    initScrollAnimations();
     initLightbox();
-    initVisualEnhancements(); // ← toutes les améliorations visuelles
+    initBackToTop();
+    initCaseRail();
+    initHeroLines();
+    initPageTransitions();
 });
 
+/* --------------------------------------------------------------------------
+   4. THÈME CLAIR / SOMBRE
+   -------------------------------------------------------------------------- */
 function initTheme() {
     const themeToggle = document.getElementById('theme-toggle');
+    if (!themeToggle) return;
     const icon = themeToggle.querySelector('i');
     const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
+
     document.documentElement.setAttribute('data-theme', savedTheme);
-    icon.className = savedTheme === 'light' ? 'fa-solid fa-lightbulb' : 'fa-regular fa-lightbulb';
+    icon.className = savedTheme === 'light' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
 
     themeToggle.addEventListener('click', () => {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('portfolio-theme', newTheme);
-        icon.className = newTheme === 'light' ? 'fa-solid fa-lightbulb' : 'fa-regular fa-lightbulb';
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+
+        themeToggle.classList.add('is-switching');
+        setTimeout(() => {
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('portfolio-theme', next);
+            icon.className = next === 'light' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            themeToggle.classList.remove('is-switching');
+        }, 200);
     });
 }
+
+/* --------------------------------------------------------------------------
+   5. NAVIGATION
+   -------------------------------------------------------------------------- */
 function initActiveLinks() {
-    let currentPath = window.location.pathname.split('/').pop();
-    if (currentPath === '') currentPath = 'index.html';
-    const navLinks = document.querySelectorAll('.nav-links a');
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === currentPath) link.classList.add('active');
+    let currentPath = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === currentPath);
     });
 }
 
 function initMobileMenu() {
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('nav-links');
-    if (hamburger) {
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('mobile-active');
-            const icon = hamburger.querySelector('i');
-            icon.className = navLinks.classList.contains('mobile-active') ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+    if (!hamburger || !navLinks) return;
+
+    hamburger.addEventListener('click', () => {
+        const isOpen = navLinks.classList.toggle('mobile-active');
+        hamburger.querySelector('i').className = isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+    });
+
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('mobile-active');
+            hamburger.querySelector('i').className = 'fa-solid fa-bars';
         });
-    }
+    });
 }
 
+/* --------------------------------------------------------------------------
+   6. CARROUSELS
+   -------------------------------------------------------------------------- */
 function initCarousels() {
-    const carousels = document.querySelectorAll('.auto-carousel');
-    carousels.forEach(carousel => {
+    document.querySelectorAll('.auto-carousel').forEach(carousel => {
         const folder = carousel.getAttribute('data-folder');
-        const photos = carousel.getAttribute('data-photos').split(',').map(photo => photo.trim());
-        
+        const photos = carousel.getAttribute('data-photos').split(',').map(p => p.trim());
+
         photos.forEach((photo, index) => {
             const img = document.createElement('img');
             img.src = folder + photo;
-            img.className = 'carousel-item';
-            if (index === 0) img.classList.add('active');
-            img.alt = "Capture projet";
+            img.className = 'carousel-item' + (index === 0 ? ' active' : '');
+            img.alt = 'Capture du projet';
             carousel.appendChild(img);
         });
 
         const items = carousel.querySelectorAll('.carousel-item');
-        if(items.length <= 1) return;
+        if (items.length <= 1) return;
 
-        let currentIndex = 0;
+        let current = 0;
         setInterval(() => {
-            items[currentIndex].classList.remove('active');
-            currentIndex = (currentIndex + 1) % items.length;
-            items[currentIndex].classList.add('active');
-        }, 3500);
+            items[current].classList.remove('active');
+            current = (current + 1) % items.length;
+            items[current].classList.add('active');
+        }, 4000);
     });
 }
 
-function initScrollAnimations() {
-    const elementsToReveal = document.querySelectorAll('.section-title, .about-text, .skills-card, .split-row, .case-section, .feature-card');
-    
-    elementsToReveal.forEach((el, index) => {
-        if (!el.classList.contains('reveal')) {
-            el.classList.add('reveal');
-        }
-        if (el.classList.contains('split-row') || el.classList.contains('feature-card')) {
-            el.style.transitionDelay = `${(index % 3) * 0.15}s`;
+/* --------------------------------------------------------------------------
+   7. RÉVÉLATION AU SCROLL — restreinte à quelques éléments porteurs de sens
+   -------------------------------------------------------------------------- */
+function initScrollReveal() {
+    const targets = document.querySelectorAll(
+        '.case-section, .feature-card, .split-row, .timeline-item, .project-showcase'
+    );
+    targets.forEach((el, i) => {
+        el.classList.add('reveal');
+        if (el.classList.contains('feature-card')) {
+            el.style.transitionDelay = `${(i % 4) * 0.08}s`;
         }
     });
 
-    const observer = new IntersectionObserver((entries, observer) => {
+    const observer = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('active'); // Fait apparaître l'élément
-                observer.unobserve(entry.target);
+                entry.target.classList.add('is-visible');
+                obs.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 }
 
+/* --------------------------------------------------------------------------
+   8. RAIL NUMÉROTÉ DES ÉTUDES DE CAS (signature)
+   -------------------------------------------------------------------------- */
+function initCaseRail() {
+    const rail = document.querySelector('.case-rail');
+    const blocks = document.querySelectorAll('.case-blocks > [data-step]');
+    if (!rail || blocks.length === 0) return;
+
+    rail.innerHTML = '';
+    blocks.forEach((block, i) => {
+        const btn = document.createElement('button');
+        btn.textContent = block.getAttribute('data-step');
+        btn.addEventListener('click', () => {
+            block.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+        rail.appendChild(btn);
+        block.id = block.id || `bloc-${i}`;
+    });
+
+    const railButtons = rail.querySelectorAll('button');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const index = Array.from(blocks).indexOf(entry.target);
+            if (entry.isIntersecting) {
+                railButtons.forEach(b => b.classList.remove('is-active'));
+                railButtons[index].classList.add('is-active');
+            }
+        });
+    }, { threshold: 0.4, rootMargin: '-100px 0px -40% 0px' });
+
+    blocks.forEach(block => observer.observe(block));
+}
+
+/* --------------------------------------------------------------------------
+   9. LIGHTBOX
+   -------------------------------------------------------------------------- */
 function initLightbox() {
     const lightbox = document.createElement('div');
     lightbox.id = 'lightbox';
-    lightbox.innerHTML = `
-        <span class="close-lightbox">&times;</span>
-        <img class="lightbox-content" id="lightbox-img">
-    `;
+    lightbox.innerHTML = `<span class="close-lightbox">&times;</span><img class="lightbox-content" id="lightbox-img" alt="Aperçu agrandi">`;
     document.body.appendChild(lightbox);
 
     const lightboxImg = document.getElementById('lightbox-img');
-    
+
     document.addEventListener('click', (e) => {
-        if (e.target.tagName === 'IMG' && (e.target.closest('.case-image') || e.target.closest('.feature-img') || e.target.classList.contains('feature-img'))) {
+        const img = e.target.closest('.case-image img, .feature-img');
+        if (img) {
             lightbox.style.display = 'flex';
-            lightboxImg.src = e.target.src;
-            setTimeout(() => lightbox.classList.add('active'), 10);
+            lightboxImg.src = img.src;
+            requestAnimationFrame(() => lightbox.classList.add('active'));
         }
     });
 
-    const closeLightbox = () => {
+    const close = () => {
         lightbox.classList.remove('active');
-        setTimeout(() => lightbox.style.display = 'none', 300);
+        setTimeout(() => { lightbox.style.display = 'none'; }, 250);
     };
 
-    lightbox.querySelector('.close-lightbox').addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) closeLightbox();
-    });
+    lightbox.querySelector('.close-lightbox').addEventListener('click', close);
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) close(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
 }
 
-// ==========================================================================
-// AMÉLIORATIONS VISUELLES
-// ==========================================================================
-
-// ------------------------------------------------------------------
-// 1. CURSEUR PERSONNALISÉ
-// ------------------------------------------------------------------
-function initCustomCursor() {
-    if (window.matchMedia('(max-width: 900px)').matches) return;
-    // Vérification tactile
-    if ('ontouchstart' in window) return;
-
-    const dot  = document.createElement('div');
-    const ring = document.createElement('div');
-    dot.className  = 'cursor-dot';
-    ring.className = 'cursor-ring';
-
-    // Départ hors écran pour éviter le flash en (0,0)
-    dot.style.left  = ring.style.left  = '-100px';
-    dot.style.top   = ring.style.top   = '-100px';
-
-    document.body.appendChild(dot);
-    document.body.appendChild(ring);
-
-    // On cache le curseur natif APRÈS injection dans le DOM
-    document.body.classList.add('custom-cursor-active');
-    document.documentElement.classList.add('custom-cursor-active');
-
-    let mouseX = 0, mouseY = 0;
-    let ringX  = 0, ringY  = 0;
-
-    window.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        dot.style.left = mouseX + 'px';
-        dot.style.top  = mouseY + 'px';
-    });
-
-    function animateRing() {
-        ringX += (mouseX - ringX) * 0.13;
-        ringY += (mouseY - ringY) * 0.13;
-        ring.style.left = ringX + 'px';
-        ring.style.top  = ringY + 'px';
-        requestAnimationFrame(animateRing);
-    }
-    animateRing();
-
-    // Hover sur éléments interactifs
-    const interactives = 'a, button, .btn, .feature-card, .project-showcase, .timeline-content, input, textarea, .tab-btn';
-    document.addEventListener('mouseover', (e) => {
-        if (e.target.closest(interactives)) {
-            dot.classList.add('cursor-hover');
-            ring.classList.add('cursor-hover');
-        }
-    });
-    document.addEventListener('mouseout', (e) => {
-        if (e.target.closest(interactives)) {
-            dot.classList.remove('cursor-hover');
-            ring.classList.remove('cursor-hover');
-        }
-    });
-
-    // Cacher seulement quand la souris quitte la fenêtre
-    document.documentElement.addEventListener('mouseleave', () => {
-        dot.style.opacity  = '0';
-        ring.style.opacity = '0';
-    });
-    document.documentElement.addEventListener('mouseenter', () => {
-        dot.style.opacity  = '1';
-        ring.style.opacity = '0.6';
-    });
-}
-
-// ------------------------------------------------------------------
-// 2. EFFET TYPING SUR LE BADGE HERO
-// ------------------------------------------------------------------
-function initTypingEffect() {
-    const badge = document.querySelector('.badge');
-    if (!badge) return;
-
-    const phrases = [
-        'Étudiant UX/UI Designer & Développeur',
-        'Passionné d\'UI/UX Design',
-        'En recherche d\'alternance 2026'
-    ];
-
-    const cursor = document.createElement('span');
-    cursor.className = 'typing-cursor';
-    badge.textContent = '';
-    badge.appendChild(cursor);
-
-    let phraseIndex = 0;
-    let charIndex   = 0;
-    let isDeleting  = false;
-    let pause       = false;
-
-    function type() {
-        if (pause) return;
-        const current = phrases[phraseIndex];
-
-        if (!isDeleting) {
-            // Écriture
-            badge.textContent = current.substring(0, charIndex + 1);
-            badge.appendChild(cursor);
-            charIndex++;
-            if (charIndex === current.length) {
-                // Pause avant effacement
-                pause = true;
-                setTimeout(() => { isDeleting = true; pause = false; }, 2200);
-            }
-        } else {
-            // Effacement
-            badge.textContent = current.substring(0, charIndex - 1);
-            badge.appendChild(cursor);
-            charIndex--;
-            if (charIndex === 0) {
-                isDeleting  = false;
-                phraseIndex = (phraseIndex + 1) % phrases.length;
-            }
-        }
-
-        const speed = isDeleting ? 45 : 80;
-        setTimeout(type, speed);
-    }
-
-    // Délai initial pour laisser la page se charger
-    setTimeout(type, 600);
-}
-
-// ------------------------------------------------------------------
-// 3. TILT 3D SUR LES CARTES PROJET
-// ------------------------------------------------------------------
-function initTiltEffect() {
-    // Appliqué aussi aux feature-cards des pages détail
-    function applyTilt(selector, maxTilt = 8) {
-        document.querySelectorAll(selector).forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect   = card.getBoundingClientRect();
-                const x      = e.clientX - rect.left;
-                const y      = e.clientY - rect.top;
-                const cx     = rect.width  / 2;
-                const cy     = rect.height / 2;
-                const rotateX = ((y - cy) / cy) * -maxTilt;
-                const rotateY = ((x - cx) / cx) *  maxTilt;
-                card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale(1)';
-            });
-        });
-    }
-
-    applyTilt('.project-showcase', 6);
-    applyTilt('.feature-card',     8);
-}
-
-
-// ------------------------------------------------------------------
-// 7. BOUTON RETOUR EN HAUT
-// ------------------------------------------------------------------
+/* --------------------------------------------------------------------------
+   10. BOUTON RETOUR EN HAUT
+   -------------------------------------------------------------------------- */
 function initBackToTop() {
     const btn = document.createElement('button');
-    btn.className   = 'back-to-top';
-    btn.innerHTML   = '<i class="fa-solid fa-chevron-up"></i>';
+    btn.className = 'back-to-top';
+    btn.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
     btn.setAttribute('aria-label', 'Retour en haut de page');
     document.body.appendChild(btn);
 
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 400) {
-            btn.classList.add('visible');
-        } else {
-            btn.classList.remove('visible');
-        }
+        btn.classList.toggle('visible', window.scrollY > 500);
     });
 
-    btn.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 }
 
+/* --------------------------------------------------------------------------
+   11. HERO — découpage du titre en lignes animées
+   -------------------------------------------------------------------------- */
+function initHeroLines() {
+    const h1 = document.querySelector('.hero h1[data-lines]');
+    if (!h1) return;
+    const lines = h1.getAttribute('data-lines').split('|');
+    h1.innerHTML = lines.map(l => `<span class="line">${l}</span>`).join('');
+}
 
-// ------------------------------------------------------------------
-// 10. PARTICULES INTERACTIVES — toutes les pages, fond fixe
-// ------------------------------------------------------------------
-function initParticles() {
-    const canvas = document.createElement('canvas');
-    canvas.id = 'particles-canvas';
-    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;';
-    document.body.appendChild(canvas);
+/* --------------------------------------------------------------------------
+   12. FILTRE PARCOURS
+   -------------------------------------------------------------------------- */
+function initParcoursFilter() {
+    const filterBtns = document.querySelectorAll('.timeline-legend .tab-btn');
+    const items = document.querySelectorAll('.timeline-item');
+    if (filterBtns.length === 0 || items.length === 0) return;
 
-    const ctx = canvas.getContext('2d');
-    let W = canvas.width  = window.innerWidth;
-    let H = canvas.height = window.innerHeight;
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
 
-    function getColor() {
-        return getComputedStyle(document.documentElement)
-            .getPropertyValue('--purple-main').trim() || '#8b5cf6';
-    }
+            const filterValue = btn.getAttribute('data-filter');
 
-    const PARTICLE_COUNT = Math.min(60, Math.floor((W * H) / 18000));
-    const particles = Array.from({ length: PARTICLE_COUNT }, () => ({
-        x:       Math.random() * W,
-        y:       Math.random() * H,
-        vx:      (Math.random() - 0.5) * 0.4,
-        vy:      (Math.random() - 0.5) * 0.4,
-        radius:  Math.random() * 1.8 + 0.8,
-        opacity: Math.random() * 0.35 + 0.2,
-    }));
-
-    let mouse = { x: null, y: null };
-    const MOUSE_RADIUS = 110;
-
-    window.addEventListener('mousemove', (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-    });
-
-    function drawLine(p1, p2, dist, maxDist, color) {
-        ctx.beginPath();
-        ctx.moveTo(p1.x, p1.y);
-        ctx.lineTo(p2.x, p2.y);
-        ctx.strokeStyle = color;
-        ctx.globalAlpha = (1 - dist / maxDist) * 0.35;
-        ctx.lineWidth   = 0.7;
-        ctx.stroke();
-        ctx.globalAlpha = 1;
-    }
-
-    function animate() {
-        ctx.clearRect(0, 0, W, H);
-        const color = getColor();
-
-        particles.forEach(p => {
-            p.x += p.vx;
-            p.y += p.vy;
-            if (p.x < 0 || p.x > W) p.vx *= -1;
-            if (p.y < 0 || p.y > H) p.vy *= -1;
-
-            if (mouse.x !== null) {
-                const dx   = mouse.x - p.x;
-                const dy   = mouse.y - p.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < MOUSE_RADIUS) {
-                    p.x += (dx / dist) * 0.5;
-                    p.y += (dy / dist) * 0.5;
+            items.forEach(item => {
+                if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
                 }
-            }
-
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-            ctx.fillStyle = color;
-            ctx.globalAlpha = p.opacity;
-            ctx.fill();
-            ctx.globalAlpha = 1;
+            });
         });
-
-        const MAX_DIST = 130;
-        for (let i = 0; i < particles.length; i++) {
-            for (let j = i + 1; j < particles.length; j++) {
-                const dx   = particles[i].x - particles[j].x;
-                const dy   = particles[i].y - particles[j].y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < MAX_DIST) drawLine(particles[i], particles[j], dist, MAX_DIST, color);
-            }
-        }
-
-        requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    window.addEventListener('resize', () => {
-        W = canvas.width  = window.innerWidth;
-        H = canvas.height = window.innerHeight;
     });
 }
 
-function updateScrollProgress() {
-    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    
-    const progressBar = document.getElementById("scroll-progress-bar"); // ID mis à jour
-    const progressContainer = document.querySelector(".scroll-progress-container");
+/* --------------------------------------------------------------------------
+   13. TRANSITIONS DE PAGE
+   -------------------------------------------------------------------------- */
+function initPageTransitions() {
+    document.body.classList.add('page-entering');
+    requestAnimationFrame(() => {
+        document.body.classList.remove('page-entering');
+    });
 
-    if (progressBar && progressContainer) {
-        if (height <= 0) {
-            progressContainer.style.display = "none";
-            return; 
-        } else {
-            progressContainer.style.display = "block"; 
-        }
+    document.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            const target = this.getAttribute('target');
+            
+            if (!href || href.startsWith('#') || href.startsWith('mailto:') || target === '_blank' || href.endsWith('.pdf')) {
+                return;
+            }
 
-        let scrolled = (winScroll / height) * 100;
-        if (isNaN(scrolled)) scrolled = 0;
-
-        progressBar.style.width = scrolled + "%";
-    }
-}
-
-// ------------------------------------------------------------------
-// INIT GLOBAL
-// ------------------------------------------------------------------
-function initVisualEnhancements() {
-    initCustomCursor();
-    initTypingEffect();
-    initTiltEffect();
-    initBackToTop();
-    initParticles();
-    window.addEventListener("scroll", updateScrollProgress);
+            e.preventDefault();
+            document.body.classList.add('page-exiting');
+            
+            setTimeout(() => {
+                window.location.href = href;
+            }, 350);
+        });
+    });
 }

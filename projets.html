@@ -1,11 +1,18 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Découvrez mes projets réalisés lors de mon BUT Informatique et mes futurs projets en école de design.">
+    <meta name="description" content="DÃ©couvrez mes projets rÃ©alisÃ©s lors de mon BUT Informatique et mes futurs projets en Ã©cole de design.">
     <title>Projets | Gabriel Roger</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="Gabriel Roger | Portfolio UX/UI">
+    <meta property="og:description" content="Étudiant en BUT Informatique et futur étudiant en UI/UX Design. Découvrez mon parcours et mes projets.">
+    <meta property="og:image" content="https://mon-portfolio.fr/img/og-preview.png">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fr_FR">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="img/logo.png" type="image/png">
@@ -19,11 +26,14 @@
     <header class="header" id="header-container"></header>
 
     <section class="projects-page">
-        <h1 class="section-title">Mes <span class="highlight-purple">Projets</span><span class="underline"></span></h1>
-        
+        <div class="section-heading">
+            <span class="eyebrow justify-center">Travaux</span>
+            <h2>Mes <em>projets</em></h2>
+        </div>
+
         <div class="tabs-menu">
             <button class="tab-btn active" onclick="openTab(event, 'info')">Projets BUT Informatique</button>
-            <button class="tab-btn" onclick="openTab(event, 'design')">Projets École de Design</button>
+            <button class="tab-btn" onclick="openTab(event, 'design')">Projets Ã‰cole de Design</button>
         </div>
 
         <div id="info" class="tab-content active">
@@ -31,26 +41,15 @@
         </div>
 
         <div id="design" class="tab-content">
-            <div style="max-width: 800px; margin: 40px auto; background-color: var(--bg-card); padding: 40px; border-radius: 15px; border: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center;">
-                
-                <div style="font-size: 3rem; color: var(--purple-main); margin-bottom: 20px;">
-                    <i class="fa-regular fa-lightbulb"></i>
-                </div>
-                
-                <h2 style="margin-bottom: 20px; font-size: 1.8rem;">Mes projets à venir : <span class="highlight-purple">École spécialisée en UI/UX Design</span></h2>
-                
-                <p style="color: var(--text-muted); line-height: 1.8; margin-bottom: 20px; text-align: left;">
-                    Après avoir acquis de solides bases techniques en développement logiciel lors de mon BUT Informatique, je souhaite désormais donner une nouvelle dimension à mon profil. À la rentrée 2026, j'intégrerai une <strong>école spécialisée en UI/UX Design</strong>.
-                </p>
-                
-                <p style="color: var(--text-muted); line-height: 1.8; margin-bottom: 20px; text-align: left;">
-                    <strong><i class="fa-solid fa-bullseye" style="margin-right: 8px;"></i> Mes objectifs pour la suite :</strong> Ce nouveau cursus est la suite logique de mon projet professionnel. Il me permettra de faire le pont parfait entre la technique (code, bases de données) et l'humain (design, ergonomie, gestion d'équipe). J'ai hâte de perfectionner mes compétences en UI/UX Design, de maîtriser les outils de création visuelle et d'apprendre à piloter des projets digitaux de A à Z.
-                </p>
-                
-                <p style="color: var(--purple-main); font-weight: 500; font-style: italic; line-height: 1.8; border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: 20px;">
-                    Cet espace de mon portfolio est voué à évoluer très prochainement pour accueillir mes futures réalisations créatives et maquettes d'interfaces !
-                </p>
-                
+            <div class="design-placeholder">
+                <span class="eyebrow"><i class="fa-regular fa-lightbulb"></i> Ã€ venir</span>
+                <h2 class="mt-20">Ã‰cole spÃ©cialisÃ©e en <em>UI/UX Design</em></h2>
+
+                <p>AprÃ¨s avoir acquis de solides bases techniques en dÃ©veloppement logiciel lors de mon BUT Informatique, je souhaite dÃ©sormais donner une nouvelle dimension Ã  mon profil. Ã€ la rentrÃ©e 2026, j'intÃ©grerai une Ã©cole spÃ©cialisÃ©e en UI/UX Design.</p>
+
+                <p>Mes objectifs pour la suite : ce nouveau cursus est la suite logique de mon projet professionnel. Il me permettra de faire le pont parfait entre la technique (code, bases de donnÃ©es) et l'humain (design, ergonomie, gestion d'Ã©quipe). J'ai hÃ¢te de perfectionner mes compÃ©tences en UI/UX Design, de maÃ®triser les outils de crÃ©ation visuelle et d'apprendre Ã  piloter des projets digitaux de A Ã  Z.</p>
+
+                <p class="closing">Cet espace de mon portfolio est vouÃ© Ã  Ã©voluer trÃ¨s prochainement pour accueillir mes futures rÃ©alisations crÃ©atives et maquettes d'interfaces !</p>
             </div>
         </div>
     </section>
@@ -65,7 +64,7 @@
                 <h2>Prototypage d'Application</h2>
             </div>
             <div class="modal-body">
-                <p>Les détails complets de cette mission créative seront bientôt disponibles. (Espace prêt à être rempli avec vos travaux d'école de design).</p>
+                <p>Les dÃ©tails complets de cette mission crÃ©ative seront bientÃ´t disponibles.</p>
             </div>
         </div>
     </div>
@@ -73,12 +72,10 @@
     <script src="js/main.js"></script>
     <script>
         function openTab(evt, tabName) {
-            let contents = document.getElementsByClassName("tab-content");
-            for (let i = 0; i < contents.length; i++) contents[i].classList.remove("active");
-            let buttons = document.getElementsByClassName("tab-btn");
-            for (let i = 0; i < buttons.length; i++) buttons[i].classList.remove("active");
-            document.getElementById(tabName).classList.add("active");
-            evt.currentTarget.classList.add("active");
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
         }
 
         function openModal(modalId) {
@@ -91,11 +88,13 @@
             if (modal) { modal.style.display = 'none'; document.body.style.overflow = 'auto'; }
         }
 
-        window.addEventListener('click', function(event) {
+        window.addEventListener('click', (event) => {
             if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none'; document.body.style.overflow = 'auto';
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
             }
         });
     </script>
 </body>
 </html>
+
