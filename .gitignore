@@ -1,0 +1,9 @@
+# Outils locaux
+.claude/
+.vscode/
+node_modules/
+
+# Système
+Thumbs.db
+desktop.ini
+.DS_Store

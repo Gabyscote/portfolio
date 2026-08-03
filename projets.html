@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Découvrez mes projets réalisés lors de mon BUT Informatique et mes futurs projets en école de design.">
+    <meta name="description" content="Les projets de Gabriel Roger : plateforme de covoiturage, e-commerce en MVC, refonte d'un ERP industriel et application de gestion du métro de Tokyo.">
     <title>Projets | Gabriel Roger</title>
-    <meta property="og:title" content="Gabriel Roger | Portfolio UX/UI">
-    <meta property="og:description" content="�tudiant en BUT Informatique et futur �tudiant en UI/UX Design. D�couvrez mon parcours et mes projets.">
-    <meta property="og:image" content="https://mon-portfolio.fr/img/og-preview.png">
+    <meta property="og:title" content="Projets | Gabriel Roger">
+    <meta property="og:description" content="Les projets de Gabriel Roger : plateforme de covoiturage, e-commerce en MVC, refonte d'un ERP industriel et application de gestion du métro de Tokyo.">
+    <meta property="og:image" content="https://gabyscote.github.io/portfolio/img/og-preview.jpg">
+    <meta property="og:image:alt" content="Portfolio de Gabriel Roger, futur Designer Numérique">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="fr_FR">
+    <meta property="og:url" content="https://gabyscote.github.io/portfolio/projets.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://gabyscote.github.io/portfolio/projets.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -32,8 +36,8 @@
         </div>
 
         <div class="tabs-menu">
-            <button class="tab-btn active" onclick="openTab(event, 'info')">Projets BUT Informatique</button>
-            <button class="tab-btn" onclick="openTab(event, 'design')">Projets École de Design</button>
+            <button type="button" class="tab-btn active" data-tab="info">Projets BUT Informatique</button>
+            <button type="button" class="tab-btn" data-tab="design">Projets École de Design</button>
         </div>
 
         <div id="info" class="tab-content active">
@@ -43,22 +47,27 @@
         <div id="design" class="tab-content">
             <div class="design-placeholder">
                 <span class="eyebrow"><i class="fa-regular fa-lightbulb"></i> À venir</span>
-                <h2 class="mt-20">École spécialisée en <em>UI/UX Design</em></h2>
+                <h2 class="mt-20">Formation <em>Designer Numérique</em></h2>
 
-                <p>Après avoir acquis de solides bases techniques en développement logiciel lors de mon BUT Informatique, je souhaite désormais donner une nouvelle dimension à mon profil. À la rentrée 2026, j'intégrerai une école spécialisée en UI/UX Design.</p>
+                <p>J'intègre Need For School à la rentrée 2026. Mes travaux de design arriveront ici à partir de là.</p>
 
-                <p>Mes objectifs pour la suite : ce nouveau cursus est la suite logique de mon projet professionnel. Il me permettra de faire le pont parfait entre la technique (code, bases de données) et l'humain (design, ergonomie, gestion d'équipe). J'ai hâte de perfectionner mes compétences en UI/UX Design, de maîtriser les outils de création visuelle et d'apprendre à piloter des projets digitaux de A à Z.</p>
+                <p class="closing">En attendant, c'est sur HabiControls que j'ai mené la démarche la plus complète : positionnement, charte graphique, maquette et supports de communication.</p>
 
-                <p class="closing">Cet espace de mon portfolio est voué à évoluer très prochainement pour accueillir mes futures réalisations créatives et maquettes d'interfaces !</p>
+                <div class="text-center mt-40">
+                    <a href="habicontrols.html" class="btn btn-primary">Voir l'étude de cas HabiControls <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
             </div>
         </div>
     </section>
 
     <footer class="footer" id="footer-container"></footer>
 
+    <!-- Réservé aux futures études de cas design : aucun élément ne l'ouvre
+         pour l'instant. Pour l'activer, ajouter data-modal-open="modal-ui"
+         sur le bouton déclencheur. -->
     <div id="modal-ui" class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('modal-ui')">&times;</span>
+            <button type="button" class="close-modal" aria-label="Fermer">&times;</button>
             <div class="modal-header">
                 <span class="project-badge">Design UI/UX</span>
                 <h2>Prototypage d'Application</h2>
@@ -70,31 +79,6 @@
     </div>
 
     <script src="js/main.js"></script>
-    <script>
-        function openTab(evt, tabName) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabName).classList.add('active');
-            evt.currentTarget.classList.add('active');
-        }
-
-        function openModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) { modal.style.display = 'block'; document.body.style.overflow = 'hidden'; }
-        }
-
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) { modal.style.display = 'none'; document.body.style.overflow = 'auto'; }
-        }
-
-        window.addEventListener('click', (event) => {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        });
-    </script>
 </body>
 </html>
 

@@ -88,7 +88,9 @@ body {
     font-size: 16px;
     line-height: 1.65;
     overflow-x: hidden;
-    transition: background-color 0.35s ease, color 0.35s ease, opacity 0.4s ease, transform 0.4s ease;
+    /* La sortie de page dure 220 ms côté JS : opacité et translation sont
+       calées dessus pour que l'animation soit terminée à la navigation. */
+    transition: background-color 0.35s ease, color 0.35s ease, opacity 0.22s ease, transform 0.22s ease;
     /* grain très discret pour donner une texture "papier" au fond sombre */
     background-image:
         radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.025) 0, transparent 0),
@@ -107,7 +109,10 @@ body.page-exiting {
     transform: translateY(-12px);
 }
 
-img { max-width: 100%; display: block; }
+/* height: auto est indispensable : les balises <img> portent des attributs
+   width/height (pour réserver la place et éviter les sauts de mise en page),
+   sans quoi la hauteur HTML l'emporterait et déformerait l'image. */
+img { max-width: 100%; height: auto; display: block; }
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 button { font: inherit; }
@@ -186,6 +191,7 @@ em {
 }
 
 .text-center { text-align: center; }
+.text-left { text-align: left; }
 .mt-20 { margin-top: 20px; }
 .mt-40 { margin-top: 40px; }
 .mb-20 { margin-bottom: 20px; }
@@ -267,6 +273,20 @@ em {
    5. EN-TÊTE / NAVIGATION
    -------------------------------------------------------------------------- */
 .header { position: fixed; top: 0; width: 100%; z-index: 1000; }
+
+/* Avancement de lecture. Posée au-dessus de la barre de navigation, elle
+   indique la progression dans les pages longues (études de cas). */
+.progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    background: var(--violet);
+    z-index: 1001;
+    pointer-events: none;
+}
 
 .navbar {
     display: flex;
@@ -386,12 +406,18 @@ em {
     white-space: nowrap;
     overflow: hidden;
     width: 0;
-    animation: type-once 1.8s steps(34, end) 0.3s forwards;
+}
+
+/* L'animation n'est lancée qu'une fois la largeur réelle du texte mesurée par
+   le JS. Calculer cette largeur en CSS (en « ch ») cassait dès que le texte
+   changeait de longueur : la fin de la phrase restait coupée. */
+.badge.is-typing {
+    animation: type-once 1.8s steps(var(--badge-steps, 34), end) 0.3s forwards;
 }
 
 @keyframes type-once {
     from { width: 0; }
-    to { width: 34ch; }
+    to { width: var(--badge-width); }
 }
 
 .hero h1 {
@@ -472,6 +498,12 @@ em {
     color: var(--paper-dim);
     font-family: 'JetBrains Mono', monospace;
 }
+/* Le rythme d'alternance est l'information que cherche un employeur :
+   on le distingue des deux lignes descriptives au-dessus. */
+.objective-text .objective-rythme {
+    color: var(--violet);
+    margin-top: 2px;
+}
 
 .hero-actions { display: flex; flex-direction: column; gap: 22px; align-items: flex-start; }
 .hero-buttons { display: flex; gap: 14px; flex-wrap: wrap; }
@@ -551,6 +583,8 @@ em {
 .skill-header { display: flex; align-items: center; gap: 10px; }
 .skill-header i { width: 20px; text-align: center; }
 .skill-desc { color: var(--paper-dim); font-size: 0.9rem; padding-left: 30px; }
+/* Ce qui est en cours d'apprentissage ne doit pas se lire comme un acquis. */
+.skill-encours { color: var(--violet); font-size: 0.82rem; font-style: italic; }
 
 /* --------------------------------------------------------------------------
    9. PERSONNALITÉ & PASSIONS
@@ -572,6 +606,9 @@ em {
     transition: padding-left 0.3s ease;
 }
 .split-row:hover { padding-left: 12px; }
+/* Les deux colonnes n'ont pas le même nombre d'entrées : sans ça, chacune se
+   termine par un filet suspendu qui donne l'impression d'un contenu coupé. */
+.split-row:last-child { border-bottom: none; }
 .row-icon {
     width: 20px; text-align: center;
     color: var(--violet);
@@ -598,8 +635,10 @@ em {
 }
 .showcase-margin { margin-top: 60px; }
 .project-showcase.reverse { flex-direction: row-reverse; }
-.project-media { flex: 1; }
-.project-media .carousel { border-radius: 0; box-shadow: none; height: 100%; }
+/* La capture ne touche plus les bords de la carte : elle respire de la même
+   façon que le texte en vis-à-vis, qui a lui aussi sa marge intérieure. */
+.project-media { flex: 1; padding: 30px; display: flex; }
+.project-media .carousel { flex: 1; box-shadow: none; height: auto; }
 .project-info { flex: 1; padding: 46px; display: flex; flex-direction: column; justify-content: center; }
 .project-badge {
     font-family: 'JetBrains Mono', monospace;
@@ -680,7 +719,11 @@ em {
     animation: modalIn 0.3s ease;
 }
 @keyframes modalIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-.close-modal { position: absolute; top: 22px; right: 28px; color: var(--paper-dim); font-size: 30px; cursor: pointer; }
+.close-modal {
+    position: absolute; top: 22px; right: 28px;
+    background: none; border: 0; line-height: 1;
+    color: var(--paper-dim); font-size: 30px; cursor: pointer;
+}
 .close-modal:hover { color: var(--violet); }
 .modal-header h2 { font-size: 2rem; margin: 12px 0 20px 0; }
 .modal-body p { color: var(--paper-dim); line-height: 1.8; }
@@ -792,6 +835,165 @@ em {
 .case-image { flex: 1; }
 .shadow-img { width: 100%; border-radius: var(--radius-md); border: var(--line-w) solid var(--line); cursor: zoom-in; }
 
+/* Rien n'indiquait que les captures s'agrandissent au clic : le curseur
+   « zoom » n'apparaît qu'une fois la souris dessus, et jamais au toucher.
+   On ajoute une pastille explicite au survol, et un liseré violet. */
+.zoomable { position: relative; }
+.zoomable::after {
+    content: "\f00e"; /* loupe Font Awesome */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem;
+    color: var(--paper);
+    background: color-mix(in srgb, var(--ink) 78%, transparent);
+    border: var(--line-w) solid var(--line);
+    border-radius: var(--radius-sm);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+}
+.zoomable:hover::after,
+.zoomable:focus-within::after { opacity: 1; }
+.zoomable:hover img { border-color: var(--violet); }
+
+/* Confrontation maquette / écran livré. L'intérêt étant la comparaison,
+   les deux images restent côte à côte et alignées en haut. */
+.avant-apres { display: flex; flex-direction: column; gap: 50px; margin-top: 46px; }
+.paire {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    align-items: start;
+}
+.paire figure { display: flex; flex-direction: column; gap: 10px; }
+.paire figcaption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    order: -1;
+}
+.paire figure.est-livre figcaption { color: var(--violet); }
+/* Une maquette pleine page peut être cinq fois plus haute que la capture
+   d'écran en face. On cadre les deux sur le même haut de page pour que la
+   comparaison soit lisible ; le clic ouvre l'image entière. */
+.paire img {
+    width: 100%;
+    height: 520px;
+    object-fit: cover;
+    object-position: top;
+    border: var(--line-w) solid var(--line);
+    border-radius: var(--radius-md);
+    cursor: zoom-in;
+}
+.paire-legende {
+    grid-column: 1 / -1;
+    color: var(--paper-dim);
+    font-size: 0.92rem;
+    border-left: 2px solid var(--line);
+    padding-left: 16px;
+}
+.paire-legende strong { color: var(--paper); }
+
+/* Affiches : format portrait A3, à ne pas étirer sur toute la largeur. */
+.affiche { max-width: 620px; margin: 0 auto; }
+.affiche img {
+    width: 100%;
+    border: var(--line-w) solid var(--line);
+    border-radius: var(--radius-md);
+    cursor: zoom-in;
+}
+
+/* Matrice SWOT — deux colonnes qui retombent sur une seule en mobile. */
+.swot-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    text-align: left;
+    margin-top: 40px;
+}
+.swot-card {
+    background: var(--ink-2);
+    border: var(--line-w) solid var(--line);
+    border-top: 2px solid var(--paper-dim);
+    border-radius: var(--radius-md);
+    padding: 24px 26px;
+}
+/* Forces et opportunités : le liseré violet les distingue du reste. */
+.swot-card.swot-positif { border-top-color: var(--violet); }
+.swot-card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+}
+.swot-card h3 i { color: var(--violet); margin-right: 8px; font-size: 0.75rem; }
+.swot-card ul { display: flex; flex-direction: column; gap: 9px; }
+.swot-card li {
+    color: var(--paper-dim);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    padding-left: 14px;
+    position: relative;
+}
+.swot-card li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0.65em;
+    width: 4px; height: 4px;
+    background: var(--violet);
+    border-radius: 50%;
+}
+
+/* Nuancier d'une charte graphique : la couleur doit se voir en grand,
+   la référence hexadécimale rester lisible et sélectionnable. */
+.charte-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-top: 40px;
+}
+.charte-teinte {
+    background: var(--teinte);
+    border: var(--line-w) solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 70px 16px 16px 16px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.charte-nom {
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: 'Space Grotesk', sans-serif;
+    color: #FFFFFF;
+}
+.charte-teinte code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.72);
+}
+/* Teinte claire : le texte blanc deviendrait illisible. */
+.charte-claire .charte-nom { color: #1B1720; }
+.charte-claire code { color: rgba(27, 23, 32, 0.65); }
+
+/* Sur un projet de groupe, la part personnelle est la première chose que
+   cherche un recruteur : on la détache du récit collectif. */
+.role-note {
+    border-left: 2px solid var(--violet);
+    padding-left: 18px;
+    margin-top: 24px;
+}
+.role-note strong { color: var(--paper); }
+
 .case-features {
     background: var(--ink-2);
     border: var(--line-w) solid var(--line);
@@ -830,19 +1032,26 @@ em {
 /* --------------------------------------------------------------------------
    14. CARROUSEL & LIGHTBOX
    -------------------------------------------------------------------------- */
+/* Les captures vont du 1.28 au 2.89 de rapport : aucun cadre fixe ne peut les
+   remplir sans en rogner certaines. On garde donc l'image entière et c'est le
+   conteneur qui s'efface, plutôt que d'encadrer du vide. */
 .carousel {
     position: relative;
     width: 100%;
     aspect-ratio: 16/10;
     overflow: hidden;
-    background: var(--ink-3);
-    border-radius: var(--radius-md);
-    border: var(--line-w) solid var(--line);
 }
 .carousel-item {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    object-fit: contain;
+    /* inset + margin auto + dimensions auto : l'image se centre et se
+       dimensionne sur ses propres proportions, donc la bordure l'épouse au
+       lieu d'encadrer du vide. */
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: auto; height: auto;
+    max-width: 100%; max-height: 100%;
+    border-radius: var(--radius-md);
+    border: var(--line-w) solid var(--line);
     opacity: 0;
     transition: opacity 1s ease;
 }
@@ -952,12 +1161,19 @@ em {
 
     .about-container, .split-container, .contact-container { grid-template-columns: 1fr; }
     .project-showcase, .project-showcase.reverse { flex-direction: column; }
+    /* 30px de chaque côté ampute trop une carte de 330px de large. */
+    .project-media { padding: 18px 18px 0 18px; }
     .case-study-content { grid-template-columns: 1fr; }
     .case-rail { display: none; }
     .case-section, .case-section.reverse { flex-direction: column; gap: 34px; }
     .case-blocks { gap: 70px; }
     .feature-grid { grid-template-columns: 1fr; }
     .case-features { padding: 40px 24px; }
+    .swot-grid { grid-template-columns: 1fr; }
+    .charte-grid { grid-template-columns: repeat(2, 1fr); }
+    /* En mobile la comparaison se lit l'une sous l'autre. */
+    .paire { grid-template-columns: 1fr; gap: 26px; }
+    .paire img { height: 400px; }
 
     .footer-container { grid-template-columns: 1fr; }
 }
