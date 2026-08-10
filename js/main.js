@@ -18,7 +18,21 @@
 //   15. Modales
 //   16. Barre d'avancement de lecture
 //   17. Badge (animation machine à écrire)
+//   18. Activation des feuilles de style préchargées
 // ==========================================================================
+
+/* --------------------------------------------------------------------------
+   18. ACTIVATION DES FEUILLES DE STYLE PRÉCHARGÉES
+   -------------------------------------------------------------------------- */
+// Google Fonts et Font Awesome sont déclarées en rel="preload" dans le <head>
+// pour ne pas bloquer le premier affichage : on les convertit en vraies
+// feuilles de style dès que ce script s'exécute, donc juste après que le
+// HTML critique a déjà pu être analysé. Placé en tête de fichier, avant tout
+// le reste, pour ne pas retarder cette bascule.
+['link-google-fonts', 'link-font-awesome'].forEach(id => {
+    const lien = document.getElementById(id);
+    if (lien) lien.rel = 'stylesheet';
+});
 
 /* --------------------------------------------------------------------------
    1. DONNÉES

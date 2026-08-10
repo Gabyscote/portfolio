@@ -961,7 +961,6 @@ em {
     margin-top: 40px;
 }
 .charte-teinte {
-    background: var(--teinte);
     border: var(--line-w) solid var(--line);
     border-radius: var(--radius-md);
     padding: 70px 16px 16px 16px;
@@ -970,6 +969,13 @@ em {
     flex-direction: column;
     gap: 3px;
 }
+/* Couleurs fixes de la charte HabiControls : en classes plutôt qu'en style
+   inline, pour qu'aucune page n'ait besoin d'assouplir la CSP avec
+   style-src 'unsafe-inline'. */
+.charte-bleu-fonce { background: #002D51; }
+.charte-bleu-eclairci { background: #004B80; }
+.charte-bleu-adouci { background: #0066A3; }
+.charte-blanc-casse { background: #F8F8F8; }
 .charte-nom {
     font-size: 0.82rem;
     font-weight: 600;

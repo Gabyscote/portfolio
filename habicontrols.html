@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-F611HVKopQ2wb+M6FmMk7uO1lcsLOW2bBvuiMMpQGvw='; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self'; connect-src 'self'; form-action 'self' https://formspree.io; base-uri 'self'; object-src 'none'">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta name="description" content="Étude de cas HabiControls : création d'une marque de domotique fictive, de l'analyse SWOT à la charte graphique, la maquette du site et les supports de communication.">
     <title>HabiControls - Étude de cas | Gabriel Roger</title>
     <meta property="og:title" content="HabiControls - Étude de cas | Gabriel Roger">
@@ -16,8 +18,12 @@
     <link rel="canonical" href="https://gabyscote.github.io/portfolio/habicontrols.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" id="link-google-fonts">
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" id="link-font-awesome">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </noscript>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="img/logo.png" type="image/png">
     <script>
@@ -97,19 +103,19 @@
                     <p class="text-center mb-40">Le nom devait dire à la fois l'habitat et le contrôle. Pour la couleur, nous voulions que le bleu porte l'idée de pilotage à distance : une gamme allant du bleu profond, pour l'assise et les aplats, au bleu franc réservé aux éléments d'action. Helvetica pour la typographie : neutre, lisible en petit corps sur une carte de visite comme en très grand sur une affiche.</p>
 
                     <div class="charte-grid">
-                        <div class="charte-teinte" style="--teinte: #002D51">
+                        <div class="charte-teinte charte-bleu-fonce">
                             <span class="charte-nom">Bleu foncé</span>
                             <code>#002D51</code>
                         </div>
-                        <div class="charte-teinte" style="--teinte: #004B80">
+                        <div class="charte-teinte charte-bleu-eclairci">
                             <span class="charte-nom">Bleu éclairci</span>
                             <code>#004B80</code>
                         </div>
-                        <div class="charte-teinte" style="--teinte: #0066A3">
+                        <div class="charte-teinte charte-bleu-adouci">
                             <span class="charte-nom">Bleu adouci</span>
                             <code>#0066A3</code>
                         </div>
-                        <div class="charte-teinte charte-claire" style="--teinte: #F8F8F8">
+                        <div class="charte-teinte charte-claire charte-blanc-casse">
                             <span class="charte-nom">Blanc cassé</span>
                             <code>#F8F8F8</code>
                         </div>
