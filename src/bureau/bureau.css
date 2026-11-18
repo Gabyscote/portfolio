@@ -257,6 +257,10 @@ button {
   display: contents;
 }
 
+.ios-points {
+  display: none;
+}
+
 /* ---------- Icônes du bureau ---------- */
 .icones {
   position: fixed;
@@ -1860,19 +1864,62 @@ html:not(.js) .dock {
   }
 
   /* Écran d'accueil */
+  /* L'écran d'accueil défile de côté, page par page, comme sur un iPhone */
   .accueil-mobile {
     display: block;
     position: fixed;
     inset: 0;
     z-index: 1;
-    overflow: auto;
-    padding: calc(var(--statut) + 0.6rem) 1.4rem 8.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .accueil-mobile::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ios-ancre {
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 1px;
+    scroll-snap-align: start;
+    pointer-events: none;
   }
 
   .widgets {
+    position: absolute;
+    top: calc(var(--statut) + 0.6rem);
+    left: 1.4rem;
+    width: calc(100vw - 2.8rem);
     display: grid;
     gap: 1.1rem;
-    margin-bottom: 1.5rem;
+  }
+
+  /* Les points des pages, au-dessus de la recherche */
+  .ios-points {
+    position: fixed;
+    left: 50%;
+    bottom: 9.6rem;
+    z-index: 2;
+    display: flex;
+    gap: 0.45rem;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .ios-points i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.4);
+  }
+
+  .ios-points i.est-actif {
+    background: #fff;
   }
 
   .widget,
@@ -1998,13 +2045,23 @@ html:not(.js) .dock {
   }
 
   /* Grille d'apps */
+  /* Chaque icône est placée par le script (page, rangée, colonne) */
   .icones {
-    position: static;
-    grid-auto-flow: row;
-    grid-template-rows: none;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1.2rem 0.5rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    height: 100%;
     direction: ltr;
+  }
+
+  .icones > li {
+    position: absolute;
+    left: var(--ios-x, 0) !important;
+    top: var(--ios-y, 0) !important;
+    width: var(--ios-l, 25vw);
+    display: grid;
+    justify-items: center;
   }
 
   .fichier {
@@ -2088,7 +2145,7 @@ html:not(.js) .dock {
   .dock__reduites,
   .dock__nom,
   .dock__point,
-  .dock > a[href$='.pdf'] {
+  .dock__app--cv {
     display: none;
   }
 
@@ -2224,8 +2281,13 @@ html:not(.js) .dock {
   }
 
 
-  /* Mode édition : appui long, les icônes tremblent et se déplacent */
+  /* Mode édition : appui long, les icônes tremblent et se déplacent.
+     Hors édition, un glissé de côté change de page. */
   .icones .fichier {
+    touch-action: pan-x;
+  }
+
+  .mode-edition .icones .fichier {
     touch-action: none;
   }
 
@@ -2251,7 +2313,6 @@ html:not(.js) .dock {
   }
 
   .icones > li.est-glisse {
-    position: relative;
     z-index: 10;
     opacity: 1;
   }
@@ -2260,9 +2321,14 @@ html:not(.js) .dock {
     background: transparent;
   }
 
+  /* En édition, comme sur iOS, le bouton OK prend la place de la barre d'état */
+  .mode-edition .ios-statut {
+    opacity: 0;
+  }
+
   .mode-edition .ios-ok {
     position: fixed;
-    top: calc(var(--statut) + 0.2rem);
+    top: 0.45rem;
     right: 1rem;
     z-index: 3;
     display: block;
@@ -2274,10 +2340,6 @@ html:not(.js) .dock {
     -webkit-backdrop-filter: blur(20px);
     color: #fff;
     font: 600 14px/1.2 var(--ui);
-  }
-
-  .mode-edition .accueil-mobile {
-    padding-top: calc(var(--statut) + 3rem);
   }
 
   .mode-edition .recherche-ios {

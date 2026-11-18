@@ -241,6 +241,8 @@ const recherchables = [
           <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.8" cy="6.8" r="4.8"></circle><path d="m10.4 10.4 3.8 3.8"></path></svg>
           Rechercher
         </button>
+        <!-- Les points des pages de l'écran d'accueil (iPhone) -->
+        <div class="ios-points" aria-hidden="true"></div>
       </div>
 
       <!-- Carte de visite : un widget posé sur le bureau (Mac seulement) -->
@@ -523,7 +525,7 @@ const recherchables = [
       </button>
       <span class="dock__separateur" aria-hidden="true"></span>
       <span class="dock__reduites"></span>
-      <a href={site.cv} target="_blank" rel="noopener" class="dock__app" aria-label="CV en PDF">
+      <a href={site.cv} target="_blank" rel="noopener" class="dock__app dock__app--cv" aria-label="CV en PDF">
         <Miniature src={apercuCv} />
         <span class="dock__nom" aria-hidden="true">CV.pdf</span>
         <span class="dock__point" aria-hidden="true"></span>
@@ -1337,11 +1339,89 @@ const recherchables = [
         });
       }
 
+      // Sur iPhone : les icônes se rangent en pages qu'on fait défiler de côté,
+      // comme un vrai écran d'accueil. La première page garde les widgets en haut.
+      const accueilIos = document.querySelector<HTMLElement>('.accueil-mobile')!;
+      const pointsIos = document.querySelector<HTMLElement>('.ios-points')!;
+      const rechercheIos = document.querySelector<HTMLElement>('.recherche-ios')!;
+      let nbPages = 1;
+      function enPages() {
+        if (!mobile.matches) {
+          accueilIos.querySelectorAll('.ios-ancre').forEach((a) => a.remove());
+          ulIcones.style.removeProperty('width');
+          pointsIos.replaceChildren();
+          return;
+        }
+        const W = accueilIos.clientWidth;
+        const marge = 22;
+        const icones = lisIcones().filter((li) => getComputedStyle(li).display !== 'none');
+        if (!icones.length) return;
+        const colW = (W - 2 * marge) / 4;
+        const rangH = icones[0].offsetHeight + 18;
+        const haut = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--statut')) * 16 || 46;
+        const debut = haut + 10;
+        const widgets = accueilIos.querySelector<HTMLElement>('.widgets')!;
+        // Le bas de la zone : au-dessus des points, de la recherche et du dock
+        const bas = rechercheIos.getBoundingClientRect().top - 34;
+        const rangsPage = Math.max(1, Math.floor((bas - debut + 18) / rangH));
+        const debutPage1 = debut + widgets.offsetHeight + 20;
+        const rangsPage1 = Math.max(0, Math.floor((bas - debutPage1 + 18) / rangH));
+        let page = 0;
+        let rang = 0;
+        let col = 0;
+        let max = rangsPage1;
+        let y0 = debutPage1;
+        if (max === 0) {
+          page = 1;
+          max = rangsPage;
+          y0 = debut;
+        }
+        icones.forEach((li) => {
+          li.style.setProperty('--ios-x', `${page * W + marge + col * colW}px`);
+          li.style.setProperty('--ios-y', `${y0 + rang * rangH}px`);
+          li.style.setProperty('--ios-l', `${colW}px`);
+          col++;
+          if (col === 4) {
+            col = 0;
+            rang++;
+            if (rang === max) {
+              rang = 0;
+              page++;
+              max = rangsPage;
+              y0 = debut;
+            }
+          }
+        });
+        nbPages = page + (rang === 0 && col === 0 ? 0 : 1);
+        ulIcones.style.width = `${nbPages * W}px`;
+        // Une ancre par page pour que le défilement s'arrête pile sur chaque page
+        accueilIos.querySelectorAll('.ios-ancre').forEach((a) => a.remove());
+        pointsIos.replaceChildren();
+        for (let i = 0; i < nbPages; i++) {
+          const a = document.createElement('span');
+          a.className = 'ios-ancre';
+          a.style.left = `${i * W}px`;
+          accueilIos.append(a);
+          if (nbPages > 1) pointsIos.append(document.createElement('i'));
+        }
+        pagePoints();
+      }
+      function pagePoints() {
+        const i = Math.round(accueilIos.scrollLeft / Math.max(1, accueilIos.clientWidth));
+        [...pointsIos.children].forEach((p, k) => p.classList.toggle('est-actif', k === i));
+      }
+      accueilIos.addEventListener('scroll', pagePoints, { passive: true });
+      addEventListener('resize', () => mobile.matches && enPages());
+
       const selonEcran = () => {
         if (mobile.matches) {
           iconesEnGrille();
           ordreIphone();
-        } else iconesLibres();
+          requestAnimationFrame(enPages);
+        } else {
+          enPages();
+          iconesLibres();
+        }
       };
       selonEcran();
       mobile.addEventListener('change', selonEcran);
@@ -1435,6 +1515,7 @@ const recherchables = [
             const tous = lisIcones();
             if (tous.indexOf(li) < tous.indexOf(cible)) cible.after(li);
             else cible.before(li);
+            enPages();
           }
           placer(ev.clientX, ev.clientY);
         };
@@ -1463,8 +1544,7 @@ const recherchables = [
           return;
         }
         if (!li) return;
-        // Le doigt posé sur une icône : appui long = mode édition, glissé = défilement de l'écran
-        let yPrec = e.clientY;
+        // Le doigt posé sur une icône : appui long = mode édition, glissé = changement de page
         const depart = { x: e.clientX, y: e.clientY };
         const minuteur = setTimeout(() => {
           annuler();
@@ -1474,8 +1554,6 @@ const recherchables = [
         }, 480);
         const bouge = (ev: PointerEvent) => {
           if (Math.hypot(ev.clientX - depart.x, ev.clientY - depart.y) > 8) clearTimeout(minuteur);
-          accueilMobile.scrollTop -= ev.clientY - yPrec;
-          yPrec = ev.clientY;
         };
         const annuler = () => {
           clearTimeout(minuteur);
