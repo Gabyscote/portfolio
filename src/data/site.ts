@@ -9,7 +9,7 @@ export const site = {
   linkedin: 'https://www.linkedin.com/in/gabriel-roger-gr88',
   github: 'https://github.com/Gabyscote',
   // Le « ?v= » force les navigateurs à recharger le CV quand il change : augmente-le à chaque nouvelle version
-  cv: `${base}CV_Gabriel_Roger.pdf?v=4`,
+  cv: `${base}CV_Gabriel_Roger.pdf?v=5`,
   // La même version sur fond blanc, pour imprimer sans vider la cartouche
   cvImpression: `${base}CV_Gabriel_Roger_impression.pdf?v=1`,
   couleur: '#6B3BFF',
