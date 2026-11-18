@@ -175,18 +175,22 @@ const recherchables = [
           </div>
 
           <!-- Widget « Projets » : les couvertures défilent toutes seules -->
-          <div class="widget-projets" data-diaporama aria-label="Projets">
-            {
-              projets.map((p, i) => (
-                <a href={lien(p.id)} class:list={['widget-projets__diapo', { 'est-active': i === 0 }]} style={`--c:${p.data.couleur}`} data-encre={p.data.encre}>
-                  <Image src={p.data.couverture} alt="" widths={[320, 560, 800]} sizes="60vw" />
-                  <span class="widget-projets__texte">
-                    <strong>{p.data.court}</strong>
-                    <small>{p.data.disciplines}</small>
-                  </span>
-                </a>
-              ))
-            }
+          <div class="widget-projets" data-diaporama>
+            <div class="widget-projets__piste" aria-label="Projets, à faire défiler">
+              {
+                projets.map((p) => (
+                  <a href={lien(p.id)} class="widget-projets__diapo" style={`--c:${p.data.couleur}`} data-encre={p.data.encre}>
+                    <span class="widget-projets__texte">
+                      <strong>{p.data.court}</strong>
+                      <small>{p.data.disciplines}</small>
+                    </span>
+                    <span class="widget-projets__image">
+                      <Image src={p.data.couverture} alt="" widths={[320, 560, 800]} sizes="55vw" />
+                    </span>
+                  </a>
+                ))
+              }
+            </div>
             <span class="widget-projets__points" aria-hidden="true">
               {projets.map((_, i) => <i class:list={{ 'est-actif': i === 0 }} />)}
             </span>
@@ -1187,18 +1191,33 @@ const recherchables = [
 
       // ---------- iPhone : le widget Projets défile, la barre d'accueil se glisse ----------
       const diaporama = document.querySelector<HTMLElement>('[data-diaporama]');
-      if (diaporama && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        const diapos = [...diaporama.querySelectorAll<HTMLElement>('.widget-projets__diapo')];
+      if (diaporama) {
+        // On peut le faire glisser au doigt ; sinon il avance tout seul,
+        // et se met en pause quelques secondes après qu'on l'a touché.
+        const piste = diaporama.querySelector<HTMLElement>('.widget-projets__piste')!;
         const points = [...diaporama.querySelectorAll('.widget-projets__points i')];
-        let n = 0;
-        setInterval(() => {
-          if (document.hidden || !mobile.matches) return;
-          diapos[n].classList.remove('est-active');
-          points[n]?.classList.remove('est-actif');
-          n = (n + 1) % diapos.length;
-          diapos[n].classList.add('est-active');
-          points[n]?.classList.add('est-actif');
-        }, 3800);
+        const nb = piste.children.length;
+        const actuelle = () => Math.round(piste.scrollLeft / Math.max(1, piste.clientWidth));
+        piste.addEventListener(
+          'scroll',
+          () => {
+            const i = actuelle();
+            points.forEach((pt, k) => pt.classList.toggle('est-actif', k === i));
+          },
+          { passive: true },
+        );
+        let pauseJusqua = 0;
+        const pause = () => (pauseJusqua = Date.now() + 8000);
+        piste.addEventListener('pointerdown', pause, { passive: true });
+        piste.addEventListener('touchstart', pause, { passive: true });
+        piste.addEventListener('wheel', pause, { passive: true });
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          setInterval(() => {
+            if (document.hidden || !mobile.matches || Date.now() < pauseJusqua) return;
+            const suivante = (actuelle() + 1) % nb;
+            piste.scrollTo({ left: suivante * piste.clientWidth, behavior: 'smooth' });
+          }, 4500);
+        }
       }
 
       document.addEventListener('pointerdown', (e) => {
