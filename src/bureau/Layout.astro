@@ -625,22 +625,106 @@ const recherchables = [
         else majDock();
       }
 
+      // ---------- Animations de fermeture et de réduction ----------
+      const sansAnimation = matchMedia('(prefers-reduced-motion: reduce)');
+      const idApp = (f: HTMLElement) => f.id.replace(/^fen-/, '');
+      // L'icône de l'app dans le dock (Mac)
+      const iconeDock = (f: HTMLElement) =>
+        idApp(f) === 'portfolio'
+          ? document.querySelector<HTMLElement>('.dock [data-app="portfolio"]')
+          : document.querySelector<HTMLElement>(`.dock__app[data-ouvrir="${idApp(f)}"]`);
+      // Sur iPhone : l'icône sur l'écran d'accueil si elle est visible, sinon celle du dock
+      function iconeIos(f: HTMLElement) {
+        const li = document.querySelector<HTMLElement>(`.icones > li[data-id="${idApp(f)}"] .fichier > :first-child`);
+        if (li) {
+          const r = li.getBoundingClientRect();
+          if (r.width && r.left >= 0 && r.right <= innerWidth) return li;
+        }
+        return iconeDock(f);
+      }
+
+      // La fenêtre se resserre puis file vers sa cible (le dock, une icône), façon « génie »
+      function aspirer(f: HTMLElement, cible: DOMRect | null, fin: () => void) {
+        const r = f.getBoundingClientRect();
+        if (sansAnimation.matches || !r.width) return fin();
+        let images: Keyframe[];
+        let reglages: KeyframeAnimationOptions;
+        if (cible && cible.width) {
+          const dx = cible.left + cible.width / 2 - (r.left + r.width / 2);
+          const dy = cible.top + cible.height / 2 - (r.top + r.height / 2);
+          const sx = cible.width / r.width;
+          const sy = cible.height / r.height;
+          if (mobile.matches) {
+            // iPhone : l'app redevient son icône, coins arrondis compris
+            const coin = Math.min(r.width, r.height) * 0.22;
+            images = [
+              { transform: 'none', borderRadius: '0px', opacity: 1 },
+              { transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`, borderRadius: `${coin}px`, opacity: 0.4 },
+            ];
+            reglages = { duration: 420, easing: 'cubic-bezier(0.32, 0.72, 0, 1)' };
+          } else {
+            images = [
+              { transform: 'none', opacity: 1, offset: 0 },
+              { transform: `translate(${dx * 0.2}px, ${dy * 0.55}px) scale(${Math.max(sx, 0.45)}, 0.62)`, opacity: 0.95, offset: 0.45 },
+              { transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`, opacity: 0.35, offset: 1 },
+            ];
+            reglages = { duration: 480, easing: 'cubic-bezier(0.5, 0, 0.75, 0.25)' };
+          }
+        } else {
+          images = [
+            { transform: 'none', opacity: 1 },
+            { transform: 'scale(0.92)', opacity: 0 },
+          ];
+          reglages = { duration: 180, easing: 'ease-in' };
+        }
+        f.style.transformOrigin = '50% 50%';
+        f.style.pointerEvents = 'none';
+        const anim = f.animate(images, reglages);
+        anim.onfinish = () => {
+          fin();
+          f.style.pointerEvents = '';
+          anim.cancel();
+        };
+      }
+
+      // L'inverse : la fenêtre ressort de sa vignette du dock
+      function deplier(f: HTMLElement, depuis: DOMRect) {
+        const r = f.getBoundingClientRect();
+        if (sansAnimation.matches || !r.width) return;
+        const dx = depuis.left + depuis.width / 2 - (r.left + r.width / 2);
+        const dy = depuis.top + depuis.height / 2 - (r.top + r.height / 2);
+        f.style.transformOrigin = '50% 50%';
+        f.animate(
+          [
+            { transform: `translate(${dx}px, ${dy}px) scale(${depuis.width / r.width}, ${depuis.height / r.height})`, opacity: 0.35, offset: 0 },
+            { transform: `translate(${dx * 0.2}px, ${dy * 0.55}px) scale(${Math.max(depuis.width / r.width, 0.45)}, 0.62)`, opacity: 0.95, offset: 0.55 },
+            { transform: 'none', opacity: 1, offset: 1 },
+          ],
+          { duration: 460, easing: 'cubic-bezier(0.25, 0.75, 0.5, 1)' },
+        );
+      }
+
       function fermer(f: HTMLElement) {
+        const cible = (mobile.matches ? iconeIos(f) : iconeDock(f))?.getBoundingClientRect() ?? null;
         if (f.dataset.retour) {
-          navigate(f.dataset.retour);
+          const retour = f.dataset.retour;
+          aspirer(f, cible, () => navigate(retour));
           return;
         }
-        f.hidden = true;
-        f.classList.remove('est-agrandie');
-        retirerReduite(f);
-        apresDisparition();
+        aspirer(f, cible, () => {
+          f.hidden = true;
+          f.classList.remove('est-agrandie');
+          retirerReduite(f);
+          apresDisparition();
+        });
       }
 
       function reduire(f: HTMLElement) {
-        f.hidden = true;
+        // La vignette prend sa place dans le dock d'abord (invisible), la fenêtre file dedans
         const zone = document.querySelector('.dock__reduites');
-        if (zone && !zone.querySelector(`[data-restaurer="${f.id}"]`)) {
-          const b = document.createElement('button');
+        let b = zone?.querySelector<HTMLElement>(`[data-restaurer="${f.id}"]`) ?? null;
+        if (zone && !b) {
+          b = document.createElement('button');
           b.type = 'button';
           b.className = 'dock__reduite';
           b.dataset.restaurer = f.id;
@@ -651,16 +735,34 @@ const recherchables = [
           nom.className = 'dock__nom';
           nom.textContent = titre;
           b.append(nom);
+          // Un aperçu de la fenêtre, en tout petit, comme sur un vrai Mac
+          const r = f.getBoundingClientRect();
+          const cote = 48;
+          const k = cote / Math.max(r.width, r.height);
+          const mini = f.cloneNode(true) as HTMLElement;
+          mini.removeAttribute('id');
+          mini.querySelectorAll('[id]').forEach((el) => el.removeAttribute('id'));
+          mini.inert = true;
+          mini.classList.add('dock__apercu');
+          mini.style.cssText = `position:absolute;inset:auto;left:${(cote - r.width * k) / 2}px;top:${(cote - r.height * k) / 2}px;width:${r.width}px;height:${r.height}px;transform:scale(${k});transform-origin:0 0;margin:0;z-index:auto;animation:none;pointer-events:none`;
+          b.append(mini);
+          b.style.visibility = 'hidden';
+          b.style.animation = 'none';
           zone.append(b);
         }
-        apresDisparition();
+        aspirer(f, b?.getBoundingClientRect() ?? null, () => {
+          f.hidden = true;
+          if (b) b.style.visibility = '';
+          apresDisparition();
+        });
       }
 
-      function restaurer(f: HTMLElement, point: { x: number; y: number } | null) {
+      function restaurer(f: HTMLElement, point: { x: number; y: number } | null, depuis?: DOMRect) {
         retirerReduite(f);
         f.hidden = false;
         devant(f);
-        animer(f, point);
+        if (depuis && !mobile.matches) deplier(f, depuis);
+        else animer(f, point);
       }
 
       // Agrandir avec une transition douce (la fenêtre glisse jusqu'à sa place)
@@ -745,7 +847,7 @@ const recherchables = [
         const aRestaurer = t.closest<HTMLElement>('[data-restaurer]');
         if (aRestaurer) {
           const f = document.getElementById(aRestaurer.dataset.restaurer!);
-          if (f) restaurer(f, point);
+          if (f) restaurer(f, point, aRestaurer.getBoundingClientRect());
           else aRestaurer.remove();
           return;
         }

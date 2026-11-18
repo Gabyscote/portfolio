@@ -1120,17 +1120,20 @@ button {
   display: contents;
 }
 
-/* Une fenêtre réduite : une vignette dans sa couleur */
+.dock__apercu {
+  box-shadow: 0 6px 16px rgb(0 0 0 / 0.35) !important;
+}
+
+/* Une fenêtre réduite : son aperçu en miniature */
 .dock__reduite {
   position: relative;
   width: 3rem;
   height: 3rem;
   margin-bottom: 7px;
   padding: 0;
-  border: 2px solid #fff;
-  border-radius: 8px;
-  background: var(--c);
-  box-shadow: 0 4px 10px rgb(0 0 0 / 0.3);
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
   cursor: default;
   animation: reduite 0.3s var(--ease);
 }
@@ -2562,4 +2565,8 @@ html:not(.js) .dock {
 .widget .logo,
 .bienvenue__tete .logo {
   flex: none;
+}
+
+.dock__reduite .dock__nom {
+  z-index: 1;
 }
