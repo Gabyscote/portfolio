@@ -1,0 +1,108 @@
+---
+titre: Rouen, musée à ciel ouvert
+court: "Photographie"
+resume: Une affiche A3 tirée d'une seule photo. Une statue qui, elle aussi, s'arrête pour regarder la ville.
+annee: 2026
+cadre: Bachelor Designer Numérique, NFS Rouen
+role: Prise de vue, retouche, montage et mise en page
+duree: Une semaine, en novembre 2026
+outils: [Canon EOS RP, Lightroom, Photoshop]
+livrables: [Affiche A3, Présentation orale]
+disciplines: Photo, retouche, affiche
+couleur: '#6E4F33'
+nomCouleur: Bronze de la statue
+encre: claire
+couverture: ../../assets/projets/rouen/affiche.jpg
+altCouverture: "Affiche « Rouen, musée à ciel ouvert » : l'abbatiale Saint-Ouen dont la tour passe devant le grand titre ROUEN en bronze, une statue au premier plan, et l'accroche « Même les statues s'y arrêtent »."
+ordre: 1
+categories: [photo, print]
+contexte: nfs
+---
+
+import Figure from '../../components/Figure.astro';
+import Comparaison from '../../components/Comparaison.astro';
+import Palette from '../../components/Palette.astro';
+import prise1 from '../../assets/projets/rouen/prise-1.jpg';
+import prise2 from '../../assets/projets/rouen/prise-2.jpg';
+import prise3 from '../../assets/projets/rouen/prise-3.jpg';
+import prise4 from '../../assets/projets/rouen/prise-4.jpg';
+import avant from '../../assets/projets/rouen/avant.jpg';
+import apres from '../../assets/projets/rouen/apres.jpg';
+import detoure from '../../assets/projets/rouen/ciel-detoure.jpg';
+import affiche from '../../assets/projets/rouen/affiche.jpg';
+
+## La semaine
+
+Ma première semaine de photo à NFS : les réglages du boîtier, un défi photo, la retouche, puis un projet final présenté à l'oral le vendredi.
+
+La consigne du projet final : une affiche A3 sur Rouen, au sens large, faite uniquement à partir de mes propres photos. Lightroom pour la retouche, Photoshop pour le montage et la mise en page.
+
+## 1. L'idée
+
+En me baladant dans Rouen, je me suis rendu compte qu'il y a de l'art partout : des statues, des façades, du gothique, du street art. Pas besoin d'entrer dans un musée. Je voulais le montrer avec une statue qui, elle aussi, s'arrête pour regarder la ville.
+
+Dans mes références d'affiches et de couvertures de magazine, j'ai retenu trois choses : une image forte qui passe devant un grand titre, une typographie très présente, et peu de texte, avec de petites informations en capitales.
+
+## 2. Les prises de vue
+
+Quatre essais au même endroit, devant l'abbatiale Saint-Ouen, au Canon EOS RP avec un 24-70 mm f/2.8.
+
+<Comparaison
+  vues={[
+    { src: prise1, alt: "La statue face à une façade classique en pierre.", titre: 'Face à la façade', legende: "f/2.8, 1/250 s, ISO 100. Premier essai." },
+    { src: prise2, alt: 'La statue en plan plus serré devant la façade.', titre: 'Plus près', legende: "f/5, 1/125 s, ISO 100. Plus net, mais pas d'abbatiale." },
+    { src: prise3, alt: "La statue au premier plan, l'abbatiale Saint-Ouen derrière.", titre: "Avec l'abbatiale", legende: "f/5, 1/125 s, ISO 100. Celle-ci : la statue regarde l'abbatiale." },
+    { src: prise4, alt: "Plan large du jardin, de l'abbatiale et de la façade voisine.", titre: 'Plan large', legende: 'f/5, 1/125 s, ISO 100. La statue devient trop petite.' },
+  ]}
+/>
+
+J'ai gardé la troisième. À f/5, la statue et l'abbatiale sont nettes toutes les deux. Le 1/125 s suffit pour éviter le flou de bougé à main levée, et en plein jour, ISO 100 évite le bruit.
+
+J'ai choisi une seule photo plutôt qu'une grille : l'affiche est plus forte et le message plus clair.
+
+## 3. La retouche
+
+<Comparaison
+  taille="texte"
+  vues={[
+    { src: avant, alt: 'La photo brute, au ciel blanc et aux tons froids.', titre: 'Avant' },
+    { src: apres, alt: 'La photo retouchée, aux tons de pierre et de bronze réchauffés.', titre: 'Après, dans Lightroom' },
+  ]}
+/>
+
+- Hautes lumières baissées pour garder le détail de la pierre.
+- Contraste et clarté légèrement montés.
+- Tons réchauffés, vers la pierre et le bronze.
+- La statue éclaircie avec un masque, pour qu'elle ressorte du fond.
+
+## 4. Le montage
+
+<Comparaison
+  taille="texte"
+  vues={[
+    { src: detoure, alt: "La photo avec le ciel détouré, remplacé par un damier de transparence.", titre: 'Ciel détouré' },
+    { src: affiche, alt: "L'affiche terminée.", titre: "L'affiche, dans Photoshop" },
+  ]}
+/>
+
+1. Détourer le ciel.
+2. Placer le titre « ROUEN » sous la photo, pour que la tour passe devant les lettres.
+3. Descendre la photo, pour que le mot reste lisible.
+4. Assombrir le bas de l'image, pour pouvoir lire l'accroche.
+5. Ajouter un grain léger, pour un rendu imprimé.
+
+## 5. La direction artistique
+
+Le titre et l'accroche sont en DM Serif Display : élégante et classique, elle rappelle le patrimoine. Les petites informations du bandeau sont en Inter, en capitales, pour le côté couverture de magazine.
+
+La couleur du titre n'est pas choisie au hasard : je l'ai prélevée directement sur la statue.
+
+<Palette
+  teintes={[
+    { nom: 'Bronze', hex: '#6E4F33', note: 'Prélevé sur la statue' },
+    { nom: 'Crème', hex: '#F2EFE9' },
+    { nom: 'Pierre', hex: '#A2845F' },
+  ]}
+/>
+
+<Figure src={affiche} alt="L'affiche finale en grand format." legende="L'affiche finale, au format A3." taille="large" fond />

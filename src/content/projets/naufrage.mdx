@@ -1,0 +1,72 @@
+---
+titre: Naufrage, un jeu de société sous tension
+court: "Naufrage"
+resume: En une semaine et à quatre, transformer le Mille Bornes et le Yams en un jeu où l'eau monte à chaque tour et où il n'y a qu'une place dans le canot.
+annee: 2026
+cadre: Bachelor Designer Numérique, NFS Rouen, atelier de game design
+role: Conception du jeu en équipe, tests, plateau
+duree: Une semaine, fin septembre 2026
+equipe: Ilona, Alice, Julien et moi
+outils: [Illustrator]
+livrables: [Règles du jeu, Plateau A2, Cartes, Présentation]
+disciplines: Game design, print
+couleur: '#13233B'
+nomCouleur: Bleu nuit du plateau
+encre: claire
+couverture: ../../assets/projets/naufrage/plateau.webp
+cadreCouverture: libre
+altCouverture: "Le plateau de Naufrage : un paquebot en coupe qui s'enfonce dans l'eau la nuit, avec ses pièces, ses échelles et le canot de sauvetage en haut à droite."
+ordre: 10
+categories: [print]
+contexte: nfs
+secondaire: true
+---
+
+import Figure from '../../components/Figure.astro';
+import Comparaison from '../../components/Comparaison.astro';
+import plateau from '../../assets/projets/naufrage/plateau.webp';
+import depart from '../../assets/projets/naufrage/slide-depart.webp';
+import coeur from '../../assets/projets/naufrage/slide-coeur.webp';
+import tests from '../../assets/projets/naufrage/slide-tests.webp';
+import bilan from '../../assets/projets/naufrage/slide-bilan.webp';
+import regles from '../../assets/projets/naufrage/regles.webp';
+
+## Le sujet
+
+L'atelier de game design partait d'une contrainte : prendre un jeu connu, et le transformer pour faire ressentir une émotion précise, gardée secrète. La nôtre était la tension. Les autres groupes devaient la deviner en jouant.
+
+On est partis du Mille Bornes, pour la course et les cartes qui aident ou gênent, puis du Yams, pour ses cinq dés et ses combinaisons.
+
+<Figure src={depart} alt="Diapositive « D'où on part » : on garde le Mille Bornes et le Yams, on ajoute le navire, les dés posés partagés, la montée des eaux et les Fantômes." legende="Ce qu'on garde des deux jeux, et ce qu'on ajoute." />
+
+## Le principe
+
+Les joueurs sont sur un paquebot qui coule. Pour monter d'une pièce à l'autre, il faut obtenir la combinaison de dés indiquée. À la fin de chaque tour, l'eau monte, et un joueur rattrapé par l'eau devient un Fantôme. Il n'y a qu'une place dans le canot de sauvetage.
+
+Le cœur du jeu tient dans un choix : quand on n'a qu'une partie de la combinaison, on peut poser ses dés sur la pièce. Mais ces dés servent alors à tout le monde, et un rival peut finir la combinaison à votre place.
+
+<Figure src={coeur} alt="Diapositive « Le cœur du jeu : poser ou garder ? » : Léa pose son 2, Tom complète avec un 5 et avance." legende="Poser, c'est avancer… ou offrir la place à un autre." />
+
+## Le plateau
+
+Le plateau est un paquebot en coupe, incliné, qui s'enfonce dans l'eau : on part en bas à gauche, dans la cale, et on vise le canot en haut à droite. La jauge d'eau, à gauche, montre ce qui est déjà englouti. On l'a retravaillé sur Illustrator, au format A2, imprimé en quatre feuilles A4.
+
+<Figure src={plateau} alt="Le plateau complet : huit niveaux de pièces avec leurs combinaisons de dés, les échelles, la jauge d'eau à gauche et le canot en haut à droite." legende="Le plateau, de la cale au canot de sauvetage." />
+
+## Six tests, six versions
+
+On a testé le jeu six fois en une semaine. Le premier test s'est arrêté au deuxième tour, et au premier passage en classe, les règles ont été mal comprises : on les a réécrites. Le vrai tournant a été d'abandonner les cartes du Mille Bornes pour les dés posés que tout le monde peut utiliser.
+
+<Comparaison
+  cadre="libre"
+  vues={[
+    { src: tests, alt: "Diapositive « Six tests, six versions » : la frise des six playtests, de la base Mille Bornes aux règles réécrites.", titre: 'Les tests', legende: 'Chaque test a changé une règle.' },
+    { src: regles, alt: "Le recto des règles du jeu : matériel, mise en place, lecture du plateau et des combinaisons.", titre: 'Les règles', legende: 'Réécrites pour se comprendre sans nous.' },
+  ]}
+/>
+
+## Ce que j'en retiens
+
+Le jeu fonctionne : le vol de combinaison crée de vrais moments autour de la table, et le sabotage entre joueurs a plu à tout le monde. Mais tout a été fait en une semaine, et ça se voit. L'équilibre de l'eau reste fragile, et le plateau aurait mérité plus de temps : les flèches et les murs restent trop peu lisibles.
+
+<Figure src={bilan} alt="Diapositive « Bilan » : ce qui marche, ce qui reste fragile, et ce qu'on ferait avec un jour de plus." legende="Notre bilan, présenté à la classe." />

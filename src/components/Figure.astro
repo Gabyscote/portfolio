@@ -1,0 +1,31 @@
+---
+// Une image dans une étude de cas, avec sa légende.
+// taille : « texte » (largeur de la colonne), « large » (déborde), « plein » (toute la largeur)
+// navigateur : encadre une capture d'écran de site dans une fenêtre de navigateur
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  legende?: string;
+  taille?: 'texte' | 'large' | 'plein';
+  fond?: boolean; // pose l'image sur un fond en creux, avec une marge
+  navigateur?: boolean;
+}
+
+const { src, alt, legende, taille = 'large', fond = false, navigateur = false } = Astro.props;
+const sizes = {
+  texte: '(min-width: 48rem) 40rem, 100vw',
+  large: '(min-width: 72rem) 64rem, 100vw',
+  plein: '100vw',
+};
+---
+
+<figure class:list={['fig', `fig--${taille}`, { 'fig--fond': fond, 'fig--navigateur': navigateur }]}>
+  <div class="fig__cadre">
+    {navigateur && <span class="navigateur__barre" aria-hidden="true"><i></i><i></i><i></i></span>}
+    <Image src={src} alt={alt} widths={[640, 1000, 1400, 2000]} sizes={sizes[taille]} />
+  </div>
+  {legende && <figcaption>{legende}</figcaption>}
+</figure>

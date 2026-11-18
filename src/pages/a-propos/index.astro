@@ -1,0 +1,111 @@
+---
+// L'app Portfolio, page À propos.
+import { Image } from 'astro:assets';
+import Layout from '../../bureau/Layout.astro';
+import Fenetre from '../../bureau/Fenetre.astro';
+import '../../bureau/portfolio.css';
+import { apropos, parcours, savoirFaire, recherche, interets } from '../../data/contenu';
+import { site, base as siteBase } from '../../data/site';
+import portrait from '../../assets/moi/portrait.jpg';
+
+const base = siteBase;
+---
+
+<Layout titre="À propos" description="Qui est Gabriel Roger : du développement au design numérique.">
+  <Fenetre
+    id="portfolio"
+    titre="À propos de Gabriel Roger"
+    navigateur
+    ouverte
+    agrandie
+    fermerVers={base}
+    chemin={[{ nom: 'Portfolio', href: `${base}portfolio/` }, { nom: 'À propos' }]}
+    couleur={site.couleur}
+    position="left:6%;top:calc(2rem + 3%);width:min(80rem, 88vw);height:calc(100svh - 10rem)"
+  >
+    <article class="pf pf-apropos" style={`--c:${site.couleur}`}>
+      <header class="pf-apropos__tete">
+        <div>
+          <p class="pf-intro__nom">À propos</p>
+          <h1>Du code à l'interface.</h1>
+          {apropos.map((t) => <p class="pf-apropos__texte">{t}</p>)}
+        </div>
+        <Image src={portrait} alt="Portrait de Gabriel Roger." widths={[400, 700, 1000]} sizes="(min-width: 64rem) 26rem, 80vw" class="pf-apropos__photo" loading="eager" />
+      </header>
+
+      <section class="pf-apropos__bloc">
+        <h2>Ce que je fais</h2>
+        <ul class="pf-savoir">
+          {
+            savoirFaire.map((s) => (
+              <li>
+                <h3>{s.titre}</h3>
+                <p>{s.texte}</p>
+                <p class="pf-savoir__outils">{s.outils.join(', ')}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="pf-apropos__bloc">
+        <h2>En dehors du design</h2>
+        <ul class="pf-savoir">
+          {
+            interets.map((i) => (
+              <li>
+                <h3>{i.titre}</h3>
+                <p>{i.texte}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="pf-apropos__bloc pf-apropos__bloc--parcours" id="parcours">
+        <div>
+          <h2>Parcours</h2>
+          <p class="pf-apropos__intro">Formations et expériences, de la plus récente à la plus ancienne.</p>
+          <div class="pf-filtres" role="radiogroup" aria-label="Afficher">
+            <input type="radio" name="filtre-parcours" id="parcours-tout" checked />
+            <label for="parcours-tout">Tout</label>
+            <input type="radio" name="filtre-parcours" id="parcours-pro" />
+            <label for="parcours-pro">Expériences pro</label>
+            <input type="radio" name="filtre-parcours" id="parcours-formation" />
+            <label for="parcours-formation">Formations</label>
+          </div>
+        </div>
+        <ol class="pf-parcours">
+          {
+            parcours.map((p) => (
+              <li data-type={p.type}>
+                <span class="pf-parcours__quand">{p.quand}</span>
+                <div class="pf-parcours__corps">
+                  <span class:list={['pf-parcours__etiquette', `pf-parcours__etiquette--${p.type}`]}>{p.etiquette}</span>
+                  <strong>{p.quoi}</strong>
+                  <span class="pf-parcours__ou">{p.ou}</span>
+                  {p.detail && <p>{p.detail}</p>}
+                  {p.lien && (
+                    <a href={`${base}projets/${p.lien}/`} class="pf-parcours__lien">
+                      Voir l'étude de cas
+                    </a>
+                  )}
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
+      <section class="pf-apropos__contact">
+        <h2>Me contacter</h2>
+        <p>{recherche}</p>
+        <div class="pf-boutons">
+          <a class="pf-btn pf-btn--plein" href={`mailto:${site.email}?subject=Alternance%20en%20design%20num%C3%A9rique`}>{site.email}</a>
+          <a class="pf-btn" href={site.cv} target="_blank" rel="noopener">Mon CV</a>
+          <a class="pf-btn" href={site.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </section>
+    </article>
+  </Fenetre>
+</Layout>

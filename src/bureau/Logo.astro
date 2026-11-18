@@ -1,0 +1,39 @@
+---
+// Le logo « GR » de Gabriel (repris de l'ancien site, redessiné en vectoriel) :
+// un G ouvert dont la barre file dans la jambe du R, terminée par un point jaune.
+// variante « tuile » : posé sur un carré blanc arrondi (dock, icônes, favicon)
+// variante « nu » : le logo seul (barre des menus)
+interface Props {
+  taille?: string; // largeur CSS, ex. « 1rem »
+  variante?: 'tuile' | 'nu';
+  classe?: string;
+}
+const { taille = '1rem', variante = 'tuile', classe = '' } = Astro.props;
+// Un identifiant par logo : le dégradé d'un logo caché ne doit pas casser les autres
+const id = `gr-${Math.random().toString(36).slice(2, 8)}`;
+const tuile = variante === 'tuile';
+---
+
+<svg
+  viewBox={tuile ? '0 0 64 64' : '0 30 682 436'}
+  class:list={['logo', `logo--${variante}`, classe]}
+  style={tuile ? `width:${taille};height:${taille}` : `width:${taille};height:auto`}
+  aria-hidden="true"
+>
+  <defs>
+    <linearGradient id={id} x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#4C1D95"></stop>
+      <stop offset="0.55" stop-color="#6B3BC8"></stop>
+      <stop offset="1" stop-color="#B07CF0"></stop>
+    </linearGradient>
+  </defs>
+  {tuile && <rect width="64" height="64" rx="14.5" fill="#fff" />}
+  <g transform={tuile ? 'translate(6 13.1) scale(0.0762)' : undefined}>
+    <g fill="none" stroke={`url(#${id})`} stroke-width={tuile ? 44 : 38} stroke-linecap="round" stroke-linejoin="round">
+      <path d="M380 146.5A197 197 0 1 0 408 248"></path>
+      <path d="M218 246H452C504 248 532 270 558 305L636 412"></path>
+      <path d="M383 48H548C604 48 643 96 643 162C643 226 610 266 560 302"></path>
+    </g>
+    <circle cx="655" cy="435" r={tuile ? 34 : 30} fill="#EAB308"></circle>
+  </g>
+</svg>

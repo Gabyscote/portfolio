@@ -1,0 +1,54 @@
+---
+titre: Modéliser le métro de Tokyo
+court: "Metro"
+resume: Un projet d'équipe pour gérer l'un des réseaux les plus denses du monde, de la base de données à l'application, en passant par l'arbre des tâches.
+annee: 2025
+cadre: BUT Informatique, IUT d'Amiens, SAE du semestre 2
+role: Modélisation des données, arbre des tâches, conseils sur les maquettes
+duree: Semestre 2 du BUT, au printemps 2025
+equipe: Projet d'équipe
+outils: [Looping, SQL, MariaDB, C#, Windows Forms, Figma]
+livrables: [Modèle de données, Base de données, Application de bureau, Arbre des tâches]
+disciplines: Données, application
+couleur: '#F39700'
+nomCouleur: Orange de la ligne Ginza
+encre: foncee
+couverture: ../../assets/projets/metro/metro_accueil.webp
+cadreCouverture: libre
+altCouverture: "L'écran d'accueil de l'application : la recherche d'un trajet à gauche, le plan du métro de Tokyo à droite, et l'actualité des lignes en bas."
+ordre: 11
+categories: [interface]
+contexte: but
+secondaire: true
+---
+
+import Figure from '../../components/Figure.astro';
+import bd from '../../assets/projets/metro/metro_bd.webp';
+import arbre from '../../assets/projets/metro/metro_arbre.webp';
+import reunion from '../../assets/projets/metro/metro_reunion.webp';
+
+## Le sujet
+
+Le métro de Tokyo compte parmi les réseaux les plus denses au monde. En deuxième semestre de BUT, on nous a demandé de le modéliser et de le gérer : stocker les lignes, les stations et les horaires, calculer des trajets, et administrer le tout depuis une application.
+
+## Structurer les données
+
+Avant d'écrire la moindre ligne de code, il fallait décrire le réseau. J'ai coréalisé le modèle de données sur Looping : les tronçons, les lignes, les stations, les horaires et les tarifs, avec leurs liens. Ce modèle a donné une base de données sans doublons, capable de calculer le coût et la durée d'un trajet.
+
+<Figure src={bd} alt="Le modèle entité-association : tronçons, lignes, stations, horaires, utilisateurs, catégories et tarifs, reliés entre eux." legende="Le modèle de données du réseau, réalisé sur Looping." />
+
+## Penser l'application avant de la dessiner
+
+L'application de bureau, en C#, permet de chercher un itinéraire et, pour un administrateur, de créer des lignes ou de modifier des stations. Pour ne rien oublier, j'ai d'abord listé tout ce que l'utilisateur devait pouvoir faire dans un arbre des tâches, puis j'ai conseillé l'équipe sur les maquettes Figma.
+
+<Figure src={arbre} alt="L'arbre des tâches de l'application, très large, qui détaille chaque action possible." legende="L'arbre des tâches : chaque branche est une action de l'utilisateur." />
+
+## Travailler en équipe
+
+Le projet nous a confrontés aux vraies difficultés du travail en groupe : la communication, l'implication inégale, les délais. On a tenu un journal de bord et organisé le code sur GitHub pour garder le cap.
+
+<Figure src={reunion} alt="Un extrait du journal de bord : les dates de réunion, les commits GitHub et une ébauche du graphe du réseau." legende="Le journal de bord de l'équipe." />
+
+## Ce que j'en retiens
+
+C'est sur ce projet que j'ai découvert l'arbre des tâches, et je m'en sers encore : lister tout ce que l'utilisateur doit pouvoir faire avant de dessiner le moindre écran. Sur un réseau aussi dense, commencer par l'interface aurait été le meilleur moyen d'oublier la moitié des cas.

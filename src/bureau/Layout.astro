@@ -1,0 +1,1581 @@
+---
+// Version « Bureau » : le portfolio comme un ordinateur.
+// La barre des menus, le fond d'écran, le bureau (icônes et petites fenêtres) et le dock
+// restent en place d'une page à l'autre (transition:persist).
+// Le portfolio lui-même est une app : une fenêtre de navigateur, ouverte en grand,
+// dont le contenu change à chaque page (accueil, à propos, études de cas).
+import { ClientRouter } from 'astro:transitions';
+import { Image, getImage } from 'astro:assets';
+import '@fontsource-variable/jetbrains-mono/wght.css';
+import './bureau.css';
+import Icone from './Icone.astro';
+import Fenetre from './Fenetre.astro';
+import Logo from './Logo.astro';
+import IconeProjet from './IconeProjet.astro';
+import Miniature from './Miniature.astro';
+import apercuCv from '../assets/bureau/apercu-cv-v3.png';
+import apercuLisezMoi from '../assets/bureau/apercu-lisez-moi.png';
+import apercuAPropos from '../assets/bureau/apercu-a-propos.png';
+import apercuParcours from '../assets/bureau/apercu-parcours.png';
+import { getProjets, getTousProjets, accroche, recherche, parcours } from '../data/contenu';
+import portrait from '../assets/moi/portrait.jpg';
+import { site, base as siteBase } from '../data/site';
+
+interface Props {
+  titre?: string;
+  description?: string;
+}
+
+const { titre, description = site.description } = Astro.props;
+const titreComplet = titre ? `${titre} | ${site.nom}` : `${site.nom}, designer numérique`;
+const projets = await getProjets();
+const tousProjets = await getTousProjets();
+const enLettres = ['Aucun', 'Un', 'Deux', 'Trois', 'Quatre', 'Cinq', 'Six', 'Sept', 'Huit', 'Neuf', 'Dix'];
+const base = siteBase;
+const portfolio = `${base}portfolio/`;
+const aPropos = `${base}a-propos/`;
+const lien = (id: string) => `${base}projets/${id}/`;
+const listeTerminal = tousProjets.map((p) => ({ id: p.id, nom: p.data.court, annee: p.data.annee, lien: lien(p.id) }));
+
+// Le Finder range les projets par catégorie et par cadre
+const categories: Record<string, string> = {
+  identite: 'Identité visuelle',
+  interface: 'Interfaces',
+  web: 'Web et intégration',
+  print: 'Print et affiche',
+  photo: 'Photo',
+  reseaux: 'Réseaux sociaux',
+};
+const contextes: Record<string, string> = {
+  nfs: 'Bachelor Designer, NFS',
+  but: 'BUT Informatique',
+  entreprise: 'En entreprise',
+};
+
+// Tout ce que la recherche (façon Spotlight) peut trouver
+const vignettes = await Promise.all(tousProjets.map((p) => getImage({ src: p.data.couverture, width: 120, format: 'webp' })));
+const recherchables = [
+  ...tousProjets.map((p, i) => ({
+    type: 'Projet',
+    titre: p.data.titre,
+    sous: `${p.data.disciplines}, ${p.data.annee}`,
+    image: vignettes[i].src,
+    couleur: p.data.couleur,
+    mots: [p.data.court, p.data.disciplines, p.data.cadre, ...p.data.outils, ...p.data.livrables].join(' '),
+    lien: lien(p.id),
+  })),
+  { type: 'Page', titre: 'Portfolio', sous: 'Tous les projets', icone: 'logo', mots: 'accueil projets travaux', lien: portfolio },
+  { type: 'Page', titre: 'À propos', sous: 'Parcours, ce que je fais', icone: 'texte', mots: 'qui parcours bachelor but nfs iut compétences savoir-faire', lien: aPropos },
+  { type: 'Page', titre: 'Parcours', sous: 'Formations et expériences', icone: 'texte', mots: 'parcours expériences cv formations stage alternance job', lien: `${aPropos}#parcours` },
+  ...parcours.map((p) => ({
+    type: p.etiquette,
+    titre: p.quoi,
+    sous: `${p.ou}, ${p.quand.toLowerCase()}`,
+    icone: 'texte',
+    mots: `${p.ou} ${p.detail ?? ''} parcours`,
+    lien: `${aPropos}#parcours`,
+  })),
+  { type: 'Action', titre: 'Me contacter', sous: site.email, icone: 'mail', mots: 'contact email mail message écrire alternance', ouvrir: 'contact' },
+  { type: 'Action', titre: "Copier l'adresse e-mail", sous: site.email, icone: 'mail', mots: 'copier email mail adresse', copier: site.email },
+  { type: 'Document', titre: 'CV.pdf', sous: 'Mon CV en PDF', icone: 'pdf', mots: 'cv curriculum pdf', externe: site.cv },
+  { type: 'Lien', titre: 'LinkedIn', sous: 'Mon profil', icone: 'lien', mots: 'linkedin réseau profil', externe: site.linkedin },
+  { type: 'App', titre: 'Finder', sous: 'Les projets par catégorie', icone: 'finder', mots: 'finder fichiers dossiers catégories parcourir', ouvrir: 'finder' },
+  { type: 'App', titre: 'Terminal', sous: 'Pour les curieux', icone: 'terminal', mots: 'terminal console commande zsh', ouvrir: 'terminal' },
+  { type: 'App', titre: 'Bienvenue', sous: 'Lisez-moi', icone: 'texte', mots: 'bienvenue lisez-moi présentation', ouvrir: 'bienvenue' },
+];
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titreComplet}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#14051f" />
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+    <script is:inline>
+      // Signale que JavaScript est actif. Le routeur d'Astro remplace les attributs
+      // de <html> à chaque changement de page : on remet la classe après chaque échange.
+      document.documentElement.classList.add('js');
+      document.addEventListener('astro:after-swap', () => document.documentElement.classList.add('js'));
+    </script>
+    <ClientRouter />
+  </head>
+  <body>
+    <a class="evitement" href="#scene">Aller au contenu</a>
+
+    <div class="fond" transition:persist="fond" aria-hidden="true"></div>
+
+    <!-- ===== Barre des menus ===== -->
+    <header class="menus" transition:persist="menus">
+      <button type="button" class="menus__logo" popovertarget="menu-gabriel" aria-label="Menu principal">
+        <Logo taille="1.55rem" variante="nu" />
+      </button>
+      <div id="menu-gabriel" popover class="menu-deroulant">
+        <button type="button" data-ouvrir="bienvenue">Bienvenue</button>
+        <a href={portfolio}>Ouvrir le portfolio</a>
+        <a href={aPropos}>À propos de Gabriel</a>
+        <a href={site.cv} target="_blank" rel="noopener">Ouvrir le CV</a>
+        <hr />
+        <button type="button" data-aligner>Aligner les icônes</button>
+        <a href={base} data-tout-fermer>Ranger le bureau</a>
+      </div>
+      <strong class="menus__app">Gabriel Roger</strong>
+      <nav class="menus__nav" aria-label="Navigation principale">
+        <button type="button" class="menus__bouton" popovertarget="menu-projets">Projets</button>
+        <div id="menu-projets" popover class="menu-deroulant">
+          {
+            projets.map((p) => (
+              <a href={lien(p.id)}>
+                <span class="puce" style={`background:${p.data.couleur}`} aria-hidden="true" />
+                {p.data.court}
+                <small>{p.data.annee}</small>
+              </a>
+            ))
+          }
+          <hr />
+          <a href={portfolio}>Tout le portfolio</a>
+          <button type="button" data-ouvrir="finder">Parcourir dans le Finder</button>
+        </div>
+        <a class="menus__bouton" href={aPropos}>À propos</a>
+        <button type="button" class="menus__bouton" data-ouvrir="contact">Contact</button>
+        <a class="menus__bouton" href={site.cv} target="_blank" rel="noopener">CV</a>
+      </nav>
+      <span class="menus__droite">
+        <button type="button" class="menus__statut" data-notif><span class="led" aria-hidden="true"></span>Disponible en alternance</button>
+        <button type="button" class="menus__loupe" data-spotlight aria-label="Rechercher (⌘K)">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.8" cy="6.8" r="4.8"></circle><path d="m10.4 10.4 3.8 3.8"></path></svg>
+        </button>
+        <time data-horloge aria-hidden="true"></time>
+      </span>
+    </header>
+
+    <!-- Barre d'état de l'iPhone (mobile seulement) -->
+    <div class="ios-statut" transition:persist="ios-statut" aria-hidden="true">
+      <time data-heure></time>
+      <span class="ios-statut__icones">
+        <svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"></rect><rect x="5" y="5.5" width="3" height="6.5" rx="1"></rect><rect x="10" y="3" width="3" height="9" rx="1"></rect><rect x="15" y="0" width="3" height="12" rx="1"></rect></svg>
+        <svg viewBox="0 0 16 12"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM3.5 6.9a6.4 6.4 0 0 1 9 0l-1.4 1.4a4.4 4.4 0 0 0-6.2 0zM1.3 4.7a9.5 9.5 0 0 1 13.4 0l-1.4 1.4a7.5 7.5 0 0 0-10.6 0z"></path></svg>
+        <svg viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity="0.4"></rect><rect x="2" y="2" width="17" height="9" rx="2"></rect><path d="M25 4.5v4a2 2 0 0 0 0-4z" opacity="0.4"></path></svg>
+      </span>
+    </div>
+
+    <!-- ===== Le bureau : icônes et petites fenêtres, gardées d'une page à l'autre ===== -->
+    <div class="bureau" transition:persist="bureau">
+      <div class="accueil-mobile">
+        <div class="widgets">
+          <div class="widget">
+            <Image src={portrait} alt="" widths={[120, 200]} sizes="3.2rem" class="widget__photo" />
+            <div>
+              <p class="widget__nom">Gabriel Roger</p>
+              <p>{accroche}</p>
+              <p class="widget__statut"><span class="led" aria-hidden="true"></span>Disponible en alternance</p>
+            </div>
+          </div>
+
+          <!-- Widget « Projets » : les couvertures défilent toutes seules -->
+          <div class="widget-projets" data-diaporama aria-label="Projets">
+            {
+              projets.map((p, i) => (
+                <a href={lien(p.id)} class:list={['widget-projets__diapo', { 'est-active': i === 0 }]} style={`--c:${p.data.couleur}`} data-encre={p.data.encre}>
+                  <Image src={p.data.couverture} alt="" widths={[320, 560, 800]} sizes="60vw" />
+                  <span class="widget-projets__texte">
+                    <strong>{p.data.court}</strong>
+                    <small>{p.data.disciplines}</small>
+                  </span>
+                </a>
+              ))
+            }
+            <span class="widget-projets__points" aria-hidden="true">
+              {projets.map((_, i) => <i class:list={{ 'est-actif': i === 0 }} />)}
+            </span>
+          </div>
+        </div>
+
+        <button type="button" class="ios-ok" data-fin-edition>OK</button>
+        <ul class="icones" aria-label="Fichiers du bureau">
+          <li data-id="portfolio">
+            <a href={portfolio} class="fichier">
+              <Logo />
+              <span>Portfolio</span>
+            </a>
+          </li>
+          <li data-id="a-propos">
+            <a href={aPropos} class="fichier">
+              <Miniature src={apercuAPropos} />
+              <span>À propos</span>
+            </a>
+          </li>
+          <li data-id="cv">
+            <a href={site.cv} target="_blank" rel="noopener" class="fichier">
+              <Miniature src={apercuCv} />
+              <span>CV.pdf</span>
+            </a>
+          </li>
+          <li data-id="lisez-moi">
+            <button type="button" data-ouvrir="bienvenue" class="fichier">
+              <Miniature src={apercuLisezMoi} />
+              <span>Lisez-moi</span>
+            </button>
+          </li>
+          <li data-id="terminal">
+            <button type="button" data-ouvrir="terminal" class="fichier">
+              <Icone type="terminal" />
+              <span>Terminal</span>
+            </button>
+          </li>
+          {
+            projets.map((p) => (
+              <li data-id={p.id}>
+                <a href={lien(p.id)} class="fichier">
+                  <IconeProjet src={p.data.couverture} couleur={p.data.couleur} />
+                  <span>{p.data.court}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <button type="button" class="recherche-ios" data-spotlight>
+          <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.8" cy="6.8" r="4.8"></circle><path d="m10.4 10.4 3.8 3.8"></path></svg>
+          Rechercher
+        </button>
+      </div>
+
+      <!-- Carte de visite : un widget posé sur le bureau (Mac seulement) -->
+      <section class="carte" aria-labelledby="carte-nom">
+        <div class="carte__tete">
+          <Image src={portrait} alt="Portrait de Gabriel Roger." widths={[160, 240, 320]} sizes="4.75rem" class="carte__photo" loading="eager" />
+          <div>
+            <h2 id="carte-nom">Gabriel Roger</h2>
+            <p class="carte__metier">Designer numérique</p>
+            <p class="carte__statut"><span class="led" aria-hidden="true"></span>Disponible en alternance</p>
+          </div>
+        </div>
+        <p class="carte__accroche">{accroche}</p>
+        <div class="carte__boutons">
+          <a class="btn btn--principal" href={portfolio}>Voir mes projets</a>
+          <button type="button" class="btn" data-ouvrir="contact">Me contacter</button>
+          <a class="btn" href={site.cv} target="_blank" rel="noopener">CV</a>
+        </div>
+      </section>
+
+      <!-- Bienvenue : le point de départ -->
+      <Fenetre id="bienvenue" titre="Bienvenue" position="left:4%;top:calc(2rem + 4%);width:33rem">
+        <div class="bienvenue">
+          <div class="bienvenue__tete">
+            <Logo taille="3.6rem" />
+            <div>
+              <h2>Gabriel Roger</h2>
+              <p class="bienvenue__statut"><span class="led" aria-hidden="true"></span>Designer numérique, disponible en alternance</p>
+            </div>
+          </div>
+          <p class="bienvenue__accroche">{accroche}</p>
+          <div>
+            <p class="bienvenue__rubrique">{enLettres[projets.length] ?? projets.length} projets, d'école et en entreprise</p>
+            <ul class="liste-projets">
+              {
+                projets.map((p) => (
+                  <li>
+                    <a href={lien(p.id)}>
+                      <span class="liste-projets__vignette" style={`--c:${p.data.couleur}`}>
+                        <Image src={p.data.couverture} alt="" widths={[120, 200]} sizes="2.6rem" />
+                      </span>
+                      <span>
+                        <strong>{p.data.court}</strong>
+                        <small>{p.data.disciplines}</small>
+                      </span>
+                      <span class="liste-projets__annee">{p.data.annee}</span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+          <div class="boutons">
+            <a class="btn btn--principal" href={portfolio}>Ouvrir le portfolio</a>
+            <button type="button" class="btn" data-ouvrir="contact">Me contacter</button>
+            <a class="btn" href={site.cv} target="_blank" rel="noopener">Mon CV</a>
+          </div>
+          <p class="bienvenue__aide">Les fenêtres se déplacent, s'agrandissent et se réduisent dans le dock, comme sur un Mac.</p>
+        </div>
+      </Fenetre>
+
+      <!-- Finder : les projets rangés par catégorie et par cadre -->
+      <Fenetre id="finder" titre="Projets" classe="fenetre--finder" position="left:max(1rem, calc(50% - 27rem));top:calc(2rem + 4%);width:min(54rem, calc(100vw - 2rem));height:min(34rem, calc(100svh - 11rem))">
+        <div class="finder" data-finder>
+          <nav class="finder__cote" aria-label="Rangement">
+            <p class="finder__rubrique">Favoris</p>
+            <ul>
+              <li><button type="button" data-filtre="tout" class="est-actif" aria-pressed="true">Tous les projets</button></li>
+              <li><button type="button" data-filtre="documents" aria-pressed="false">Documents</button></li>
+            </ul>
+            <p class="finder__rubrique">Catégories</p>
+            <ul>
+              {
+                Object.entries(categories).map(([cle, nom]) => (
+                  <li>
+                    <button type="button" data-filtre={`cat:${cle}`} aria-pressed="false">
+                      {nom}
+                    </button>
+                  </li>
+                ))
+              }
+            </ul>
+            <p class="finder__rubrique">Cadre</p>
+            <ul>
+              {
+                Object.entries(contextes).map(([cle, nom]) => (
+                  <li>
+                    <button type="button" data-filtre={`ctx:${cle}`} aria-pressed="false">
+                      {nom}
+                    </button>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
+
+          <div class="finder__principal">
+            <div class="finder__outils">
+              <p class="finder__titre" data-finder-titre>Tous les projets</p>
+              <div class="finder__vues" role="group" aria-label="Présentation">
+                <button type="button" data-vue="icones" aria-pressed="true" aria-label="Icônes">
+                  <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="1.5" width="5" height="5" rx="1"></rect><rect x="9.5" y="1.5" width="5" height="5" rx="1"></rect><rect x="1.5" y="9.5" width="5" height="5" rx="1"></rect><rect x="9.5" y="9.5" width="5" height="5" rx="1"></rect></svg>
+                </button>
+                <button type="button" data-vue="liste" aria-pressed="false" aria-label="Liste">
+                  <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3.5h12M2 8h12M2 12.5h12"></path></svg>
+                </button>
+              </div>
+              <input type="search" class="finder__recherche" placeholder="Rechercher" aria-label="Rechercher dans le Finder" data-finder-recherche />
+            </div>
+
+            <ul class="finder__elements" data-affichage="icones">
+              <li class="finder__entete" aria-hidden="true">
+                <span>Nom</span><span>Catégories</span><span>Cadre</span><span>Année</span>
+              </li>
+              {
+                tousProjets.map((p) => (
+                  <li
+                    data-type="projet"
+                    data-cat={(p.data.categories ?? []).join(' ')}
+                    data-ctx={p.data.contexte}
+                    data-texte={`${p.data.titre} ${p.data.court} ${p.data.disciplines} ${p.data.outils.join(' ')}`}
+                  >
+                    <a href={lien(p.id)} class="finder__element">
+                      <IconeProjet src={p.data.couverture} couleur={p.data.couleur} />
+                      <span class="finder__nom">{p.data.court}</span>
+                      <span class="finder__col">{(p.data.categories ?? []).map((c) => categories[c]).join(', ')}</span>
+                      <span class="finder__col">{p.data.contexte ? contextes[p.data.contexte] : ''}</span>
+                      <span class="finder__col">{p.data.annee}</span>
+                    </a>
+                  </li>
+                ))
+              }
+              <li data-type="document" data-texte="CV curriculum PDF">
+                <a href={site.cv} target="_blank" rel="noopener" class="finder__element">
+                  <Miniature src={apercuCv} />
+                  <span class="finder__nom">CV.pdf</span>
+                  <span class="finder__col">Document PDF</span>
+                  <span class="finder__col"></span>
+                  <span class="finder__col">2026</span>
+                </a>
+              </li>
+              <li data-type="document" data-texte="À propos parcours compétences">
+                <a href={aPropos} class="finder__element">
+                  <Miniature src={apercuAPropos} />
+                  <span class="finder__nom">À propos</span>
+                  <span class="finder__col">Parcours et savoir-faire</span>
+                  <span class="finder__col"></span>
+                  <span class="finder__col"></span>
+                </a>
+              </li>
+              <li data-type="document" data-texte="Parcours expériences formations stage alternance">
+                <a href={`${aPropos}#parcours`} class="finder__element">
+                  <Miniature src={apercuParcours} />
+                  <span class="finder__nom">Parcours</span>
+                  <span class="finder__col">Formations et expériences</span>
+                  <span class="finder__col"></span>
+                  <span class="finder__col"></span>
+                </a>
+              </li>
+              <li data-type="document" data-texte="Lisez-moi bienvenue">
+                <button type="button" data-ouvrir="bienvenue" class="finder__element">
+                  <Miniature src={apercuLisezMoi} />
+                  <span class="finder__nom">Lisez-moi</span>
+                  <span class="finder__col">Présentation</span>
+                  <span class="finder__col"></span>
+                  <span class="finder__col"></span>
+                </button>
+              </li>
+            </ul>
+            <p class="finder__vide" hidden>Aucun élément ne correspond.</p>
+            <p class="finder__pied" data-finder-compte></p>
+          </div>
+        </div>
+      </Fenetre>
+
+      <!-- Contact -->
+      <Fenetre id="contact" titre="Nouveau message" position="left:34%;top:calc(2rem + 16%);width:30rem">
+        <div class="mail">
+          <p class="mail__ligne"><span>À</span>{site.email}</p>
+          <p class="mail__ligne"><span>Objet</span>Une alternance en design numérique</p>
+          <p class="mail__corps">{recherche}</p>
+          <div class="boutons">
+            <a class="btn btn--principal" href={`mailto:${site.email}?subject=Alternance%20en%20design%20num%C3%A9rique`}>Écrire le message</a>
+            <button type="button" class="btn" data-copier={site.email}>Copier l'adresse</button>
+            <a class="btn" href={site.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+          </div>
+        </div>
+      </Fenetre>
+
+      <!-- Terminal -->
+      <Fenetre id="terminal" titre="gabriel — zsh" position="left:42%;top:calc(2rem + 24%);width:38rem;height:22rem" classe="fenetre--terminal">
+        <div class="terminal" data-terminal>
+          <div class="terminal__sortie" aria-live="polite"></div>
+          <form class="terminal__ligne">
+            <label for="commande"><span class="invite">gabriel@portfolio ~ %</span></label>
+            <input id="commande" name="commande" autocomplete="off" spellcheck="false" autocapitalize="off" />
+          </form>
+        </div>
+      </Fenetre>
+
+      <script id="donnees-terminal" type="application/json" set:html={JSON.stringify({ projets: listeTerminal, email: site.email, cv: site.cv, accroche, portfolio, aPropos })} />
+
+      <!-- Visionneuse : une image en grand -->
+      <figure class="visionneuse" tabindex="-1" hidden role="dialog" aria-modal="true" aria-label="Image en grand. Cliquez ou appuyez sur Échap pour fermer.">
+        <img alt="" />
+        <figcaption></figcaption>
+      </figure>
+      <div class="zone-agrandir" aria-hidden="true"></div>
+
+      <!-- Notification d'arrivée -->
+      <aside class="notif" role="status" hidden aria-label="Notification">
+        <Logo taille="2.4rem" />
+        <div class="notif__texte">
+          <p class="notif__tete"><strong>Gabriel Roger</strong><span>maintenant</span></p>
+          <p>Je cherche une alternance en design numérique ou en communication digitale. Disponible dès maintenant.</p>
+          <div class="notif__actions">
+            <button type="button" data-ouvrir="contact" data-notif-fermer>Me contacter</button>
+            <a href={portfolio} data-notif-fermer>Voir les projets</a>
+          </div>
+        </div>
+        <button type="button" class="notif__fermer" data-notif-fermer aria-label="Fermer la notification">×</button>
+      </aside>
+
+      <!-- Recherche façon Spotlight -->
+      <div class="spotlight" hidden>
+        <div class="spotlight__boite" role="dialog" aria-modal="true" aria-label="Rechercher">
+          <div class="spotlight__champ">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.8" cy="6.8" r="4.8"></circle><path d="m10.4 10.4 3.8 3.8"></path></svg>
+            <input type="search" placeholder="Rechercher un projet, un outil, une page…" aria-label="Rechercher" aria-controls="spotlight-resultats" autocomplete="off" spellcheck="false" />
+            <button type="button" class="spotlight__annuler" data-spotlight-fermer>Annuler</button>
+          </div>
+          <ul class="spotlight__resultats" id="spotlight-resultats" role="listbox" aria-label="Résultats"></ul>
+          <div hidden>
+            <template data-icone="logo"><Logo taille="100%" /></template>
+            <template data-icone="texte"><Icone type="texte" /></template>
+            <template data-icone="mail"><Icone type="mail" /></template>
+            <template data-icone="pdf"><Icone type="pdf" /></template>
+            <template data-icone="finder"><Icone type="finder" /></template>
+            <template data-icone="terminal"><Icone type="terminal" /></template>
+            <template data-icone="lien"><svg viewBox="0 0 64 64" class="icone"><rect width="64" height="64" rx="14" fill="#0A66C2"></rect><text x="32" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="32" fill="#fff">in</text></svg></template>
+          </div>
+          <p class="spotlight__aide">↑ ↓ pour choisir, Entrée pour ouvrir, Échap pour fermer</p>
+        </div>
+      </div>
+      <script id="donnees-recherche" type="application/json" set:html={JSON.stringify(recherchables)} />
+
+      <!-- Barre d'accueil de l'iPhone : touchée ou glissée vers le haut, elle ferme l'app -->
+      <button type="button" class="barre-accueil" data-accueil aria-label="Revenir à l'écran d'accueil"><span></span></button>
+    </div>
+
+    <!-- ===== Ce qui change selon la page : l'app Portfolio ===== -->
+    <div class="scene" id="scene"><slot /></div>
+
+    <!-- ===== Dock ===== -->
+    <nav class="dock" transition:persist="dock" aria-label="Dock">
+      <a href={portfolio} class="dock__app" data-app="portfolio" aria-label="Portfolio">
+        <Logo />
+        <span class="dock__nom" aria-hidden="true">Portfolio</span>
+        <span class="dock__point" aria-hidden="true"></span>
+      </a>
+      <button type="button" data-ouvrir="finder" class="dock__app" aria-label="Finder">
+        <Icone type="finder" />
+        <span class="dock__nom" aria-hidden="true">Finder</span>
+        <span class="dock__point" aria-hidden="true"></span>
+      </button>
+      <button type="button" data-ouvrir="bienvenue" class="dock__app dock__app--mac" aria-label="Bienvenue">
+        <Icone type="texte" />
+        <span class="dock__nom" aria-hidden="true">Bienvenue</span>
+        <span class="dock__point" aria-hidden="true"></span>
+      </button>
+      <button type="button" data-ouvrir="contact" class="dock__app" aria-label="Contact">
+        <Icone type="mail" />
+        <span class="dock__nom" aria-hidden="true">Contact</span>
+        <span class="dock__point" aria-hidden="true"></span>
+      </button>
+      <button type="button" data-ouvrir="terminal" class="dock__app" aria-label="Terminal">
+        <Icone type="terminal" />
+        <span class="dock__nom" aria-hidden="true">Terminal</span>
+        <span class="dock__point" aria-hidden="true"></span>
+      </button>
+      <span class="dock__separateur" aria-hidden="true"></span>
+      <span class="dock__reduites"></span>
+      <a href={site.cv} target="_blank" rel="noopener" class="dock__app" aria-label="CV en PDF">
+        <Miniature src={apercuCv} />
+        <span class="dock__nom" aria-hidden="true">CV.pdf</span>
+        <span class="dock__point" aria-hidden="true"></span>
+      </a>
+    </nav>
+
+    <script>
+      import { navigate } from 'astro:transitions/client';
+
+      // Ce script ne s'exécute qu'une fois : les écouteurs sont posés sur `document`,
+      // et « astro:page-load » se déclenche à chaque changement de page.
+
+      const mobile = matchMedia('(max-width: 56rem)');
+      const HAUT = 32; // hauteur de la barre des menus, en pixels
+      let zHaut = 20;
+      let dernierClic: { x: number; y: number } | null = null;
+
+      // ---------- Fenêtres ----------
+      const visibles = () => [...document.querySelectorAll<HTMLElement>('.fenetre:not([hidden])')];
+      const laPlusHaute = () =>
+        visibles().sort((a, b) => Number(b.style.zIndex || 0) - Number(a.style.zIndex || 0))[0];
+      const fenPortfolio = () => document.getElementById('fen-portfolio');
+
+      function majDock() {
+        document.querySelectorAll<HTMLElement>('.dock__app[data-ouvrir]').forEach((a) => {
+          const f = document.getElementById(`fen-${a.dataset.ouvrir}`);
+          const reduite = document.querySelector(`[data-restaurer="fen-${a.dataset.ouvrir}"]`);
+          a.classList.toggle('est-ouverte', !!f && (!f.hidden || !!reduite));
+        });
+        document.querySelector('[data-app="portfolio"]')?.classList.toggle('est-ouverte', !!fenPortfolio());
+        // Sur iPhone : une app ouverte cache le dock, et la barre d'état passe au foncé ou au clair
+        const devantF = laPlusHaute();
+        document.body.classList.toggle('app-ouverte', !!devantF);
+        document.body.classList.toggle('app-sombre', !!devantF?.classList.contains('fenetre--terminal'));
+      }
+
+      function devant(f: HTMLElement) {
+        zHaut += 1;
+        f.style.zIndex = String(zHaut);
+        document.querySelectorAll('.fenetre').forEach((x) => x.classList.toggle('est-devant', x === f));
+        majDock();
+      }
+
+      function animer(f: HTMLElement, point: { x: number; y: number } | null) {
+        const r = f.getBoundingClientRect();
+        f.style.transformOrigin =
+          point ? `${point.x - r.left}px ${point.y - r.top}px` : 'center 30%';
+        f.classList.remove('anim-ouvre');
+        void f.offsetWidth; // relance l'animation
+        f.classList.add('anim-ouvre');
+      }
+
+      const retirerReduite = (f: HTMLElement) => document.querySelector(`[data-restaurer="${f.id}"]`)?.remove();
+      const titreDe = (f: HTMLElement) =>
+        (f.querySelector('.fenetre__titre, .outils__adresse .sr-only')?.textContent ?? 'Fenêtre').trim();
+      const focusTitre = (f: HTMLElement) =>
+        f.querySelector<HTMLElement>('.fenetre__titre, .outils__adresse')?.focus({ preventScroll: true });
+
+      // Une fenêtre reste toujours entière à l'écran (petits écrans, fenêtre du navigateur réduite)
+      function recadrer(f: HTMLElement) {
+        if (mobile.matches || f.hidden || f.classList.contains('est-agrandie')) return;
+        const marge = 8;
+        const bas = innerHeight - 84; // au-dessus du dock
+        if (f.offsetWidth > innerWidth - marge * 2) f.style.width = `${innerWidth - marge * 2}px`;
+        if (f.offsetHeight > bas - HAUT - marge) f.style.height = `${bas - HAUT - marge}px`;
+        // offsetLeft / offsetTop : la position réelle, sans l'animation d'ouverture
+        let l = f.offsetLeft;
+        let t = f.offsetTop;
+        if (l + f.offsetWidth > innerWidth - marge) l = innerWidth - marge - f.offsetWidth;
+        if (t + f.offsetHeight > bas) t = bas - f.offsetHeight;
+        f.style.left = `${Math.max(marge, l)}px`;
+        f.style.top = `${Math.max(HAUT + marge, t)}px`;
+      }
+      addEventListener('resize', () => visibles().forEach(recadrer));
+      mobile.addEventListener('change', () => setTimeout(() => visibles().forEach(recadrer)));
+
+      function ouvrir(id: string, point: { x: number; y: number } | null = null) {
+        const f = document.getElementById(`fen-${id}`);
+        if (!f) return false;
+        const etaitCachee = f.hidden;
+        f.hidden = false;
+        recadrer(f);
+        retirerReduite(f);
+        devant(f);
+        if (etaitCachee) animer(f, point);
+        focusTitre(f);
+        return true;
+      }
+
+      function apresDisparition() {
+        const suivante = laPlusHaute();
+        if (suivante) devant(suivante);
+        else majDock();
+      }
+
+      function fermer(f: HTMLElement) {
+        if (f.dataset.retour) {
+          navigate(f.dataset.retour);
+          return;
+        }
+        f.hidden = true;
+        f.classList.remove('est-agrandie');
+        retirerReduite(f);
+        apresDisparition();
+      }
+
+      function reduire(f: HTMLElement) {
+        f.hidden = true;
+        const zone = document.querySelector('.dock__reduites');
+        if (zone && !zone.querySelector(`[data-restaurer="${f.id}"]`)) {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'dock__reduite';
+          b.dataset.restaurer = f.id;
+          b.style.setProperty('--c', f.dataset.couleur || '#6B3BFF');
+          const titre = titreDe(f);
+          b.setAttribute('aria-label', `Rouvrir : ${titre}`);
+          const nom = document.createElement('span');
+          nom.className = 'dock__nom';
+          nom.textContent = titre;
+          b.append(nom);
+          zone.append(b);
+        }
+        apresDisparition();
+      }
+
+      function restaurer(f: HTMLElement, point: { x: number; y: number } | null) {
+        retirerReduite(f);
+        f.hidden = false;
+        devant(f);
+        animer(f, point);
+      }
+
+      // Agrandir avec une transition douce (la fenêtre glisse jusqu'à sa place)
+      function basculerAgrandie(f: HTMLElement, etat?: boolean) {
+        f.classList.add('est-anime');
+        f.classList.toggle('est-agrandie', etat);
+        setTimeout(() => f.classList.remove('est-anime'), 320);
+        devant(f);
+      }
+
+      const fermerMenus = () =>
+        document.querySelectorAll<HTMLElement>('[popover]').forEach((p) => {
+          try {
+            p.hidePopover();
+          } catch {}
+        });
+
+      // ---------- Visionneuse ----------
+      const visionneuse = () => document.querySelector<HTMLElement>('.visionneuse')!;
+      function montrerImage(img: HTMLImageElement) {
+        const v = visionneuse();
+        const grande = v.querySelector('img')!;
+        // La plus grande taille disponible dans le srcset
+        const tailles = (img.srcset || '')
+          .split(',')
+          .map((s) => s.trim().split(/\s+/))
+          .filter((s) => s[0]);
+        const meilleure = tailles.sort((a, b) => parseInt(b[1] || '0') - parseInt(a[1] || '0'))[0];
+        grande.src = meilleure ? meilleure[0] : img.currentSrc || img.src;
+        grande.alt = img.alt;
+        // La légende : le titre en gras, puis le texte, sans les coller l'un à l'autre
+        const source = img.closest('figure')?.querySelector('figcaption');
+        const cible = v.querySelector('figcaption')!;
+        cible.replaceChildren();
+        if (source) {
+          const morceaux = [...source.children].map((c) => c.textContent?.trim() ?? '').filter(Boolean);
+          if (morceaux.length > 1) {
+            const titre = document.createElement('strong');
+            titre.textContent = morceaux[0];
+            cible.append(titre, ' ' + morceaux.slice(1).join(' '));
+          } else {
+            cible.textContent = source.textContent?.trim() ?? '';
+          }
+        }
+        v.hidden = false;
+        v.focus?.();
+      }
+      const cacherImage = () => (visionneuse().hidden = true);
+
+      // ---------- Clics ----------
+      document.addEventListener('click', (e) => {
+        const t = e.target as HTMLElement;
+        const point = { x: e.clientX, y: e.clientY };
+
+        if (t.closest('.visionneuse')) return cacherImage();
+
+        if (t.closest('[data-notif-fermer]')) cacherNotif();
+        if (t.closest('[data-aligner]')) {
+          fermerMenus();
+          return aligner();
+        }
+        if (t.closest('[data-fin-edition]')) return sortirEdition();
+        if (t.closest('[data-notif]')) return montrerNotif();
+        if (t.closest('[data-spotlight]')) return ouvrirSpotlight();
+        if (t.closest('[data-spotlight-fermer]') || t.classList.contains('spotlight')) return fermerSpotlight();
+        if (t.closest('[data-accueil]')) {
+          const f = laPlusHaute();
+          if (f) fermer(f);
+          return;
+        }
+
+        const zoom = t.closest<HTMLImageElement>('.pf .fig__cadre img, .pf .comparaison__image img');
+        if (zoom) return montrerImage(zoom);
+
+        const aOuvrir = t.closest<HTMLElement>('[data-ouvrir]');
+        if (aOuvrir) {
+          if (ouvrir(aOuvrir.dataset.ouvrir!, point)) e.preventDefault();
+          fermerMenus();
+          return;
+        }
+
+        const aRestaurer = t.closest<HTMLElement>('[data-restaurer]');
+        if (aRestaurer) {
+          const f = document.getElementById(aRestaurer.dataset.restaurer!);
+          if (f) restaurer(f, point);
+          else aRestaurer.remove();
+          return;
+        }
+
+        // Le Portfolio dans le dock : s'il est déjà là, on le remet devant au lieu de recharger
+        const app = t.closest<HTMLElement>('[data-app="portfolio"]');
+        const pf = fenPortfolio();
+        if (app && pf) {
+          e.preventDefault();
+          if (pf.hidden) restaurer(pf, point);
+          else devant(pf);
+          return;
+        }
+
+        const historique = t.closest<HTMLElement>('[data-historique]');
+        if (historique) return history.go(Number(historique.dataset.historique));
+
+        const fen = t.closest<HTMLElement>('.fenetre');
+        if (fen && t.closest('[data-fermer]')) return fermer(fen);
+        if (fen && t.closest('[data-reduire]')) return reduire(fen);
+        if (fen && t.closest('[data-agrandir]')) return basculerAgrandie(fen);
+
+        if (t.closest('[data-tout-fermer]')) {
+          document.querySelectorAll<HTMLElement>('.bureau .fenetre').forEach((f) => (f.hidden = true));
+          document.querySelectorAll('[data-restaurer]').forEach((b) => b.remove());
+        }
+
+        // Un lien vers le portfolio : on retient d'où part le clic pour animer l'ouverture
+        if (t.closest('a[href^="/"]:not([href^="//"])')) {
+          dernierClic = point;
+          fermerMenus();
+        }
+      });
+
+      // Double-clic sur une barre de titre : agrandir / rétablir
+      document.addEventListener('dblclick', (e) => {
+        const t = e.target as HTMLElement;
+        const barre = t.closest('.fenetre__barre');
+        if (!barre || t.closest('button, a') || mobile.matches) return;
+        basculerAgrandie(barre.closest<HTMLElement>('.fenetre')!);
+      });
+
+      // ---------- Déplacer, agrandir en glissant vers le haut, redimensionner ----------
+      const zone = () => document.querySelector<HTMLElement>('.zone-agrandir');
+
+      function suivre(el: HTMLElement, e: PointerEvent, bouge: (ev: PointerEvent) => void, fin: (ev: PointerEvent) => void) {
+        el.setPointerCapture(e.pointerId);
+        const lache = (ev: PointerEvent) => {
+          el.removeEventListener('pointermove', bouge);
+          el.removeEventListener('pointerup', lache);
+          el.removeEventListener('pointercancel', lache);
+          fin(ev);
+        };
+        el.addEventListener('pointermove', bouge);
+        el.addEventListener('pointerup', lache);
+        el.addEventListener('pointercancel', lache);
+      }
+
+      function deplacer(f: HTMLElement, barre: HTMLElement, e: PointerEvent) {
+        let depart = { x: e.clientX, y: e.clientY, l: f.offsetLeft, t: f.offsetTop };
+        let aBouge = false;
+        let versLeHaut = false;
+        suivre(
+          barre,
+          e,
+          (ev) => {
+            const dx = ev.clientX - depart.x;
+            const dy = ev.clientY - depart.y;
+            if (!aBouge && Math.hypot(dx, dy) < 4) return;
+            if (!aBouge) {
+              aBouge = true;
+              f.classList.add('est-deplacee');
+              // Une fenêtre agrandie qu'on attrape reprend sa taille, sous le curseur
+              if (f.classList.contains('est-agrandie')) {
+                const ratio = (depart.x - f.offsetLeft) / f.offsetWidth;
+                f.classList.remove('est-agrandie');
+                const l = depart.x - f.offsetWidth * ratio;
+                f.style.left = `${l}px`;
+                f.style.top = `${HAUT}px`;
+                depart = { ...depart, l, t: HAUT };
+              }
+            }
+            const l = Math.min(Math.max(depart.l + dx, -f.offsetWidth + 140), innerWidth - 140);
+            const h = Math.min(Math.max(depart.t + dy, HAUT), innerHeight - 90);
+            f.style.left = `${l}px`;
+            f.style.top = `${h}px`;
+            versLeHaut = ev.clientY <= HAUT + 6;
+            zone()?.classList.toggle('est-visible', versLeHaut);
+          },
+          () => {
+            f.classList.remove('est-deplacee');
+            zone()?.classList.remove('est-visible');
+            if (versLeHaut) {
+              // On garde une position de retour raisonnable
+              f.style.top = `${HAUT + 24}px`;
+              basculerAgrandie(f, true);
+            }
+          },
+        );
+      }
+
+      function redimensionner(f: HTMLElement, cote: string, poignee: HTMLElement, e: PointerEvent) {
+        const r = f.getBoundingClientRect();
+        const min = { l: 320, h: 160 };
+        const d = { x: e.clientX, y: e.clientY };
+        f.classList.add('est-redimensionnee');
+        suivre(
+          poignee,
+          e,
+          (ev) => {
+            const dx = ev.clientX - d.x;
+            const dy = ev.clientY - d.y;
+            let { left, top, width, height } = r;
+            if (cote.includes('e')) width = Math.max(min.l, r.width + dx);
+            if (cote.includes('s')) height = Math.max(min.h, Math.min(r.height + dy, innerHeight - r.top));
+            if (cote.includes('o')) {
+              width = Math.max(min.l, r.width - dx);
+              left = r.right - width;
+            }
+            if (cote.includes('n')) {
+              height = Math.max(min.h, r.height - dy);
+              top = Math.max(HAUT, r.bottom - height);
+              height = r.bottom - top;
+            }
+            Object.assign(f.style, { left: `${left}px`, top: `${top}px`, width: `${width}px`, height: `${height}px` });
+          },
+          () => f.classList.remove('est-redimensionnee'),
+        );
+      }
+
+      document.addEventListener('pointerdown', (e) => {
+        const t = e.target as HTMLElement;
+        const f = t.closest<HTMLElement>('.fenetre');
+        if (!f) return;
+        if (!f.classList.contains('est-devant')) devant(f);
+        if (mobile.matches || e.button !== 0) return;
+
+        const poignee = t.closest<HTMLElement>('[data-poignee]');
+        if (poignee) {
+          e.preventDefault();
+          return redimensionner(f, poignee.dataset.poignee!, poignee, e);
+        }
+        const barre = t.closest<HTMLElement>('.fenetre__barre');
+        if (barre && !t.closest('button, a')) deplacer(f, barre, e);
+      });
+
+      // Échap : d'abord la visionneuse, puis la fenêtre de devant
+      document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape' || document.querySelector(':popover-open')) return;
+        if (!spotlight().hidden) return fermerSpotlight();
+        if (document.body.classList.contains('mode-edition')) return sortirEdition();
+        if (!visionneuse().hidden) return cacherImage();
+        const f = laPlusHaute();
+        if (f) fermer(f);
+      });
+
+      // Menus déroulants : placés sous leur bouton
+      document.querySelectorAll<HTMLElement>('[popover]').forEach((menu) => {
+        menu.addEventListener('beforetoggle', (e) => {
+          if ((e as ToggleEvent).newState !== 'open') return;
+          const bouton = document.querySelector(`[popovertarget="${menu.id}"]`);
+          const r = bouton?.getBoundingClientRect();
+          if (r) {
+            menu.style.left = `${Math.min(r.left, innerWidth - 260)}px`;
+            menu.style.top = `${r.bottom + 4}px`;
+          }
+        });
+      });
+
+      // ---------- Horloge ----------
+      const horloge = document.querySelector('[data-horloge]');
+      const tic = () => {
+        if (!horloge) return;
+        const d = new Date();
+        horloge.textContent =
+          d.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' }) +
+          '  ' +
+          d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+      };
+      const heure = document.querySelector('[data-heure]');
+      const ticIos = () => {
+        if (heure) heure.textContent = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+      };
+      tic();
+      ticIos();
+      setInterval(() => {
+        tic();
+        ticIos();
+      }, 15000);
+
+      // ---------- Copier l'adresse ----------
+      document.addEventListener('click', async (e) => {
+        const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-copier]');
+        if (!b) return;
+        const libelle = b.textContent;
+        try {
+          await navigator.clipboard.writeText(b.dataset.copier ?? '');
+          b.textContent = 'Adresse copiée';
+        } catch {
+          b.textContent = "Copie impossible, sélectionnez l'adresse";
+        }
+        setTimeout(() => (b.textContent = libelle), 2200);
+      });
+
+      // ---------- Terminal ----------
+      const donnees = JSON.parse(document.getElementById('donnees-terminal')?.textContent ?? '{}');
+      const term = document.querySelector<HTMLElement>('[data-terminal]');
+      if (term) {
+        const sortie = term.querySelector<HTMLElement>('.terminal__sortie')!;
+        const champ = term.querySelector('input')!;
+        const ecrire = (texte: string, classe = '') => {
+          const ligne = document.createElement('p');
+          if (classe) ligne.className = classe;
+          ligne.textContent = texte;
+          sortie.append(ligne);
+          term.parentElement!.scrollTop = term.parentElement!.scrollHeight;
+        };
+        type P = { id: string; nom: string; annee: number; lien: string };
+        const simplifier = (s: string) => s.toLowerCase().normalize('NFD').replace(/[^a-z0-9]/g, '');
+        const commandes: Record<string, (arg: string) => void> = {
+          aide: () => {
+            ecrire('Commandes disponibles :');
+            ecrire('  qui              qui je suis');
+            ecrire('  projets          la liste des projets');
+            ecrire('  ouvrir <projet>  ouvre un projet, ex. « ouvrir rouen »');
+            ecrire('  portfolio        ouvre le portfolio');
+            ecrire('  contact          ouvre la fenêtre de contact');
+            ecrire('  cv               ouvre mon CV');
+            ecrire('  effacer          vide le terminal');
+          },
+          qui: () => {
+            ecrire('Gabriel Roger, étudiant designer numérique à NFS Rouen.');
+            ecrire(donnees.accroche);
+          },
+          projets: () => donnees.projets.forEach((p: P) => ecrire(`  ${p.id.padEnd(15)} ${p.nom} (${p.annee})`)),
+          ouvrir: (arg) => {
+            if (!arg) return ecrire('Précisez un projet, ex. « ouvrir rouen ». Tapez « projets » pour la liste.', 'erreur');
+            const p = donnees.projets.find(
+              (x: P) => x.id === simplifier(arg) || simplifier(x.nom).includes(simplifier(arg)),
+            );
+            if (!p) return ecrire(`Projet introuvable : ${arg}. Tapez « projets » pour la liste.`, 'erreur');
+            ecrire(`Ouverture de ${p.nom}…`);
+            navigate(p.lien);
+          },
+          portfolio: () => navigate(donnees.portfolio),
+          contact: () => {
+            ecrire(donnees.email);
+            ouvrir('contact');
+          },
+          cv: () => {
+            ecrire('Ouverture du CV dans un nouvel onglet…');
+            window.open(donnees.cv, '_blank', 'noopener');
+          },
+          effacer: () => {
+            sortie.innerHTML = '';
+          },
+        };
+        commandes.whoami = commandes.qui;
+        commandes.ls = commandes.projets;
+        commandes.open = commandes.ouvrir;
+        commandes.help = commandes.aide;
+        commandes.clear = commandes.effacer;
+
+        const executer = (saisie: string) => {
+          ecrire(`gabriel@portfolio ~ % ${saisie}`, 'saisie');
+          const [nom, ...reste] = saisie.trim().split(/\s+/);
+          if (!nom) return;
+          const cmd = commandes[nom.toLowerCase()];
+          if (cmd) cmd(reste.join(' '));
+          else ecrire(`Commande introuvable : ${nom}. Tapez « aide ».`, 'erreur');
+        };
+
+        term.querySelector('form')!.addEventListener('submit', (e) => {
+          e.preventDefault();
+          executer(champ.value);
+          champ.value = '';
+        });
+        term.addEventListener('click', () => champ.focus());
+        ecrire(`Dernière connexion : ${new Date().toLocaleString('fr-FR')}`, 'discret');
+        executer('qui');
+        ecrire('Tapez « aide » pour voir les commandes.', 'discret');
+      }
+
+
+      // ---------- Notification d'arrivée ----------
+      const notif = () => document.querySelector<HTMLElement>('.notif')!;
+      function montrerNotif() {
+        const n = notif();
+        n.hidden = false;
+        n.classList.remove('est-sortie');
+      }
+      function cacherNotif() {
+        const n = notif();
+        if (n.hidden) return;
+        n.classList.add('est-sortie');
+        setTimeout(() => (n.hidden = true), 280);
+      }
+      if (!sessionStorage.getItem('notif-vue')) {
+        sessionStorage.setItem('notif-vue', '1');
+        setTimeout(montrerNotif, 1400);
+      }
+
+      // ---------- Recherche façon Spotlight ----------
+      type Element_ = {
+        type: string;
+        titre: string;
+        sous: string;
+        mots: string;
+        image?: string;
+        couleur?: string;
+        icone?: string;
+        lien?: string;
+        ouvrir?: string;
+        externe?: string;
+        copier?: string;
+      };
+      const elements: Element_[] = JSON.parse(document.getElementById('donnees-recherche')?.textContent ?? '[]');
+      const spotlight = () => document.querySelector<HTMLElement>('.spotlight')!;
+      const champRecherche = () => spotlight().querySelector('input')!;
+      const listeResultats = () => spotlight().querySelector<HTMLElement>('.spotlight__resultats')!;
+      const sansAccents = (t: string) => t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+      let trouves: Element_[] = [];
+      let choix = 0;
+
+      function chercher(q: string) {
+        const mots = sansAccents(q).split(/\s+/).filter(Boolean);
+        if (!mots.length) return elements;
+        return elements
+          .map((el) => {
+            const titre = sansAccents(el.titre);
+            const tout = sansAccents(`${el.titre} ${el.sous} ${el.mots} ${el.type}`);
+            if (!mots.every((m) => tout.includes(m))) return null;
+            const score = mots.reduce((s, m) => s + (titre.startsWith(m) ? 3 : titre.includes(m) ? 2 : 1), 0);
+            return { el, score };
+          })
+          .filter((x): x is { el: Element_; score: number } => !!x)
+          .sort((a, b) => b.score - a.score)
+          .map((x) => x.el);
+      }
+
+      function afficherResultats() {
+        const ul = listeResultats();
+        ul.innerHTML = '';
+        if (!trouves.length) {
+          const li = document.createElement('li');
+          li.className = 'spotlight__vide';
+          li.textContent = 'Aucun résultat. Essayez « affiche », « Figma » ou « contact ».';
+          ul.append(li);
+          return;
+        }
+        trouves.forEach((el, i) => {
+          const li = document.createElement('li');
+          li.setAttribute('role', 'option');
+          li.id = `resultat-${i}`;
+          li.className = 'spotlight__resultat';
+          li.setAttribute('aria-selected', String(i === choix));
+          li.dataset.index = String(i);
+          const vignette = document.createElement('span');
+          vignette.className = 'spotlight__vignette';
+          if (el.image) {
+            vignette.style.setProperty('--c', el.couleur ?? '#6B3BFF');
+            const img = document.createElement('img');
+            img.src = el.image;
+            img.alt = '';
+            vignette.append(img);
+            vignette.classList.add('est-projet');
+          } else {
+            const modele = document.querySelector<HTMLTemplateElement>(`template[data-icone="${el.icone}"]`);
+            if (modele) vignette.append(modele.content.cloneNode(true));
+          }
+          const texte = document.createElement('span');
+          texte.className = 'spotlight__texte';
+          const titre = document.createElement('strong');
+          titre.textContent = el.titre;
+          const sous = document.createElement('small');
+          sous.textContent = el.sous;
+          texte.append(titre, sous);
+          const type = document.createElement('span');
+          type.className = 'spotlight__type';
+          type.textContent = el.type;
+          li.append(vignette, texte, type);
+          ul.append(li);
+        });
+        champRecherche().setAttribute('aria-activedescendant', `resultat-${choix}`);
+      }
+
+      function ouvrirSpotlight() {
+        fermerMenus();
+        const sp = spotlight();
+        sp.hidden = false;
+        const champ = champRecherche();
+        champ.value = '';
+        trouves = chercher('');
+        choix = 0;
+        afficherResultats();
+        requestAnimationFrame(() => champ.focus());
+      }
+      function fermerSpotlight() {
+        spotlight().hidden = true;
+      }
+
+      async function lancer(el: Element_) {
+        fermerSpotlight();
+        if (el.lien) navigate(el.lien);
+        else if (el.ouvrir) ouvrir(el.ouvrir);
+        else if (el.externe) window.open(el.externe, '_blank', 'noopener');
+        else if (el.copier) {
+          try {
+            await navigator.clipboard.writeText(el.copier);
+          } catch {}
+        }
+      }
+
+      document.addEventListener('input', (e) => {
+        if (!(e.target as HTMLElement).closest('.spotlight')) return;
+        trouves = chercher(champRecherche().value);
+        choix = 0;
+        afficherResultats();
+      });
+      document.addEventListener('click', (e) => {
+        const li = (e.target as HTMLElement).closest<HTMLElement>('.spotlight__resultat');
+        if (li) lancer(trouves[Number(li.dataset.index)]);
+      });
+      document.addEventListener('keydown', (e) => {
+        const ecrit = (e.target as HTMLElement).closest('input, textarea, [contenteditable]');
+        // ⌘K ou Ctrl+K partout, « / » hors d'un champ de saisie
+        if (((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') || (e.key === '/' && !ecrit)) {
+          e.preventDefault();
+          return spotlight().hidden ? ouvrirSpotlight() : fermerSpotlight();
+        }
+        if (spotlight().hidden) return;
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (!trouves.length) return;
+          choix = (choix + (e.key === 'ArrowDown' ? 1 : -1) + trouves.length) % trouves.length;
+          afficherResultats();
+          document.getElementById(`resultat-${choix}`)?.scrollIntoView({ block: 'nearest' });
+        } else if (e.key === 'Enter' && trouves[choix]) {
+          e.preventDefault();
+          lancer(trouves[choix]);
+        }
+      });
+
+      // ---------- iPhone : le widget Projets défile, la barre d'accueil se glisse ----------
+      const diaporama = document.querySelector<HTMLElement>('[data-diaporama]');
+      if (diaporama && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const diapos = [...diaporama.querySelectorAll<HTMLElement>('.widget-projets__diapo')];
+        const points = [...diaporama.querySelectorAll('.widget-projets__points i')];
+        let n = 0;
+        setInterval(() => {
+          if (document.hidden || !mobile.matches) return;
+          diapos[n].classList.remove('est-active');
+          points[n]?.classList.remove('est-actif');
+          n = (n + 1) % diapos.length;
+          diapos[n].classList.add('est-active');
+          points[n]?.classList.add('est-actif');
+        }, 3800);
+      }
+
+      document.addEventListener('pointerdown', (e) => {
+        const barre = (e.target as HTMLElement).closest<HTMLElement>('[data-accueil]');
+        if (!barre) return;
+        const y0 = e.clientY;
+        const fin = (ev: PointerEvent) => {
+          document.removeEventListener('pointerup', fin);
+          if (y0 - ev.clientY > 30 && !(ev.target as HTMLElement).closest('[data-accueil]')) {
+            const f = laPlusHaute();
+            if (f) fermer(f);
+          }
+        };
+        document.addEventListener('pointerup', fin);
+      });
+
+
+      // ---------- Finder ----------
+      const finder = document.querySelector<HTMLElement>('[data-finder]');
+      if (finder) {
+        const elements = [...finder.querySelectorAll<HTMLElement>('.finder__elements > li:not(.finder__entete)')];
+        const titre = finder.querySelector<HTMLElement>('[data-finder-titre]')!;
+        const compte = finder.querySelector<HTMLElement>('[data-finder-compte]')!;
+        const vide = finder.querySelector<HTMLElement>('.finder__vide')!;
+        const champ = finder.querySelector<HTMLInputElement>('[data-finder-recherche]')!;
+        const liste = finder.querySelector<HTMLElement>('.finder__elements')!;
+        let filtre = 'tout';
+
+        const appliquer = () => {
+          const q = sansAccents(champ.value.trim());
+          let n = 0;
+          elements.forEach((li) => {
+            const d = li.dataset;
+            let ok =
+              filtre === 'tout'
+                ? d.type === 'projet'
+                : filtre === 'documents'
+                  ? d.type === 'document'
+                  : filtre.startsWith('cat:')
+                    ? (d.cat ?? '').split(' ').includes(filtre.slice(4))
+                    : d.ctx === filtre.slice(4);
+            // La recherche cherche partout, quel que soit le rangement choisi
+            if (q) ok = sansAccents(d.texte ?? '').includes(q);
+            li.hidden = !ok;
+            if (ok) n += 1;
+          });
+          compte.textContent = `${n} élément${n > 1 ? 's' : ''}`;
+          vide.hidden = n > 0;
+        };
+
+        finder.addEventListener('click', (e) => {
+          const t = e.target as HTMLElement;
+          const bouton = t.closest<HTMLElement>('[data-filtre]');
+          if (bouton) {
+            filtre = bouton.dataset.filtre!;
+            finder.querySelectorAll<HTMLElement>('[data-filtre]').forEach((b) => {
+              b.classList.toggle('est-actif', b === bouton);
+              b.setAttribute('aria-pressed', String(b === bouton));
+            });
+            titre.textContent = bouton.textContent!.trim();
+            bouton.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+            champ.value = '';
+            appliquer();
+            return;
+          }
+          const vue = t.closest<HTMLElement>('[data-vue]');
+          if (vue) {
+            liste.dataset.affichage = vue.dataset.vue!;
+            finder.querySelectorAll<HTMLElement>('[data-vue]').forEach((b) => b.setAttribute('aria-pressed', String(b === vue)));
+          }
+        });
+        champ.addEventListener('input', () => {
+          titre.textContent = champ.value.trim() ? `Recherche : « ${champ.value.trim()} »` : finder.querySelector('[data-filtre].est-actif')!.textContent!.trim();
+          appliquer();
+        });
+        appliquer();
+      }
+
+      // ---------- Icônes du bureau : on les déplace comme sur un vrai Mac ----------
+      const ulIcones = document.querySelector<HTMLElement>('.icones')!;
+      const lisIcones = () => [...ulIcones.querySelectorAll<HTMLElement>(':scope > li')];
+      const CLE_MAC = 'bureau-icones-mac-v2';
+      const CLE_IOS = 'bureau-icones-iphone-v2';
+      const lire = (cle: string) => {
+        try {
+          return JSON.parse(localStorage.getItem(cle) ?? 'null');
+        } catch {
+          return null;
+        }
+      };
+      const ecrire_ = (cle: string, v: unknown) => {
+        try {
+          if (v === null) localStorage.removeItem(cle);
+          else localStorage.setItem(cle, JSON.stringify(v));
+        } catch {}
+      };
+      let vientDeGlisser = false;
+
+      const borner = (x: number, y: number, li: HTMLElement) => ({
+        x: Math.min(Math.max(x, 4), innerWidth - li.offsetWidth - 4),
+        y: Math.min(Math.max(y, HAUT + 4), innerHeight - li.offsetHeight - 90),
+      });
+
+      function iconesLibres() {
+        if (mobile.matches || ulIcones.classList.contains('est-libre')) return;
+        const places = lire(CLE_MAC) ?? {};
+        const rects = lisIcones().map((li) => li.getBoundingClientRect());
+        ulIcones.classList.add('est-libre');
+        lisIcones().forEach((li, i) => {
+          const p = places[li.dataset.id!] ?? { x: rects[i].left, y: rects[i].top };
+          const b = borner(p.x, p.y, li);
+          li.style.left = `${b.x}px`;
+          li.style.top = `${b.y}px`;
+        });
+      }
+      function iconesEnGrille() {
+        ulIcones.classList.remove('est-libre');
+        lisIcones().forEach((li) => li.removeAttribute('style'));
+      }
+      function aligner() {
+        ecrire_(CLE_MAC, null);
+        iconesEnGrille();
+        iconesLibres();
+      }
+      function enregistrerMac() {
+        const places: Record<string, { x: number; y: number }> = {};
+        lisIcones().forEach((li) => (places[li.dataset.id!] = { x: li.offsetLeft, y: li.offsetTop }));
+        ecrire_(CLE_MAC, places);
+      }
+
+      // Sur iPhone : l'ordre des icônes est retenu
+      function ordreIphone() {
+        const ordre: string[] | null = lire(CLE_IOS);
+        if (!ordre) return;
+        ordre.forEach((id) => {
+          const li = ulIcones.querySelector(`:scope > li[data-id="${id}"]`);
+          if (li) ulIcones.append(li);
+        });
+      }
+
+      const selonEcran = () => {
+        if (mobile.matches) {
+          iconesEnGrille();
+          ordreIphone();
+        } else iconesLibres();
+      };
+      selonEcran();
+      mobile.addEventListener('change', selonEcran);
+      addEventListener('resize', () => {
+        if (mobile.matches) return;
+        lisIcones().forEach((li) => {
+          const b = borner(li.offsetLeft, li.offsetTop, li);
+          li.style.left = `${b.x}px`;
+          li.style.top = `${b.y}px`;
+        });
+      });
+
+      // Un clic qui termine un glisser n'ouvre rien ; en mode édition (iPhone), toucher une icône non plus
+      document.addEventListener(
+        'click',
+        (e) => {
+          const surIcone = (e.target as HTMLElement).closest('.icones');
+          if (!surIcone) return;
+          if (vientDeGlisser || document.body.classList.contains('mode-edition')) {
+            e.preventDefault();
+            e.stopPropagation();
+            vientDeGlisser = false;
+          }
+        },
+        true,
+      );
+      ulIcones.addEventListener('dragstart', (e) => e.preventDefault());
+      ulIcones.addEventListener('contextmenu', (e) => {
+        if (mobile.matches) e.preventDefault();
+      });
+
+      // Mac : glisser une icône n'importe où sur le bureau
+      ulIcones.addEventListener('pointerdown', (e) => {
+        if (mobile.matches || e.button !== 0) return;
+        const li = (e.target as HTMLElement).closest<HTMLElement>('.icones > li');
+        if (!li) return;
+        const d = { x: e.clientX, y: e.clientY, l: li.offsetLeft, t: li.offsetTop };
+        let bouge = false;
+        const suivreMac = (ev: PointerEvent) => {
+          const dx = ev.clientX - d.x;
+          const dy = ev.clientY - d.y;
+          if (!bouge && Math.hypot(dx, dy) < 5) return;
+          if (!bouge) {
+            bouge = true;
+            li.classList.add('est-glisse');
+          }
+          const b = borner(d.l + dx, d.t + dy, li);
+          li.style.left = `${b.x}px`;
+          li.style.top = `${b.y}px`;
+        };
+        const finMac = () => {
+          removeEventListener('pointermove', suivreMac);
+          removeEventListener('pointerup', finMac);
+          removeEventListener('pointercancel', finMac);
+          if (!bouge) return;
+          li.classList.remove('est-glisse');
+          vientDeGlisser = true;
+          setTimeout(() => (vientDeGlisser = false), 50);
+          enregistrerMac();
+        };
+        addEventListener('pointermove', suivreMac);
+        addEventListener('pointerup', finMac);
+        addEventListener('pointercancel', finMac);
+      });
+
+      // iPhone : appui long pour passer en mode édition, puis glisser pour réordonner
+      const accueilMobile = document.querySelector<HTMLElement>('.accueil-mobile')!;
+      function entrerEdition() {
+        document.body.classList.add('mode-edition');
+        navigator.vibrate?.(12);
+      }
+      function sortirEdition() {
+        document.body.classList.remove('mode-edition');
+      }
+      function glisserIphone(li: HTMLElement, x0: number, y0: number) {
+        const r0 = li.getBoundingClientRect();
+        const prise = { x: x0 - r0.left, y: y0 - r0.top };
+        li.classList.add('est-glisse');
+        const placer = (x: number, y: number) => {
+          li.style.transform = '';
+          const r = li.getBoundingClientRect();
+          li.style.transform = `translate(${x - prise.x - r.left}px, ${y - prise.y - r.top}px) scale(1.08)`;
+        };
+        const suivreIos = (ev: PointerEvent) => {
+          ev.preventDefault();
+          const cible = document
+            .elementsFromPoint(ev.clientX, ev.clientY)
+            .map((el) => el.closest<HTMLElement>('.icones > li'))
+            .find((x) => x && x !== li);
+          if (cible) {
+            const tous = lisIcones();
+            if (tous.indexOf(li) < tous.indexOf(cible)) cible.after(li);
+            else cible.before(li);
+          }
+          placer(ev.clientX, ev.clientY);
+        };
+        const finIos = () => {
+          removeEventListener('pointermove', suivreIos);
+          removeEventListener('pointerup', finIos);
+          removeEventListener('pointercancel', finIos);
+          li.classList.remove('est-glisse');
+          li.style.transform = '';
+          ecrire_(CLE_IOS, lisIcones().map((x) => x.dataset.id));
+        };
+        addEventListener('pointermove', suivreIos, { passive: false });
+        addEventListener('pointerup', finIos);
+        addEventListener('pointercancel', finIos);
+      }
+
+      accueilMobile.addEventListener('pointerdown', (e) => {
+        if (!mobile.matches) return;
+        const t = e.target as HTMLElement;
+        const li = t.closest<HTMLElement>('.icones > li');
+        if (document.body.classList.contains('mode-edition')) {
+          if (li) {
+            e.preventDefault();
+            glisserIphone(li, e.clientX, e.clientY);
+          } else if (!t.closest('[data-fin-edition]')) sortirEdition();
+          return;
+        }
+        if (!li) return;
+        // Le doigt posé sur une icône : appui long = mode édition, glissé = défilement de l'écran
+        let yPrec = e.clientY;
+        const depart = { x: e.clientX, y: e.clientY };
+        const minuteur = setTimeout(() => {
+          annuler();
+          entrerEdition();
+          vientDeGlisser = true;
+          glisserIphone(li, depart.x, depart.y);
+        }, 480);
+        const bouge = (ev: PointerEvent) => {
+          if (Math.hypot(ev.clientX - depart.x, ev.clientY - depart.y) > 8) clearTimeout(minuteur);
+          accueilMobile.scrollTop -= ev.clientY - yPrec;
+          yPrec = ev.clientY;
+        };
+        const annuler = () => {
+          clearTimeout(minuteur);
+          removeEventListener('pointermove', bouge);
+          removeEventListener('pointerup', annuler);
+          removeEventListener('pointercancel', annuler);
+        };
+        addEventListener('pointermove', bouge);
+        addEventListener('pointerup', annuler);
+        addEventListener('pointercancel', annuler);
+      });
+
+      // ---------- D'une page du portfolio à l'autre : la fenêtre ne bouge pas ----------
+      let geometrie: { style: string; agrandie: boolean; visible: boolean; z: string } | null = null;
+      document.addEventListener('astro:before-swap', () => {
+        const f = fenPortfolio();
+        geometrie =
+          f && !f.hidden
+            ? { style: f.getAttribute('style') ?? '', agrandie: f.classList.contains('est-agrandie'), visible: true, z: f.style.zIndex }
+            : null;
+      });
+      document.addEventListener('astro:after-swap', () => {
+        const f = fenPortfolio();
+        if (!f || !geometrie) return;
+        f.setAttribute('style', geometrie.style);
+        f.classList.toggle('est-agrandie', geometrie.agrandie);
+      });
+
+      // ---------- Dans le portfolio ----------
+      // L'accueil : le fond prend la couleur du projet qu'on regarde
+      function couleursAuDefilement(f: HTMLElement) {
+        const accueil = f.querySelector<HTMLElement>('[data-couleurs]');
+        if (!accueil) return;
+        const corps = f.querySelector('.fenetre__corps')!;
+        const pastille = f.querySelector<HTMLElement>('.outils__pastille');
+        const sections = accueil.querySelectorAll<HTMLElement>('[data-couleur]');
+        const obs = new IntersectionObserver(
+          (entrees) => {
+            entrees.forEach((en) => {
+              if (!en.isIntersecting) return;
+              const el = en.target as HTMLElement;
+              accueil.style.setProperty('--fond', el.dataset.couleur!);
+              accueil.dataset.encre = el.dataset.ton || 'claire';
+              pastille?.style.setProperty('background', el.dataset.couleur!);
+            });
+          },
+          { root: corps, rootMargin: '-45% 0px -45% 0px' },
+        );
+        sections.forEach((s) => obs.observe(s));
+      }
+
+      // Les blocs d'une étude de cas apparaissent quand on y arrive
+      function apparitions(f: HTMLElement) {
+        const blocs = f.querySelectorAll<HTMLElement>('.pf .bloc--media .bloc__media, .pf-suite');
+        if (!blocs.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const corps = f.querySelector('.fenetre__corps')!;
+        const obs = new IntersectionObserver(
+          (entrees) =>
+            entrees.forEach((en) => {
+              if (en.isIntersecting) {
+                en.target.classList.add('est-vu');
+                obs.unobserve(en.target);
+              }
+            }),
+          { root: corps, rootMargin: '0px 0px -12% 0px' },
+        );
+        blocs.forEach((b) => {
+          b.classList.add('apparait');
+          obs.observe(b);
+        });
+      }
+
+      // ---------- À chaque page ----------
+      document.addEventListener('astro:page-load', () => {
+        cacherImage();
+        fermerSpotlight();
+
+        // Les fenêtres réduites dont la page a changé n'existent plus
+        document.querySelectorAll<HTMLElement>('[data-restaurer]').forEach((b) => {
+          if (!document.getElementById(b.dataset.restaurer!)) b.remove();
+        });
+
+        const pf = fenPortfolio();
+        if (pf) {
+          devant(pf);
+          // On n'anime l'ouverture que si le portfolio n'était pas déjà à l'écran
+          if (!geometrie) animer(pf, dernierClic);
+          focusTitre(pf);
+          couleursAuDefilement(pf);
+          apparitions(pf);
+        } else {
+          const f = laPlusHaute();
+          if (f) devant(f);
+        }
+        dernierClic = null;
+        geometrie = null;
+
+        if (location.hash) ouvrir(location.hash.slice(1));
+        majDock();
+      });
+    </script>
+  </body>
+</html>

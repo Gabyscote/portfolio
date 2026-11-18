@@ -1,0 +1,96 @@
+---
+// L'app Portfolio, page d'accueil : un projet par écran,
+// le fond prend la couleur du projet qu'on regarde.
+import Layout from '../../bureau/Layout.astro';
+import Fenetre from '../../bureau/Fenetre.astro';
+import Couverture from '../../bureau/Couverture.astro';
+import '../../bureau/portfolio.css';
+import { Image } from 'astro:assets';
+import { getProjets, getAutresProjets, accroche, recherche } from '../../data/contenu';
+import { site, base as siteBase } from '../../data/site';
+
+const projets = await getProjets();
+const autres = await getAutresProjets();
+const base = siteBase;
+---
+
+<Layout titre="Portfolio">
+  <Fenetre
+    id="portfolio"
+    titre="Portfolio de Gabriel Roger"
+    navigateur
+    ouverte
+    agrandie
+    fermerVers={base}
+    chemin={[{ nom: 'Portfolio' }]}
+    couleur={site.couleur}
+    position="left:6%;top:calc(2rem + 3%);width:min(80rem, 88vw);height:calc(100svh - 10rem)"
+  >
+    <div class="pf pf-accueil" data-couleurs style={`--fond:${site.couleur}`} data-encre="claire">
+      <section class="pf-intro" data-couleur={site.couleur} data-ton="claire">
+        <p class="pf-intro__nom">Gabriel Roger, designer numérique</p>
+        <h1>{accroche}</h1>
+        <p class="pf-intro__texte">{recherche}</p>
+        <div class="pf-boutons">
+          <a class="pf-btn pf-btn--plein" href="#projets">Voir les projets</a>
+          <a class="pf-btn" href={`${base}a-propos/`}>Qui je suis</a>
+        </div>
+      </section>
+
+      <ol class="pf-liste" id="projets" aria-label="Projets">
+        {
+          projets.map((p) => (
+            <li class="pf-ecran" data-couleur={p.data.couleur} data-ton={p.data.encre}>
+              <a href={`${base}projets/${p.id}/`} class="pf-ecran__lien">
+                <span class="pf-ecran__texte">
+                  <span class="pf-ecran__meta">
+                    {p.data.disciplines}, {p.data.annee}
+                  </span>
+                  <span class="pf-ecran__titre">{p.data.titre}</span>
+                  <span class="pf-ecran__resume">{p.data.resume}</span>
+                  <span class="pf-ecran__cta">Ouvrir le projet</span>
+                </span>
+                <Couverture src={p.data.couverture} alt={p.data.altCouverture} cadre={p.data.cadreCouverture} />
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+
+      {
+        autres.length > 0 && (
+          <section class="pf-autres" data-couleur="#F3F0FF" data-ton="foncee" aria-labelledby="autres-titre">
+            <h2 id="autres-titre">Autres projets</h2>
+            <p class="pf-autres__intro">Des projets plus modestes ou plus anciens, qui ont compté dans mon parcours.</p>
+            <ul>
+              {autres.map((p) => (
+                <li>
+                  <a href={`${base}projets/${p.id}/`} style={`--c:${p.data.couleur}`}>
+                    <span class="pf-autres__image">
+                      <Image src={p.data.couverture} alt="" widths={[240, 400, 560]} sizes="14rem" />
+                    </span>
+                    <span class="pf-autres__texte">
+                      <span class="pf-ecran__meta">{p.data.disciplines}, {p.data.annee}</span>
+                      <strong>{p.data.titre}</strong>
+                      <span>{p.data.resume}</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+
+      <section class="pf-fin" data-couleur="#F3F0FF" data-ton="foncee">
+        <h2>On travaille ensemble ?</h2>
+        <p>Je cherche une alternance en design numérique ou en communication digitale, à partir de maintenant.</p>
+        <div class="pf-boutons">
+          <a class="pf-btn pf-btn--plein" href={`mailto:${site.email}?subject=Alternance%20en%20design%20num%C3%A9rique`}>M'écrire</a>
+          <a class="pf-btn" href={site.cv} target="_blank" rel="noopener">Mon CV</a>
+          <a class="pf-btn" href={site.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </section>
+    </div>
+  </Fenetre>
+</Layout>

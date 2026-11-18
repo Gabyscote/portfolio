@@ -1,0 +1,1166 @@
+/* ==========================================================================
+   L'app « Portfolio » : le site qui s'ouvre dans la fenêtre de navigateur.
+   Plus posé que le bureau autour : une seule famille (Funnel), de grands titres,
+   la couleur de chaque projet en fond.
+   ========================================================================== */
+
+@import '@fontsource-variable/funnel-display';
+@import '@fontsource-variable/funnel-sans';
+
+.pf {
+  --titre: 'Funnel Display Variable', var(--ui);
+  --corps: 'Funnel Sans Variable', var(--ui);
+  --encre: #1d1a26;
+  --encre-2: #625d75;
+  --papier: #fbfaff;
+  --marge: clamp(1.25rem, 5vw, 4.5rem);
+  min-height: 100%;
+  font-family: var(--corps);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--encre);
+  background: var(--papier);
+}
+
+.pf h1,
+.pf h2,
+.pf h3 {
+  font-family: var(--titre);
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.pf p {
+  text-wrap: pretty;
+}
+
+/* Encre claire (texte blanc) ou foncée, selon la couleur du fond */
+.pf[data-encre='claire'],
+.pf [data-encre='claire'] {
+  --encre: #fff;
+  --encre-2: rgb(255 255 255 / 0.72);
+}
+
+.pf[data-encre='foncee'],
+.pf [data-encre='foncee'] {
+  --encre: #1d1a26;
+  --encre-2: rgb(29 26 38 / 0.68);
+}
+
+/* ---------- Boutons ---------- */
+.pf-boutons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.pf-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.9rem;
+  padding: 0 1.25rem;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1.5px currentColor;
+  color: var(--encre);
+  font: 600 15px/1 var(--corps);
+  text-decoration: none;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.pf-btn:hover {
+  background: color-mix(in srgb, var(--encre) 12%, transparent);
+}
+
+.pf-btn--plein {
+  background: var(--encre);
+  color: var(--fond, var(--c, #6b3bff));
+  box-shadow: none;
+}
+
+.pf-btn--plein:hover {
+  background: color-mix(in srgb, var(--encre) 85%, transparent);
+}
+
+/* La mise en page suit la largeur de la fenêtre, pas celle de l'écran */
+.fenetre--navigateur .fenetre__corps {
+  container: portfolio / inline-size;
+}
+
+/* ==========================================================================
+   Accueil : un projet par écran, le fond suit
+   ========================================================================== */
+.pf-accueil {
+  background: var(--fond);
+  transition: background-color 0.7s var(--ease);
+}
+
+.pf-accueil > * {
+  color: var(--encre);
+  transition: color 0.5s;
+}
+
+/* L'encre suit la section visible, pas seulement la section elle-même */
+.pf-accueil[data-encre='claire'] > * {
+  --encre: #fff;
+  --encre-2: rgb(255 255 255 / 0.72);
+}
+.pf-accueil[data-encre='foncee'] > * {
+  --encre: #1d1a26;
+  --encre-2: rgb(29 26 38 / 0.68);
+}
+
+.pf-intro {
+  display: grid;
+  align-content: center;
+  gap: 1.5rem;
+  min-height: min(44rem, 88svh);
+  padding: clamp(3rem, 8vw, 6rem) var(--marge);
+}
+
+.pf-intro__nom {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--encre-2);
+}
+
+.pf-intro h1 {
+  max-width: 15ch;
+  font-size: clamp(2.6rem, 7.2vw, 6.4rem);
+}
+
+.pf-intro__texte {
+  max-width: 34rem;
+  font-size: 1.1rem;
+  color: var(--encre-2);
+}
+
+.pf-liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pf-ecran__lien {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: center;
+  gap: clamp(1.5rem, 5vw, 5rem);
+  min-height: min(46rem, 92svh);
+  padding: clamp(2.5rem, 6vw, 5rem) var(--marge);
+  color: inherit;
+  text-decoration: none;
+}
+
+.pf-ecran__texte {
+  display: grid;
+  gap: 1rem;
+  align-content: center;
+}
+
+.pf-ecran__meta {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--encre-2);
+}
+
+.pf-ecran__titre {
+  font-family: var(--titre);
+  font-size: clamp(2.4rem, 5.6vw, 5rem);
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+}
+
+.pf-ecran__resume {
+  max-width: 28rem;
+  font-size: 1.08rem;
+  color: var(--encre-2);
+}
+
+.pf-ecran__cta {
+  justify-self: start;
+  margin-top: 0.5rem;
+  padding-bottom: 0.15rem;
+  border-bottom: 2px solid currentColor;
+  font-weight: 600;
+}
+
+.pf-ecran__lien .couv {
+  transition: transform 0.6s var(--ease);
+}
+
+.pf-ecran__lien:hover .couv {
+  transform: translateY(-6px) rotate(-0.6deg);
+}
+
+/* Autres projets : des cartes plus discrètes que les grands écrans */
+.pf-autres {
+  display: grid;
+  gap: 1.25rem;
+  padding: clamp(4rem, 9vw, 7rem) var(--marge) 0;
+}
+
+.pf-autres h2 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+}
+
+.pf-autres__intro {
+  max-width: 32rem;
+  color: var(--encre-2);
+}
+
+.pf-autres ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 26rem), 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pf-autres a {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 1.1rem;
+  align-items: center;
+  padding: 0.8rem;
+  border-radius: 14px;
+  background: rgb(255 255 255 / 0.7);
+  color: inherit;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.pf-autres a:hover {
+  background: #fff;
+}
+
+.pf-autres__image {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 9px;
+  background: var(--c);
+}
+
+.pf-autres__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pf-autres__texte {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.pf-autres__texte strong {
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+.pf-autres__texte > span:last-child {
+  color: var(--encre-2);
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.pf-fin {
+  display: grid;
+  gap: 1.25rem;
+  justify-items: start;
+  padding: clamp(4rem, 9vw, 7rem) var(--marge);
+}
+
+.pf-fin h2 {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+}
+
+.pf-fin p {
+  max-width: 32rem;
+  color: var(--encre-2);
+}
+
+/* ==========================================================================
+   Couvertures et cadres
+   ========================================================================== */
+.couv {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+}
+
+.couv img {
+  width: auto;
+  max-width: 100%;
+}
+
+.couv--affiche img {
+  max-height: min(68svh, 40rem);
+  box-shadow: 0 30px 60px -20px rgb(0 0 0 / 0.55);
+}
+
+.couv--libre img {
+  max-height: min(62svh, 36rem);
+  filter: drop-shadow(0 26px 34px rgb(0 0 0 / 0.35));
+}
+
+/* Une capture d'écran, dans une fenêtre de navigateur */
+.couv--navigateur,
+.fig--navigateur .fig__cadre,
+.comparaison--navigateur .comparaison__image {
+  display: block;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.08),
+    0 30px 60px -24px rgb(10 6 30 / 0.5);
+}
+
+.couv--navigateur img {
+  width: 100%;
+}
+
+.navigateur__barre {
+  display: flex;
+  width: 100%;
+  gap: 0.35rem;
+  align-items: center;
+  height: 1.7rem;
+  padding: 0 0.7rem;
+  background: #ece9f3;
+  border-bottom: 1px solid rgb(0 0 0 / 0.06);
+}
+
+.navigateur__barre i {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: #cfcad9;
+}
+
+.navigateur__barre i:nth-child(1) {
+  background: #ff5f57;
+}
+.navigateur__barre i:nth-child(2) {
+  background: #febc2e;
+}
+.navigateur__barre i:nth-child(3) {
+  background: #28c840;
+}
+
+/* ==========================================================================
+   Étude de cas
+   ========================================================================== */
+.pf-projet {
+  position: relative;
+  overflow: clip;
+}
+
+/* À l'ouverture, la couleur du projet remplit la fenêtre puis remonte dans l'en-tête */
+.pf-ouverture {
+  position: absolute;
+  z-index: 5;
+  inset: 0 0 auto;
+  height: 100svh;
+  background: var(--c);
+  transform-origin: top;
+  pointer-events: none;
+  animation: pf-ouverture 0.9s 0.1s var(--ease) both;
+}
+
+@keyframes pf-ouverture {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0);
+  }
+}
+
+.pf-tete {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5rem);
+  min-height: min(42rem, 80svh);
+  padding: clamp(3rem, 7vw, 5.5rem) var(--marge);
+  background: var(--c);
+  color: var(--encre);
+}
+
+.pf-tete__texte {
+  display: grid;
+  gap: 1.1rem;
+  animation: pf-monte 0.8s 0.45s var(--ease) both;
+}
+
+.pf-tete .couv {
+  animation: pf-monte 0.9s 0.55s var(--ease) both;
+}
+
+@keyframes pf-monte {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+}
+
+.pf-tete__meta {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--encre-2);
+}
+
+.pf-tete h1 {
+  font-size: clamp(2.8rem, 7vw, 6.2rem);
+  letter-spacing: -0.035em;
+}
+
+.pf-tete__resume {
+  max-width: 32rem;
+  font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+  line-height: 1.45;
+}
+
+/* Le bas de page reste en encre foncée, quel que soit le projet */
+.pf-projet > :not(.pf-tete):not(.pf-ouverture) {
+  --encre: #1d1a26;
+  --encre-2: #625d75;
+  color: var(--encre);
+}
+
+.pf-fiche {
+  display: grid;
+  gap: 1.25rem;
+  justify-items: start;
+  padding: clamp(1.75rem, 4vw, 2.75rem) var(--marge);
+  border-bottom: 1px solid rgb(29 26 38 / 0.1);
+}
+
+.pf-fiche dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1.25rem 2rem;
+  width: 100%;
+  margin: 0;
+}
+
+.pf-fiche dt {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--encre-2);
+}
+
+.pf-fiche dd {
+  margin: 0.2rem 0 0;
+  font-size: 15.5px;
+  line-height: 1.45;
+}
+
+.pf-fiche .pf-btn--plein {
+  background: var(--c);
+  color: #fff;
+}
+
+.pf-projet[data-encre='foncee'] .pf-fiche .pf-btn--plein {
+  color: #1d1a26;
+}
+
+/* ---------- Le récit, en blocs : texte d'un côté, images de l'autre ---------- */
+.pf .recit {
+  display: grid;
+  gap: clamp(4rem, 9vw, 7.5rem);
+  padding: clamp(3.5rem, 8vw, 6.5rem) var(--marge);
+}
+
+.pf .bloc {
+  display: grid;
+  gap: clamp(2rem, 5vw, 5rem);
+}
+
+.pf .bloc--media {
+  grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+  align-items: start;
+}
+
+/* Un bloc sur deux, les images passent à gauche */
+.pf .bloc--media:nth-child(even of .bloc--media) {
+  grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+}
+.pf .bloc--media:nth-child(even of .bloc--media) .bloc__texte {
+  order: 2;
+}
+
+.pf .bloc--media .bloc__texte {
+  position: sticky;
+  top: 2rem;
+}
+
+.pf .bloc--texte {
+  width: min(44rem, 100%);
+  margin-inline: auto;
+}
+
+.pf .bloc__texte > :last-child {
+  margin-bottom: 0;
+}
+
+.pf .bloc h2 {
+  margin: 0 0 1.1rem;
+  font-size: clamp(1.8rem, 3.4vw, 2.7rem);
+}
+
+.pf .bloc p,
+.pf .bloc ul:not([class]),
+.pf .bloc ol:not([class]) {
+  margin: 0 0 1rem;
+  line-height: 1.68;
+}
+
+.pf .bloc ul:not([class]),
+.pf .bloc ol:not([class]) {
+  padding-left: 1.2rem;
+}
+
+.pf .bloc li::marker {
+  color: var(--c);
+}
+
+.pf .bloc a {
+  color: inherit;
+  text-decoration-color: var(--c);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+/* Ce que j'en retiens : mis en avant, sur un fond de la couleur du projet */
+.pf .bloc--lecon {
+  width: 100%;
+  max-width: none;
+  padding: clamp(2.5rem, 6vw, 4.5rem) var(--marge);
+  margin-inline: calc(-1 * var(--marge));
+  width: calc(100% + 2 * var(--marge));
+  background: color-mix(in srgb, var(--c) 12%, var(--papier));
+}
+
+.pf .bloc--lecon .bloc__texte {
+  width: min(48rem, 100%);
+  margin-inline: auto;
+}
+
+.pf .bloc--lecon p {
+  font-family: var(--titre);
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- Les images ---------- */
+.pf .bloc__media {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  min-width: 0;
+}
+
+.pf .bloc--texte .bloc__media:empty {
+  display: none;
+}
+
+.pf .fig {
+  margin: 0;
+}
+
+.pf .fig__cadre {
+  position: relative;
+}
+
+.pf .fig__cadre img,
+.pf .comparaison__image img {
+  cursor: zoom-in;
+}
+
+.pf .fig__cadre img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* Les images très hautes : on montre le haut, l'image entière s'ouvre au clic */
+.pf .fig__cadre:has(img[height]) {
+  max-height: min(78svh, 46rem);
+  overflow: hidden;
+}
+
+.pf .fig--navigateur .fig__cadre img,
+.pf .comparaison--navigateur .comparaison__image img {
+  border-radius: 0;
+}
+
+.pf .fig--navigateur .fig__cadre,
+.pf .comparaison--navigateur .comparaison__image {
+  max-height: min(70svh, 40rem);
+}
+
+.pf .fig--navigateur .fig__cadre::after,
+.pf .comparaison--navigateur .comparaison__image::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 3rem;
+  background: linear-gradient(transparent, rgb(255 255 255 / 0.9));
+  pointer-events: none;
+}
+
+.pf .fig--navigateur .fig__cadre,
+.pf .comparaison--navigateur .comparaison__image {
+  position: relative;
+}
+
+.pf .fig--fond .fig__cadre {
+  display: grid;
+  place-items: center;
+  max-height: none;
+  padding: clamp(1.5rem, 5vw, 3.5rem);
+  border-radius: 14px;
+  background: var(--c);
+}
+
+.pf .fig--fond .fig__cadre img {
+  width: auto;
+  max-height: min(70svh, 40rem);
+  border-radius: 4px;
+  box-shadow: 0 24px 40px -18px rgb(0 0 0 / 0.55);
+}
+
+.pf figcaption {
+  margin-top: 0.7rem;
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: var(--encre-2);
+}
+
+/* Comparaisons : deux à quatre vues, quatre en carré */
+.pf .comparaison {
+  display: grid;
+  grid-template-columns: repeat(min(var(--n), 3), minmax(0, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+.pf .comparaison[data-n='4'] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.pf .comparaison figure {
+  margin: 0;
+}
+
+.pf .comparaison__image {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 3 / 4;
+  padding: 0.75rem;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--c) 10%, #f1eff8);
+}
+
+.pf .comparaison__image img {
+  max-height: 100%;
+  width: auto;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.pf .comparaison--libre .comparaison__image {
+  aspect-ratio: auto;
+}
+
+.pf .comparaison--libre .comparaison__image img {
+  width: 100%;
+}
+
+.pf .comparaison--navigateur .comparaison__image {
+  padding: 0;
+  place-items: start;
+  background: #fff;
+}
+
+.pf .comparaison figcaption {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.pf .comparaison figcaption strong {
+  color: var(--encre);
+  font-weight: 650;
+}
+
+/* Palette */
+.pf .palette {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pf .palette li {
+  display: grid;
+  align-content: start;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.pf .palette__pastille {
+  aspect-ratio: 1;
+  border-radius: 14px;
+  margin-bottom: 0.6rem;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
+}
+
+.pf .palette__nom {
+  font-weight: 650;
+}
+
+.pf .palette__hex,
+.pf .palette__note {
+  color: var(--encre-2);
+}
+
+/* Apparition des images au défilement (posée par le script) */
+.pf .apparait {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 0.7s var(--ease),
+    transform 0.8s var(--ease);
+}
+
+.pf .apparait.est-vu {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Voir autre chose ---------- */
+.pf-suite {
+  display: grid;
+  gap: 1.75rem;
+  padding: clamp(3rem, 7vw, 5rem) var(--marge) clamp(3rem, 6vw, 4rem);
+  background: #f1eff8;
+}
+
+.pf-suite h2 {
+  font-size: clamp(2rem, 4.5vw, 3.4rem);
+}
+
+.pf-suite ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
+  gap: 1.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pf-suite li a {
+  display: grid;
+  gap: 0.2rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.pf-suite__image {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  margin-bottom: 0.6rem;
+  border-radius: 14px;
+  background: var(--c);
+  overflow: hidden;
+}
+
+.pf-suite__image img {
+  position: absolute;
+  inset: 12%;
+  width: 76%;
+  height: 76%;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 18px rgb(0 0 0 / 0.35));
+  transition: transform 0.5s var(--ease);
+}
+
+.pf-suite li a:hover img {
+  transform: scale(1.05);
+}
+
+.pf-suite strong {
+  font-family: var(--titre);
+  font-size: 1.3rem;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+.pf-suite small {
+  font-size: 14px;
+  color: var(--encre-2);
+}
+
+.pf-suite__tout {
+  justify-self: start;
+  font-weight: 600;
+  color: inherit;
+  text-decoration-color: var(--violet);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+/* ==========================================================================
+   À propos
+   ========================================================================== */
+.pf-apropos__tete {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+  align-items: center;
+  gap: clamp(2rem, 6vw, 5rem);
+  padding: clamp(3.5rem, 8vw, 6rem) var(--marge);
+  background: var(--c);
+  --encre: #fff;
+  --encre-2: rgb(255 255 255 / 0.75);
+  color: var(--encre);
+}
+
+.pf-apropos__tete > div {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.pf-apropos__tete h1 {
+  font-size: clamp(2.8rem, 7vw, 6rem);
+}
+
+.pf-apropos__texte {
+  max-width: 38rem;
+  font-size: 1.08rem;
+  color: var(--encre-2);
+}
+
+.pf-apropos__texte:first-of-type {
+  font-size: clamp(1.15rem, 2vw, 1.35rem);
+  line-height: 1.45;
+  color: var(--encre);
+}
+
+.pf-apropos__photo {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: 0 30px 60px -24px rgb(0 0 0 / 0.55);
+  transform: rotate(1.5deg);
+}
+
+.pf-apropos__bloc {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: clamp(1.5rem, 5vw, 5rem);
+  padding: clamp(3rem, 7vw, 5rem) var(--marge);
+  border-bottom: 1px solid rgb(29 26 38 / 0.1);
+}
+
+.pf-apropos__bloc h2 {
+  font-size: clamp(1.8rem, 3.4vw, 2.7rem);
+}
+
+.pf-savoir {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem 2.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pf-savoir h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.35rem;
+  letter-spacing: -0.015em;
+}
+
+.pf-savoir p {
+  line-height: 1.6;
+}
+
+.pf-savoir__outils {
+  margin-top: 0.5rem;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--violet);
+}
+
+/* Parcours : une frise, filtrable sans JavaScript (boutons radio + :has) */
+.pf-apropos__bloc--parcours > div:first-child {
+  position: sticky;
+  top: 2rem;
+  align-self: start;
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+}
+
+.pf-apropos__intro {
+  color: var(--encre-2);
+}
+
+.pf-filtres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.pf-filtres input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pf-filtres label {
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1.5px rgb(29 26 38 / 0.15);
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.pf-filtres input:checked + label {
+  background: var(--violet);
+  box-shadow: none;
+  color: #fff;
+}
+
+.pf-filtres input:focus-visible + label {
+  outline: 3px solid var(--violet);
+  outline-offset: 2px;
+}
+
+.pf-apropos__bloc--parcours:has(#parcours-pro:checked) .pf-parcours li:not([data-type='pro']),
+.pf-apropos__bloc--parcours:has(#parcours-formation:checked) .pf-parcours li:not([data-type='formation']) {
+  display: none;
+}
+
+.pf-parcours {
+  position: relative;
+  display: grid;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* La ligne de la frise */
+.pf-parcours::before {
+  content: '';
+  position: absolute;
+  top: 0.6rem;
+  bottom: 0.6rem;
+  left: 11.25rem;
+  width: 2px;
+  background: rgb(29 26 38 / 0.1);
+}
+
+.pf-parcours li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 10rem minmax(0, 1fr);
+  gap: 2.5rem;
+  padding-bottom: 2rem;
+  animation: pf-apparait 0.4s var(--ease);
+}
+
+.pf-parcours li:last-child {
+  padding-bottom: 0;
+}
+
+@keyframes pf-apparait {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* Le point sur la frise : violet pour l'expérience pro, contour pour une formation */
+.pf-parcours li::before {
+  content: '';
+  position: absolute;
+  top: 0.35rem;
+  left: calc(11.25rem - 5px);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--violet);
+  box-shadow: 0 0 0 4px var(--papier);
+}
+
+.pf-parcours li[data-type='formation']::before {
+  background: var(--papier);
+  box-shadow:
+    inset 0 0 0 2.5px var(--violet),
+    0 0 0 4px var(--papier);
+}
+
+.pf-parcours__quand {
+  padding-top: 0.1rem;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--encre-2);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.pf-parcours__corps {
+  display: grid;
+  justify-items: start;
+  gap: 0.2rem;
+}
+
+.pf-parcours__etiquette {
+  margin-bottom: 0.2rem;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  background: rgb(107 59 255 / 0.12);
+  color: #4a22d6;
+  font-size: 12.5px;
+  font-weight: 650;
+}
+
+.pf-parcours__etiquette--formation {
+  background: rgb(29 26 38 / 0.07);
+  color: var(--encre-2);
+}
+
+.pf-parcours strong {
+  font-family: var(--titre);
+  font-size: 1.3rem;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.pf-parcours__ou {
+  color: var(--encre-2);
+  font-weight: 500;
+}
+
+.pf-parcours__corps p {
+  max-width: 40rem;
+  margin-top: 0.35rem;
+  font-size: 15.5px;
+  line-height: 1.6;
+}
+
+.pf-parcours__lien {
+  margin-top: 0.4rem;
+  font-weight: 600;
+  color: inherit;
+  text-decoration-color: var(--violet);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.pf-apropos__contact {
+  display: grid;
+  gap: 1.1rem;
+  justify-items: start;
+  padding: clamp(3.5rem, 8vw, 6rem) var(--marge);
+  background: #f1eff8;
+}
+
+.pf-apropos__contact h2 {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+}
+
+.pf-apropos__contact p {
+  max-width: 34rem;
+  color: var(--encre-2);
+}
+
+.pf-apropos__contact .pf-btn--plein {
+  background: var(--violet);
+  color: #fff;
+}
+
+/* ==========================================================================
+   Fenêtre étroite ou mobile : tout s'empile
+   ========================================================================== */
+@container portfolio (max-width: 60rem) {
+  .pf-ecran__lien,
+  .pf-tete,
+  .pf .bloc--media,
+  .pf .bloc--media:nth-child(even of .bloc--media),
+  .pf-apropos__tete,
+  .pf-apropos__bloc {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pf .bloc--media:nth-child(even of .bloc--media) .bloc__texte {
+    order: 0;
+  }
+
+  .pf .bloc--media .bloc__texte {
+    position: static;
+  }
+
+  .pf-ecran__lien,
+  .pf-tete {
+    min-height: 0;
+  }
+
+  .pf-apropos__photo {
+    max-width: 18rem;
+  }
+}
+
+@container portfolio (max-width: 38rem) {
+  .pf {
+    font-size: 16px;
+  }
+
+  .pf-savoir {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pf-apropos__bloc--parcours > div:first-child {
+    position: static;
+  }
+
+  .pf-parcours::before {
+    left: 5px;
+  }
+
+  .pf-parcours li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.3rem;
+    padding-left: 1.75rem;
+  }
+
+  .pf-parcours li::before {
+    left: 0;
+  }
+
+  .pf-parcours__quand {
+    text-align: left;
+  }
+
+  .pf .comparaison {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

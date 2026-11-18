@@ -1,0 +1,67 @@
+---
+titre: Un outil métier pour l'industrie
+court: "JLM"
+resume: Huit semaines de stage pour transformer un prototype de gestion de production en outil utilisé chaque jour en atelier.
+annee: 2026
+cadre: Stage chez JLM Solution Informatique, Saint-Crespin
+role: Interface et ergonomie de l'extranet, développement PHP et SQL
+duree: Huit semaines, de janvier à mars 2026
+outils: [PHP, SQL, CSS, Raspberry Pi]
+livrables: [Tableaux de bord, Suivi des ordres de fabrication, Module de simulation, Gestion documentaire, Affiche de restitution]
+disciplines: Outil métier, stage
+couleur: '#C3D0E2'
+nomCouleur: Bleu acier de l'affiche
+encre: foncee
+couverture: ../../assets/projets/jlm/stage_poster.webp
+altCouverture: "L'affiche de restitution du stage : « Refonte et optimisation d'une plateforme web de gestion de production et de stocks »."
+ordre: 3
+categories: [interface, web, print]
+contexte: entreprise
+---
+
+import Figure from '../../components/Figure.astro';
+import Comparaison from '../../components/Comparaison.astro';
+import accueil from '../../assets/projets/jlm/stage_accueil.webp';
+import of from '../../assets/projets/jlm/stage_of.webp';
+import simu from '../../assets/projets/jlm/stage_simu.webp';
+import ged from '../../assets/projets/jlm/stage_ged.webp';
+import poster from '../../assets/projets/jlm/stage_poster.webp';
+
+## Le contexte
+
+Pour mon stage de deuxième année, chez JLM Solution Informatique, une équipe de cinq qui développe des logiciels de gestion pour l'industrie, on m'a confié un prototype d'outil de gestion de production et de stocks. Un squelette de code qui tournait avec des données fictives.
+
+L'objectif : en faire un outil fiable, que des opérateurs et des chefs d'atelier utiliseraient tous les jours, sur ordinateur comme sur mobile.
+
+## Concevoir sans maquette
+
+Un outil métier impose une contrainte forte : l'information doit se lire instantanément. Sur l'extranet, personne n'avait dessiné les écrans avant nous. L'emplacement des tableaux, ce qui devait se lire d'un coup d'œil, ce qui pouvait attendre un clic : on l'a tranché à deux avec mon tuteur, au fil de l'avancement. Une visioconférence avec le client a ensuite permis de faire le tri entre ce qu'il voulait et ce qui était réalisable.
+
+<Figure navigateur src={accueil} alt="Le tableau de bord de l'outil, avec les indicateurs de livraisons, de réceptions et de production. Les données sensibles sont floutées." legende="Le tableau de bord : livraisons, réceptions et production en un coup d'œil. Les données de l'entreprise sont floutées." />
+
+## Les réalisations
+
+<Figure navigateur src={of} alt="La page de détail d'un ordre de fabrication, avec ses palettes et sa production." legende="Le suivi des ordres de fabrication : l'avancement, les palettes produites, les quantités et les statuts." />
+
+<Comparaison
+  cadre="libre"
+  navigateur
+  vues={[
+    { src: simu, alt: 'Le module de simulation des besoins en composants.', titre: 'Simulation', legende: "Anticiper les composants manquants pour une production, à partir des stocks réels." },
+    { src: ged, alt: "La gestion documentaire liée aux ordres de fabrication.", titre: 'Gestion documentaire', legende: 'Associer des fichiers, comme les photos de contrôle qualité, aux ordres de fabrication.' },
+  ]}
+/>
+
+Derrière l'interface, il a fallu écrire et optimiser des requêtes SQL qui croisent les stocks pour calculer automatiquement le manque en composants. Second projet du stage : configurer un Raspberry Pi en mode kiosque pour afficher des informations dans les ateliers.
+
+## Restituer huit semaines sur une affiche
+
+De retour à l'IUT, il fallait résumer le stage sur une affiche unique : contexte, mission, réalisations et bilan, lisibles à deux mètres. L'exercice oblige à trancher : sur huit semaines de travail, qu'est-ce qui mérite d'être vu en premier ?
+
+<Figure src={poster} alt="L'affiche de restitution du stage en entier." legende="L'affiche de restitution." taille="texte" fond />
+
+## Ce que j'en retiens
+
+La plus grande difficulté n'a pas été technique : comment reprendre le code de quelqu'un d'autre sans tout casser ? J'ai appris à lire, analyser et documenter avant de coder.
+
+Personne n'a testé l'outil avant la fin du stage. C'est la limite que je retiens de ces huit semaines, et la raison pour laquelle je veux apprendre à concevoir avec les utilisateurs, plutôt que pour eux.

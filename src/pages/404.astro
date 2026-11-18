@@ -1,0 +1,41 @@
+---
+// Page introuvable : le bureau reste en place, une petite fenêtre explique le problème.
+import Layout from '../bureau/Layout.astro';
+import Fenetre from '../bureau/Fenetre.astro';
+import { base } from '../data/site';
+---
+
+<Layout titre="Page introuvable">
+  <Fenetre
+    id="introuvable"
+    titre="Page introuvable"
+    ouverte
+    fermerVers={base}
+    position="left:50%;top:22%;width:min(26rem, 90vw);translate:-50% 0"
+  >
+    <div class="introuvable">
+      <h1>Cette page n'existe pas.</h1>
+      <p>Le lien est peut-être ancien, ou l'adresse contient une faute de frappe.</p>
+      <a href={base}>Revenir au bureau</a>
+    </div>
+  </Fenetre>
+</Layout>
+
+<style>
+  .introuvable {
+    display: grid;
+    gap: 0.75rem;
+    padding: 1.5rem;
+  }
+  h1 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+  p {
+    margin: 0;
+  }
+  a {
+    justify-self: start;
+    font-weight: 600;
+  }
+</style>

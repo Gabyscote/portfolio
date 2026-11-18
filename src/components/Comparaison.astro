@@ -1,0 +1,48 @@
+---
+// Deux à quatre images côte à côte, chacune avec sa légende.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Vue {
+  src: ImageMetadata;
+  alt: string;
+  titre: string;
+  legende?: string;
+}
+
+interface Props {
+  vues: Vue[];
+  taille?: 'texte' | 'large';
+  cadre?: 'regulier' | 'libre'; // « libre » : chaque image garde ses proportions
+  navigateur?: boolean;         // captures de site, encadrées comme dans un navigateur
+}
+
+const { vues, taille = 'large', cadre = 'regulier', navigateur = false } = Astro.props;
+---
+
+<div
+  class:list={['comparaison', `fig--${taille}`, `comparaison--${cadre}`, { 'comparaison--navigateur': navigateur }]}
+  style={`--n:${vues.length}`}
+  data-n={vues.length}
+>
+  {
+    vues.map((v) => (
+      <figure>
+        <div class="comparaison__image">
+          {navigateur && (
+            <span class="navigateur__barre" aria-hidden="true">
+              <i />
+              <i />
+              <i />
+            </span>
+          )}
+          <Image src={v.src} alt={v.alt} widths={[400, 700, 1000]} sizes="(min-width: 64rem) 32rem, 50vw" />
+        </div>
+        <figcaption>
+          <strong>{v.titre}</strong>
+          {v.legende && <span>{v.legende}</span>}
+        </figcaption>
+      </figure>
+    ))
+  }
+</div>

@@ -1,0 +1,15 @@
+---
+// Une icône de document qui montre son contenu, comme les aperçus du Finder :
+// la vraie page en tout petit (CV, Lisez-moi, À propos…).
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+}
+const { src } = Astro.props;
+---
+
+<span class="miniature" aria-hidden="true">
+  <Image src={src} alt="" widths={[96, 160, 240]} sizes="4.6rem" />
+</span>

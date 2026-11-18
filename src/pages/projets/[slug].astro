@@ -1,0 +1,113 @@
+---
+// L'app Portfolio, une étude de cas : une vraie page, qui s'ouvre dans la couleur du projet.
+import { render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Layout from '../../bureau/Layout.astro';
+import Fenetre from '../../bureau/Fenetre.astro';
+import Couverture from '../../bureau/Couverture.astro';
+import '../../bureau/portfolio.css';
+import { base as siteBase } from '../../data/site';
+import { getProjets, getAutresProjets } from '../../data/contenu';
+
+export async function getStaticPaths() {
+  const projets = await getProjets();
+  const secondaires = await getAutresProjets();
+  return [
+    ...projets.map((projet, i) => ({
+      params: { slug: projet.id },
+      props: {
+        projet,
+        // Les autres projets, en commençant par le suivant
+        autres: [...projets.slice(i + 1), ...projets.slice(0, i)],
+      },
+    })),
+    // Un projet secondaire propose ensuite les projets principaux
+    ...secondaires.map((projet) => ({ params: { slug: projet.id }, props: { projet, autres: projets } })),
+  ];
+}
+
+const { projet, autres } = Astro.props;
+const { data } = projet;
+const { Content } = await render(projet);
+const base = siteBase;
+
+const fiche = [
+  ['Cadre', data.cadre],
+  ['Mon rôle', data.role],
+  ['Durée', data.duree],
+  ...(data.equipe ? [['Équipe', data.equipe]] : []),
+  ['Outils', data.outils.join(', ')],
+  ['Livrables', data.livrables.join(', ')],
+];
+---
+
+<Layout titre={data.titre} description={data.resume}>
+  <Fenetre
+    id="portfolio"
+    titre={`${data.titre}, étude de cas`}
+    navigateur
+    ouverte
+    agrandie
+    fermerVers={base}
+    chemin={[{ nom: 'Portfolio', href: `${base}portfolio/` }, { nom: data.court }]}
+    couleur={data.couleur}
+    position="left:6%;top:calc(2rem + 3%);width:min(80rem, 88vw);height:calc(100svh - 10rem)"
+  >
+    <article class="pf pf-projet" style={`--c:${data.couleur}`} data-encre={data.encre}>
+      <div class="pf-ouverture" aria-hidden="true"></div>
+
+      <header class="pf-tete">
+        <div class="pf-tete__texte">
+          <p class="pf-tete__meta">{data.disciplines}, {data.annee}</p>
+          <h1>{data.titre}</h1>
+          <p class="pf-tete__resume">{data.resume}</p>
+        </div>
+        <Couverture src={data.couverture} alt={data.altCouverture} cadre={data.cadreCouverture} eager />
+      </header>
+
+      <div class="pf-fiche">
+        <dl>
+          {
+            fiche.map(([t, v]) => (
+              <div>
+                <dt>{t}</dt>
+                <dd>{v}</dd>
+              </div>
+            ))
+          }
+        </dl>
+        {
+          data.lienSite && (
+            <a class="pf-btn pf-btn--plein" href={data.lienSite} target="_blank" rel="noopener">
+              Voir le site en ligne
+            </a>
+          )
+        }
+      </div>
+
+      <div class="recit">
+        <Content />
+      </div>
+
+      <nav class="pf-suite" aria-labelledby="voir-autre-chose">
+        <h2 id="voir-autre-chose">Voir autre chose</h2>
+        <ul>
+          {
+            autres.map((p) => (
+              <li>
+                <a href={`${base}projets/${p.id}/`} style={`--c:${p.data.couleur}`}>
+                  <span class="pf-suite__image">
+                    <Image src={p.data.couverture} alt="" widths={[320, 560]} sizes="(min-width: 64rem) 18rem, 45vw" />
+                  </span>
+                  <strong>{p.data.titre}</strong>
+                  <small>{p.data.disciplines}</small>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <a class="pf-suite__tout" href={`${base}portfolio/`}>Revenir au portfolio</a>
+      </nav>
+    </article>
+  </Fenetre>
+</Layout>

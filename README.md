@@ -1,88 +1,61 @@
-# Portfolio — Gabriel Roger
+# Portfolio de Gabriel Roger
 
-Portfolio personnel (UI/UX & développement). Site statique, sans framework ni
-étape de build : HTML, CSS et JavaScript natifs.
+Version 2, construite avec [Astro](https://astro.build). Astro transforme des fichiers `.astro` (du HTML avec un peu de JavaScript en haut) et `.mdx` (du texte Markdown) en un site statique : du HTML, du CSS et des images optimisées, sans framework côté visiteur.
 
-**En ligne :** https://gabyscote.github.io/portfolio/
+## Lancer le site sur ton Mac
 
-## Aperçu local
-
-Le header et le footer sont chargés en `fetch()` depuis `header.html` et
-`footer.html`. Ouvrir un fichier directement en `file://` ne fonctionne donc
-pas : il faut un serveur HTTP.
+Il faut Node.js (version 22 ou plus). Vérifie avec `node -v` dans le Terminal. S'il manque : `brew install node`.
 
 ```bash
-npx --yes serve .
+cd ~/portfolio
+npm install        # une seule fois : installe Astro dans node_modules/
+npm run dev        # lance le site sur http://localhost:4321, mis à jour à chaque sauvegarde
 ```
 
-Puis ouvrir l'adresse affichée (par défaut http://localhost:3000).
+Pour produire la version finale (dossier `dist/`, prêt à héberger) : `npm run build`, puis `npm run preview` pour la vérifier.
 
-## Structure
+## Où se trouve quoi
 
 ```
-index.html          Accueil (hero, à propos, dernier projet)
-parcours.html       Timeline filtrable
-projets.html        Liste des projets, en onglets
-contact.html        Formulaire (Formspree)
-404.html            Page d'erreur
-header.html         Navigation, injectée par JS
-footer.html         Pied de page, injecté par JS
-
-campusgo.html       ┐
-crazyburgear.html   │ Études de cas
-metro.html          │
-stage.html          ┘
-
-style.css           Feuille unique, découpée en 18 sections numérotées
-js/main.js          Script unique, découpé en 15 sections numérotées
-img/                Captures par projet + og-preview.jpg (image de partage)
-piece_jointe/       CV en PDF
+src/
+  pages/                 Une page = un fichier
+    index.astro          L'accueil (intro, projets, savoir-faire, à propos)
+    projets/[slug].astro Le gabarit commun à toutes les études de cas
+    404.astro            La page d'erreur
+  content/projets/       Une étude de cas = un fichier .mdx (le texte)
+  components/            Les morceaux réutilisables
+    Header.astro         L'en-tête
+    Footer.astro         Le bloc contact violet
+    Nuancier.astro       L'éventail de couleurs de l'accueil
+    ProjectTile.astro    Une vignette de projet
+    Figure.astro         Une image avec sa légende (dans les études de cas)
+    Comparaison.astro    Plusieurs images côte à côte
+    Palette.astro        Une rangée de pastilles de couleur
+  layouts/Base.astro     Le <head>, l'en-tête et le pied de page communs
+  styles/global.css      Les variables (couleurs, tailles, espacements) et les styles de base
+  data/site.ts           Ton nom, ton email, tes liens, le chemin du CV
+  assets/                Les images (Astro les convertit et les redimensionne)
+  content.config.ts      La liste des champs obligatoires d'une étude de cas
+public/                  Fichiers copiés tels quels (CV, favicon)
 ```
 
 ## Ajouter un projet
 
-Tout le contenu dynamique vient de deux tableaux en haut de `js/main.js` :
+1. Mets les images dans `src/assets/projets/nom-du-projet/`.
+2. Duplique un fichier de `src/content/projets/` et renomme-le, par exemple `mon-projet.mdx`. Le nom du fichier devient l'adresse : `/projets/mon-projet/`.
+3. Remplis l'en-tête (entre les `---`). `couleur` est la couleur prélevée dans le projet : c'est elle qui apparaît sur le nuancier et derrière la couverture. `encre` vaut `claire` si le texte posé sur cette couleur doit être blanc, `foncee` s'il doit être sombre. `ordre` fixe la position sur l'accueil.
+4. Écris le texte en Markdown sous l'en-tête. Pour les images, importe-les en haut du fichier et utilise les composants `<Figure />`, `<Comparaison />` ou `<Palette />` (regarde `rouen.mdx` pour un exemple de chaque).
 
-- `mesProjets` alimente la page Projets, le bloc « dernier projet » de
-  l'accueil et les carrousels ;
-- `monParcours` alimente la timeline de la page Parcours.
+Si un champ manque ou est mal écrit, `npm run dev` affiche une erreur qui dit lequel.
 
-Pour un nouveau projet, ajouter une entrée à `mesProjets` :
+## Changer les couleurs ou les typographies
 
-```js
-{
-    id: "mon-projet",
-    date: "Mois AAAA",
-    type: "Projet Universitaire",
-    titre: "Nom du projet",
-    description: "Une ou deux phrases.",
-    technos: ["PHP", "MySQL"],
-    lien: "mon-projet.html",        // page d'étude de cas
-    lienVisite: "https://...",      // facultatif : bouton « Visiter le site »
-    dossierImages: "img/mon-projet/",
-    images: "vue1.webp, vue2.webp"  // la 1re sert de vignette
-}
-```
+Tout est dans les variables en haut de `src/styles/global.css`. Les composants n'utilisent que ces variables : changer `--violet` change le violet partout.
 
-L'ordre du tableau fait foi : la première entrée est mise en avant sur
-l'accueil.
+## Transitions entre les pages
 
-## Conventions
+`<ClientRouter />` dans `Base.astro` active les transitions de page du navigateur. Les attributs `transition:name` relient deux éléments d'une page à l'autre : la couleur d'une vignette se transforme en couverture de l'étude de cas. Les visiteurs qui ont demandé moins d'animations (réglage d'accessibilité du système) ne les voient pas.
 
-- **Thème clair/sombre** — piloté par `data-theme` sur `<html>`, mémorisé dans
-  `localStorage` sous la clé `portfolio-theme`. Un script inline dans le
-  `<head>` de chaque page l'applique avant le premier rendu pour éviter le
-  flash de thème.
-- **Couleurs** — toujours via les variables CSS de la section 1 de
-  `style.css` (`--ink`, `--paper`, `--violet`…), jamais en dur : les deux
-  thèmes redéfinissent ces mêmes variables.
-- **Images** — format WebP, largeur maximale 1800 px. Toute balise `<img>`
-  porte `width`/`height` (pour réserver la place et éviter les sauts de mise
-  en page) et `loading="lazy"`, sauf le portrait de l'accueil et le logo.
-- **Métadonnées** — chaque page a ses propres `description`, `og:title`,
-  `og:description`, `og:url` et `canonical`. En cas de changement de domaine,
-  ce sont les valeurs `https://gabyscote.github.io/portfolio/` à remplacer.
+## Mettre en ligne
 
-## Déploiement
-
-GitHub Pages, branche `main`, racine du dépôt. Un `git push` suffit.
+Le site produit par `npm run build` est un dossier statique (`dist/`). Il peut être hébergé gratuitement sur Vercel, Netlify ou GitHub Pages. Une fois l'adresse choisie, renseigne `site` dans `astro.config.mjs`.

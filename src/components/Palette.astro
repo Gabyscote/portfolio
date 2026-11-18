@@ -1,0 +1,25 @@
+---
+// Une rangée de pastilles de couleur, comme sur un nuancier.
+interface Teinte {
+  nom: string;
+  hex: string;
+  note?: string;
+}
+interface Props {
+  teintes: Teinte[];
+}
+const { teintes } = Astro.props;
+---
+
+<ul class="palette fig--texte">
+  {
+    teintes.map((t) => (
+      <li>
+        <span class="palette__pastille" style={`background:${t.hex}`} aria-hidden="true" />
+        <span class="palette__nom">{t.nom}</span>
+        <span class="palette__hex">{t.hex.toUpperCase()}</span>
+        {t.note && <span class="palette__note">{t.note}</span>}
+      </li>
+    ))
+  }
+</ul>

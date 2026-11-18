@@ -1,9 +1,6 @@
-# Outils locaux
-.claude/
-.vscode/
+# Généré automatiquement, ne pas versionner
 node_modules/
-
-# Système
-Thumbs.db
-desktop.ini
+dist/
+.astro/
 .DS_Store
+ev/

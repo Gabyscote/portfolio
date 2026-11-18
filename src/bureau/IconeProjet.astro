@@ -1,0 +1,16 @@
+---
+// L'icône d'un projet : un aperçu de sa couverture, sur sa couleur.
+// Sert sur le bureau (Mac) et sur l'écran d'accueil (iPhone).
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  couleur: string;
+}
+const { src, couleur } = Astro.props;
+---
+
+<span class="icone-projet" style={`--c:${couleur}`} aria-hidden="true">
+  <Image src={src} alt="" widths={[96, 160, 240]} sizes="4rem" />
+</span>

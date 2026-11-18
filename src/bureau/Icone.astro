@@ -1,0 +1,93 @@
+---
+// Icônes du bureau et du dock, dessinées en SVG.
+interface Props {
+  type: 'dossier' | 'texte' | 'pdf' | 'terminal' | 'mail' | 'finder' | 'photos';
+  couleur?: string;
+}
+const { type, couleur = '#6B3BFF' } = Astro.props;
+// Un identifiant par icône : les dégradés de deux icônes ne se mélangent pas
+const uid = `ic-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+{
+  type === 'dossier' && (
+    <svg viewBox="0 0 64 52" aria-hidden="true" class="icone">
+      <path d="M4 8a4 4 0 0 1 4-4h16l6 6h26a4 4 0 0 1 4 4v4H4z" fill={couleur} style="filter:brightness(0.8)" />
+      <rect x="4" y="14" width="56" height="34" rx="4" fill={couleur} />
+      <rect x="4" y="14" width="56" height="6" rx="3" fill="#fff" opacity="0.18" />
+    </svg>
+  )
+}
+{
+  type === 'texte' && (
+    <svg viewBox="0 0 52 64" aria-hidden="true" class="icone">
+      <path d="M6 2h28l14 14v42a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z" fill="#fff" />
+      <path d="M34 2v10a4 4 0 0 0 4 4h10" fill="#e4e0ee" />
+      <g stroke="#9a94ad" stroke-width="2.5" stroke-linecap="round">
+        <path d="M10 26h28M10 33h32M10 40h26M10 47h30" />
+      </g>
+    </svg>
+  )
+}
+{
+  type === 'pdf' && (
+    <svg viewBox="0 0 52 64" aria-hidden="true" class="icone">
+      <path d="M6 2h28l14 14v42a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z" fill="#fff" />
+      <path d="M34 2v10a4 4 0 0 0 4 4h10" fill="#e4e0ee" />
+      <rect x="8" y="36" width="36" height="16" rx="3" fill="#e5484d" />
+      <text x="26" y="48" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="system-ui">CV</text>
+    </svg>
+  )
+}
+{
+  type === 'terminal' && (
+    <svg viewBox="0 0 64 64" aria-hidden="true" class="icone">
+      <rect x="2" y="2" width="60" height="60" rx="14" fill="#1b1726" />
+      <path d="M16 22l10 9-10 9" fill="none" stroke="#7cff9b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M30 42h16" stroke="#fff" stroke-width="4" stroke-linecap="round" />
+    </svg>
+  )
+}
+{
+  type === 'mail' && (
+    <svg viewBox="0 0 64 64" aria-hidden="true" class="icone">
+      <rect x="2" y="2" width="60" height="60" rx="14" fill={couleur} />
+      <rect x="13" y="19" width="38" height="27" rx="4" fill="none" stroke="#fff" stroke-width="3.5" />
+      <path d="M15 22l17 12 17-12" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" />
+    </svg>
+  )
+}
+{
+  type === 'finder' && (
+    <svg viewBox="0 0 64 64" aria-hidden="true" class="icone">
+      <defs>
+        <linearGradient id={`${uid}-fond`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#7cc8ff" />
+          <stop offset="1" stop-color="#1f7cf0" />
+        </linearGradient>
+        <linearGradient id={`${uid}-dossier`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffffff" />
+          <stop offset="1" stop-color="#e3efff" />
+        </linearGradient>
+      </defs>
+      <rect x="2" y="2" width="60" height="60" rx="14" fill={`url(#${uid}-fond)`} />
+      <path d="M13 22a3 3 0 0 1 3-3h10l4 4h18a3 3 0 0 1 3 3v2H13z" fill="#cfe3ff" />
+      <rect x="13" y="26" width="38" height="22" rx="3" fill={`url(#${uid}-dossier)`} />
+      <path d="M22 37h20" stroke="#1f7cf0" stroke-width="2.5" stroke-linecap="round" opacity="0.55" />
+    </svg>
+  )
+}
+{
+  type === 'photos' && (
+    <svg viewBox="0 0 64 64" aria-hidden="true" class="icone">
+      <rect x="2" y="2" width="60" height="60" rx="14" fill="#fff" />
+      <g transform="translate(32 32)">
+        <ellipse rx="7" ry="14" cy="-10" fill="#6E4F33" opacity="0.85" />
+        <ellipse rx="7" ry="14" cy="-10" fill="#6B3BFF" opacity="0.8" transform="rotate(72)" />
+        <ellipse rx="7" ry="14" cy="-10" fill="#2C7A32" opacity="0.8" transform="rotate(144)" />
+        <ellipse rx="7" ry="14" cy="-10" fill="#E8530A" opacity="0.8" transform="rotate(216)" />
+        <ellipse rx="7" ry="14" cy="-10" fill="#0B3358" opacity="0.8" transform="rotate(288)" />
+      </g>
+    </svg>
+  )
+}

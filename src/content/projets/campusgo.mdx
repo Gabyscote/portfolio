@@ -1,0 +1,92 @@
+---
+titre: Campus'Go
+court: "Campus'Go"
+resume: Une plateforme de covoiturage pour les étudiants de l'IUT d'Amiens, de la maquette Figma à l'écran livré.
+annee: 2025
+cadre: BUT Informatique, IUT d'Amiens
+role: Recherche de trajets, pages « trajets à venir » et « trajets passés », renfort sur d'autres pages
+duree: Plusieurs mois, semestre 3 du BUT
+equipe: Cinq développeurs
+outils: [Figma, Laravel, Tailwind CSS, MySQL, Git]
+livrables: [Cahier des charges, 11 maquettes Figma, Site en ligne, Affiche A3]
+disciplines: UX, interface, intégration
+couleur: '#2C7A32'
+nomCouleur: Vert de la charte
+encre: claire
+couverture: ../../assets/projets/campusgo/campusgo_accueil_apercu.webp
+cadreCouverture: navigateur
+altCouverture: "Page d'accueil de Campus'Go : « Voyagez ensemble vers l'IUT d'Amiens », sur fond beige et vert."
+ordre: 6
+categories: [interface, web, print]
+contexte: but
+lienSite: https://campusgo.alwaysdata.net/
+---
+
+import Figure from '../../components/Figure.astro';
+import Comparaison from '../../components/Comparaison.astro';
+import maquetteRecherche from '../../assets/projets/campusgo/maquette_recherche.webp';
+import ecranRecherche from '../../assets/projets/campusgo/campusgo_recherche_seul.webp';
+import maquetteTrajets from '../../assets/projets/campusgo/maquette_trajets_venir.webp';
+import ecranTrajets from '../../assets/projets/campusgo/campusgo_trajets_venir_seul.webp';
+import poster from '../../assets/projets/campusgo/campusgo_poster.webp';
+import impact from '../../assets/projets/campusgo/campusgo_impact_eco.webp';
+import profil from '../../assets/projets/campusgo/campusgo_profil.webp';
+
+## Le point de départ
+
+Les parkings de l'IUT d'Amiens sont pleins de voitures avec une seule personne à bord. Avec le coût de la vie étudiante, on s'est demandé comment proposer une solution de mobilité concrète et locale, qui recrée du lien au passage.
+
+L'idée n'était pas de refaire BlaBlaCar, mais de penser à notre échelle : un espace de confiance réservé à l'IUT, sans commission, fait par des étudiants pour des étudiants.
+
+## Avant la première ligne de code
+
+Nous avons d'abord rédigé un cahier des charges : les besoins, trois rôles (conducteur, passager, administrateur), des scénarios d'usage détaillés, puis onze maquettes sous Figma. La charte était posée dès ce document : beige et vert, pour un service à la fois étudiant et écologique.
+
+## De la maquette à l'écran livré
+
+Voici, face à face, les deux écrans dont j'avais la charge.
+
+<Comparaison
+  cadre="libre"
+  navigateur
+  vues={[
+    { src: maquetteRecherche, alt: 'Maquette Figma de la recherche de trajet.', titre: 'Recherche, maquette Figma' },
+    { src: ecranRecherche, alt: 'Écran livré de la recherche de trajet.', titre: 'Recherche, écran livré' },
+  ]}
+/>
+
+La structure de la maquette a tenu : le formulaire, la carte, les résultats en dessous. Ce qui s'est ajouté à l'intégration, c'est tout ce qu'un écran vide ne laisse pas voir : un bouton pour inverser départ et arrivée, le choix entre heure de départ et heure d'arrivée, un rappel des prochains trajets réservés, et une relance quand la recherche ne donne rien.
+
+<Comparaison
+  cadre="libre"
+  navigateur
+  vues={[
+    { src: maquetteTrajets, alt: 'Maquette Figma de la page Mes trajets à venir.', titre: 'Mes trajets, maquette Figma' },
+    { src: ecranTrajets, alt: 'Écran livré de la page Mes trajets à venir.', titre: 'Mes trajets, écran livré' },
+  ]}
+/>
+
+C'est ici que l'écart est le plus net, et il porte entièrement sur les états. La maquette montrait des trajets. L'écran livré doit dire si vous êtes conducteur ou passager, afficher le prix et les places restantes, et proposer « Annuler » à celui qui a réservé mais « Supprimer » à celui qui a publié. Un second onglet, absent de la maquette, gère l'historique et la notation.
+
+J'en retiens deux choses. La charte posée dans le cahier des charges a tenu jusqu'à la mise en ligne, à cinq et sans directeur artistique : un document de cadrage sert vraiment. Et les écarts entre une maquette et l'écran livré viennent rarement de la mise en page. Ils viennent des états qu'on n'a pas pensé à dessiner.
+
+<Figure navigateur src={profil} alt="La page profil de Campus'Go, avec les véhicules et les préférences de voyage." legende="Le profil : plusieurs véhicules, et des préférences de voyage (musique, discussion, animaux) pour savoir avec qui on part." />
+
+## Faire connaître le service
+
+Un service de covoiturage ne vaut rien sans utilisateurs. Nous avons produit une affiche A3 pour l'IUT, qui part d'une question plutôt que d'une présentation, « Accès à l'IUT trop compliqué ? », puis déroule le trajet domicile-campus en trois arguments, jusqu'au QR code.
+
+Au semestre suivant, un exercice nous demandait de mesurer l'empreinte écologique d'un projet et de la présenter en anglais. Avec deux autres équipes qui avaient mené leur propre plateforme de covoiturage, nous avons fusionné nos mesures : matériel, énergie de développement et hébergement. Résultat : quatre trajets partagés suffisent à compenser l'empreinte du projet.
+
+<Comparaison
+  vues={[
+    { src: poster, alt: "L'affiche Campus'Go : « Accès à l'IUT trop compliqué ? Utilise Campus'Go »." , titre: "L'affiche A3" },
+    { src: impact, alt: "L'infographie en anglais sur l'impact environnemental du projet.", titre: "L'infographie d'impact, en anglais" },
+  ]}
+/>
+
+## La leçon de la soutenance
+
+Nous relisions les pages les uns des autres, et pourtant c'est le professeur qui a trouvé la faille en quelques minutes : l'inscription n'exigeait que huit caractères, sans majuscule, chiffre ni caractère spécial. Nous avions bien haché les mots de passe en base, mais personne n'avait pensé à la règle qui protège l'utilisateur en amont.
+
+Depuis, je considère qu'une relecture entre gens qui ont écrit le code ne remplace pas un regard extérieur.

@@ -1,0 +1,62 @@
+---
+titre: Crazy Burgear
+court: "Crazy Burgear"
+resume: Un site e-commerce imposé, sans thème. J'en ai fait un fast-food où chaque burger vient d'un univers d'anime.
+annee: 2026
+cadre: BUT Informatique, IUT d'Amiens, module R4-1
+role: Univers de marque, conception et développement du site
+duree: Semestre 4 du BUT
+outils: [PHP, MySQL, architecture MVC, HTML, CSS]
+livrables: [Site e-commerce complet, Espace client, Back-office]
+disciplines: Univers de marque, e-commerce
+couleur: '#E8530A'
+nomCouleur: Orange des boutons
+encre: foncee
+couverture: ../../assets/projets/crazyburgear/crazyburgear_accueil_apercu.webp
+cadreCouverture: navigateur
+altCouverture: "Page d'accueil de Crazy Burgear : « Des burgers inspirés de tes mangas préférés », sur une ruelle de nuit aux enseignes lumineuses."
+ordre: 4
+categories: [identite, web]
+contexte: but
+lienSite: https://crazyburgear.alwaysdata.net/
+---
+
+import Figure from '../../components/Figure.astro';
+import Comparaison from '../../components/Comparaison.astro';
+import catalogue from '../../assets/projets/crazyburgear/crazyburgear_catalogue.webp';
+import panier from '../../assets/projets/crazyburgear/crazyburgear_panier.webp';
+import compte from '../../assets/projets/crazyburgear/crazyburgear_compte.webp';
+import backoffice from '../../assets/projets/crazyburgear/crazyburgear_backoffice.webp';
+
+## Un sujet imposé, un univers choisi
+
+Le cahier des charges était purement technique : développer un site e-commerce de bout en bout, dans une architecture logicielle stricte. Rien sur le contenu, rien sur le thème.
+
+J'ai profité de cette liberté pour inventer Crazy Burgear, un fast-food dont chaque burger vient d'un univers d'anime : « Chapeau de Paille », « Kamehameha », « Assaut bestial ». Nommer les produits, choisir les univers, trouver un ton : ce travail ne rapportait aucun point, mais c'est lui qui rend le catalogue crédible, au lieu d'une liste de « Produit 1, Produit 2 ». Un site marchand sans univers ne se teste pas vraiment.
+
+## Le parcours d'achat
+
+Quatre écrans, dans l'ordre où un client les traverse : il choisit dans le catalogue, valide son panier, suit sa commande depuis son espace, pendant que l'équipe la prépare dans le back-office.
+
+<Figure navigateur src={catalogue} alt="Le catalogue Crazy Burgear, une grille de burgers filtrable par univers d'anime." legende="1. Le catalogue, filtrable par univers d'anime." />
+
+<Comparaison
+  cadre="libre"
+  navigateur
+  vues={[
+    { src: panier, alt: 'Le panier, avec le récapitulatif de la commande.', titre: '2. Panier', legende: "Ajout, modification des quantités et paiement simulé." },
+    { src: compte, alt: "L'espace client, avec l'historique des commandes.", titre: '3. Espace client', legende: 'Inscription, connexion, données personnelles et suivi des commandes.' },
+  ]}
+/>
+
+<Figure navigateur src={backoffice} alt="Le tableau de bord du back-office, avec les objectifs du mois et les commandes en cours." legende="4. Le back-office, réservé à l'équipe : produits, stocks et statut de préparation des commandes." />
+
+## Sous le capot
+
+L'application suit une architecture modèle-vue-contrôleur écrite à la main en PHP, sans framework : la logique métier, l'accès aux données et l'affichage vivent dans des couches séparées. Les mots de passe sont hachés, les requêtes SQL préparées contre les injections, et les sessions cloisonnées.
+
+## Ce que j'en retiens
+
+C'est le projet qui m'a le plus appris sur la rigueur d'un code, et celui où j'ai le plus senti la limite de cette rigueur seule. Un catalogue impeccablement architecturé reste un catalogue que personne n'a envie de parcourir si l'univers ne tient pas.
+
+C'est en nommant des burgers que j'ai pris le plus de plaisir sur ce projet. Ça m'a mis la puce à l'oreille.

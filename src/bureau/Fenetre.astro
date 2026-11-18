@@ -1,0 +1,97 @@
+---
+// Une fenêtre du bureau.
+// Les trois boutons marchent : rouge ferme, jaune réduit dans le dock, vert agrandit.
+// Les bords et les coins permettent de la redimensionner.
+// En mode « navigateur », la barre de titre devient une barre d'outils
+// (précédent, suivant, accueil du portfolio, et le chemin de la page).
+interface Props {
+  id: string;
+  titre: string;
+  position?: string;    // ex. « left:8%;top:10%;width:30rem »
+  classe?: string;
+  ouverte?: boolean;    // visible dès le chargement
+  agrandie?: boolean;   // ouverte en plein écran
+  fermerVers?: string;  // si présent, fermer revient à cette adresse
+  navigateur?: boolean;
+  chemin?: { nom: string; href?: string }[];
+  couleur?: string;     // pastille de couleur du projet dans la barre d'outils
+}
+
+const {
+  id,
+  titre,
+  position = '',
+  classe = '',
+  ouverte = false,
+  agrandie = false,
+  fermerVers,
+  navigateur = false,
+  chemin = [],
+  couleur,
+} = Astro.props;
+const poignees = ['n', 's', 'e', 'o', 'ne', 'no', 'se', 'so'];
+---
+
+<section
+  class:list={['fenetre', classe, { 'fenetre--navigateur': navigateur, 'est-agrandie': agrandie }]}
+  id={`fen-${id}`}
+  role="dialog"
+  aria-labelledby={`titre-${id}`}
+  style={position}
+  data-retour={fermerVers}
+  data-couleur={couleur}
+  hidden={!ouverte}
+>
+  <div class="fenetre__barre">
+    <div class="feux">
+      {
+        fermerVers ? (
+          <a href={fermerVers} class="feu feu--rouge" aria-label="Fermer la fenêtre" />
+        ) : (
+          <button type="button" class="feu feu--rouge" data-fermer aria-label="Fermer la fenêtre" />
+        )
+      }
+      <button type="button" class="feu feu--jaune" data-reduire aria-label="Réduire dans le dock"></button>
+      <button type="button" class="feu feu--vert" data-agrandir aria-label="Agrandir ou rétablir la fenêtre"></button>
+    </div>
+
+    {
+      navigateur ? (
+        <div class="outils">
+          <button type="button" class="outils__bouton" data-historique="-1" aria-label="Page précédente">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5" /></svg>
+          </button>
+          <button type="button" class="outils__bouton" data-historique="1" aria-label="Page suivante">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5" /></svg>
+          </button>
+          <p class="outils__adresse" id={`titre-${id}`} tabindex="-1">
+            {couleur && <span class="outils__pastille" style={`background:${couleur}`} aria-hidden="true" />}
+            {chemin.map((c, i) => (
+              <>
+                {i > 0 && <span class="outils__sep" aria-hidden="true">/</span>}
+                {c.href ? <a href={c.href}>{c.nom}</a> : <span>{c.nom}</span>}
+              </>
+            ))}
+            <span class="sr-only">{titre}</span>
+          </p>
+        </div>
+      ) : (
+        <p class="fenetre__titre" id={`titre-${id}`} tabindex="-1">
+          {titre}
+        </p>
+      )
+    }
+
+    {
+      fermerVers ? (
+        <a href={fermerVers} class="fenetre__fermer">Fermer</a>
+      ) : (
+        <button type="button" class="fenetre__fermer" data-fermer>
+          Fermer
+        </button>
+      )
+    }
+  </div>
+  <div class="fenetre__corps"><slot /></div>
+  {poignees.map((p) => <span class={`poignee poignee--${p}`} data-poignee={p} aria-hidden="true" />)}
+</section>
