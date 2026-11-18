@@ -1088,6 +1088,7 @@ button {
 .visionneuse {
   position: fixed;
   inset: 0;
+  margin: 0; /* une <figure> a des marges par défaut : sans ça, le voile ne couvre pas les bords */
   z-index: 8000;
   display: grid;
   place-items: center;
