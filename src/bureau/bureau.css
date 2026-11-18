@@ -1120,15 +1120,30 @@ button {
   display: contents;
 }
 
-.dock__apercu {
-  box-shadow: 0 6px 16px rgb(0 0 0 / 0.35) !important;
+.dock__vignette {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 11px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.3);
+}
+
+.dock__vignette--projet {
+  background: transparent;
+  box-shadow: none;
+}
+
+.dock__vignette--projet .icone-projet {
+  width: 100% !important;
+  height: 100% !important;
 }
 
 /* Une fenêtre réduite : son aperçu en miniature */
 .dock__reduite {
   position: relative;
-  width: 3rem;
-  height: 3rem;
+  width: 3.4rem;
+  height: 3.4rem;
   margin-bottom: 7px;
   padding: 0;
   border: 0;
@@ -2229,14 +2244,18 @@ html:not(.js) .dock {
   }
 
   .fenetre.anim-ouvre {
-    animation: ouverture-ios 0.42s var(--ease);
+    animation: ouverture-ios 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+    will-change: transform, opacity;
   }
 
+  /* Seuls transform et opacity bougent : c'est ce qui reste fluide sur téléphone */
   @keyframes ouverture-ios {
     from {
-      opacity: 0.3;
-      transform: scale(0.1);
-      border-radius: 40px;
+      opacity: 0;
+      transform: scale(0.12);
+    }
+    40% {
+      opacity: 1;
     }
   }
 

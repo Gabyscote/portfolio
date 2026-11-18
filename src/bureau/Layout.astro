@@ -553,13 +553,16 @@ const recherchables = [
         visibles().sort((a, b) => Number(b.style.zIndex || 0) - Number(a.style.zIndex || 0))[0];
       const fenPortfolio = () => document.getElementById('fen-portfolio');
 
+      // Comme sur un Mac, une app ouverte une fois reste lancée (son point reste sous l'icône)
+      const lancees = new Set<string>();
       function majDock() {
         document.querySelectorAll<HTMLElement>('.dock__app[data-ouvrir]').forEach((a) => {
           const f = document.getElementById(`fen-${a.dataset.ouvrir}`);
-          const reduite = document.querySelector(`[data-restaurer="fen-${a.dataset.ouvrir}"]`);
-          a.classList.toggle('est-ouverte', !!f && (!f.hidden || !!reduite));
+          if (f && !f.hidden) lancees.add(a.dataset.ouvrir!);
+          a.classList.toggle('est-ouverte', lancees.has(a.dataset.ouvrir!));
         });
-        document.querySelector('[data-app="portfolio"]')?.classList.toggle('est-ouverte', !!fenPortfolio());
+        if (fenPortfolio() || document.querySelector('[data-restaurer="fen-portfolio"]')) lancees.add('portfolio');
+        document.querySelector('[data-app="portfolio"]')?.classList.toggle('est-ouverte', lancees.has('portfolio'));
         // Sur iPhone : une app ouverte cache le dock, et la barre d'état passe au foncé ou au clair
         const devantF = laPlusHaute();
         document.body.classList.toggle('app-ouverte', !!devantF);
@@ -582,9 +585,20 @@ const recherchables = [
         f.classList.add('anim-ouvre');
       }
 
-      const retirerReduite = (f: HTMLElement) => document.querySelector(`[data-restaurer="${f.id}"]`)?.remove();
-      const titreDe = (f: HTMLElement) =>
-        (f.querySelector('.fenetre__titre, .outils__adresse .sr-only')?.textContent ?? 'Fenêtre').trim();
+      // Le portfolio peut avoir plusieurs pages réduites : chacune retient son adresse
+      const vignetteDe = (f: HTMLElement) =>
+        document.querySelector<HTMLElement>(
+          f.id === 'fen-portfolio'
+            ? `[data-restaurer="fen-portfolio"][data-adresse="${location.pathname}"]`
+            : `[data-restaurer="${f.id}"]`,
+        );
+      const retirerReduite = (f: HTMLElement) => vignetteDe(f)?.remove();
+      // Le titre court : le dernier élément du fil d'Ariane (« Esprit Voyages »), sinon le titre de la fenêtre
+      const titreDe = (f: HTMLElement) => {
+        const fil = [...f.querySelectorAll('.outils__adresse > a, .outils__adresse > span:not(.outils__sep):not(.outils__pastille):not(.sr-only)')];
+        const t = fil.length ? fil[fil.length - 1].textContent : f.querySelector('.fenetre__titre')?.textContent;
+        return (t ?? 'Fenêtre').trim();
+      };
       const focusTitre = (f: HTMLElement) =>
         f.querySelector<HTMLElement>('.fenetre__titre, .outils__adresse')?.focus({ preventScroll: true });
 
@@ -635,7 +649,13 @@ const recherchables = [
           : document.querySelector<HTMLElement>(`.dock__app[data-ouvrir="${idApp(f)}"]`);
       // Sur iPhone : l'icône sur l'écran d'accueil si elle est visible, sinon celle du dock
       function iconeIos(f: HTMLElement) {
-        const li = document.querySelector<HTMLElement>(`.icones > li[data-id="${idApp(f)}"] .fichier > :first-child`);
+        // Le portfolio retourne vers l'icône de la page affichée (le projet, À propos), sinon la sienne
+        let id = idApp(f);
+        if (id === 'portfolio') {
+          const m = location.pathname.match(/\/(?:projets\/([^/]+)|(a-propos))\/?$/);
+          if (m) id = m[1] ?? m[2];
+        }
+        const li = document.querySelector<HTMLElement>(`.icones > li[data-id="${id}"] .fichier > :first-child`);
         if (li) {
           const r = li.getBoundingClientRect();
           if (r.width && r.left >= 0 && r.right <= innerWidth) return li;
@@ -656,12 +676,14 @@ const recherchables = [
           const sy = cible.height / r.height;
           if (mobile.matches) {
             // iPhone : l'app redevient son icône, coins arrondis compris
-            const coin = Math.min(r.width, r.height) * 0.22;
+            // Seuls transform et opacity sont animés : la carte graphique s'en charge, c'est fluide
+            f.style.borderRadius = '38px';
+            f.style.overflow = 'hidden';
             images = [
-              { transform: 'none', borderRadius: '0px', opacity: 1 },
-              { transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`, borderRadius: `${coin}px`, opacity: 0.4 },
+              { transform: 'none', opacity: 1 },
+              { transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`, opacity: 0 },
             ];
-            reglages = { duration: 420, easing: 'cubic-bezier(0.32, 0.72, 0, 1)' };
+            reglages = { duration: 380, easing: 'cubic-bezier(0.32, 0.72, 0, 1)' };
           } else {
             images = [
               { transform: 'none', opacity: 1, offset: 0 },
@@ -673,9 +695,9 @@ const recherchables = [
         } else {
           images = [
             { transform: 'none', opacity: 1 },
-            { transform: 'scale(0.92)', opacity: 0 },
+            { transform: 'scale(0.94)', opacity: 0 },
           ];
-          reglages = { duration: 180, easing: 'ease-in' };
+          reglages = { duration: 220, easing: 'cubic-bezier(0.4, 0, 1, 1)' };
         }
         f.style.transformOrigin = '50% 50%';
         f.style.pointerEvents = 'none';
@@ -683,6 +705,8 @@ const recherchables = [
         anim.onfinish = () => {
           fin();
           f.style.pointerEvents = '';
+          f.style.borderRadius = '';
+          f.style.overflow = '';
           anim.cancel();
         };
       }
@@ -705,7 +729,9 @@ const recherchables = [
       }
 
       function fermer(f: HTMLElement) {
-        const cible = (mobile.matches ? iconeIos(f) : iconeDock(f))?.getBoundingClientRect() ?? null;
+        // Sur Mac, la fenêtre se ferme sur place (l'app reste dans le dock) ;
+        // sur iPhone, l'app redevient son icône
+        const cible = mobile.matches ? (iconeIos(f)?.getBoundingClientRect() ?? null) : null;
         if (f.dataset.retour) {
           const retour = f.dataset.retour;
           aspirer(f, cible, () => navigate(retour));
@@ -719,40 +745,57 @@ const recherchables = [
         });
       }
 
-      function reduire(f: HTMLElement) {
-        // La vignette prend sa place dans le dock d'abord (invisible), la fenêtre file dedans
-        const zone = document.querySelector('.dock__reduites');
-        let b = zone?.querySelector<HTMLElement>(`[data-restaurer="${f.id}"]`) ?? null;
-        if (zone && !b) {
-          b = document.createElement('button');
-          b.type = 'button';
-          b.className = 'dock__reduite';
-          b.dataset.restaurer = f.id;
-          b.style.setProperty('--c', f.dataset.couleur || '#6B3BFF');
-          const titre = titreDe(f);
-          b.setAttribute('aria-label', `Rouvrir : ${titre}`);
-          const nom = document.createElement('span');
-          nom.className = 'dock__nom';
-          nom.textContent = titre;
-          b.append(nom);
-          // Un aperçu de la fenêtre, en tout petit, comme sur un vrai Mac
-          const r = f.getBoundingClientRect();
-          const cote = 48;
-          const k = cote / Math.max(r.width, r.height);
-          const mini = f.cloneNode(true) as HTMLElement;
-          mini.removeAttribute('id');
-          mini.querySelectorAll('[id]').forEach((el) => el.removeAttribute('id'));
-          mini.inert = true;
-          mini.classList.add('dock__apercu');
-          mini.style.cssText = `position:absolute;inset:auto;left:${(cote - r.width * k) / 2}px;top:${(cote - r.height * k) / 2}px;width:${r.width}px;height:${r.height}px;transform:scale(${k});transform-origin:0 0;margin:0;z-index:auto;animation:none;pointer-events:none`;
-          b.append(mini);
-          b.style.visibility = 'hidden';
-          b.style.animation = 'none';
-          zone.append(b);
+      // L'icône carrée d'une vignette : la couverture du projet si on est sur un projet,
+      // sinon un aperçu de la fenêtre recadré en carré
+      function iconeVignette(f: HTMLElement, cote: number) {
+        const projet = f.id === 'fen-portfolio' && location.pathname.match(/\/projets\/([^/]+)\/?$/);
+        // L'icône du projet : sur le bureau, ou à défaut dans le Finder (projets secondaires)
+        const modele = projet && document.querySelector<HTMLElement>(`a[href$="/projets/${projet[1]}/"] .icone-projet`);
+        const boite = document.createElement('span');
+        boite.className = 'dock__vignette';
+        if (modele) {
+          const c = modele.cloneNode(true) as HTMLElement;
+          boite.append(c);
+          boite.classList.add('dock__vignette--projet');
+          return boite;
         }
-        aspirer(f, b?.getBoundingClientRect() ?? null, () => {
+        const r = f.getBoundingClientRect();
+        const k = cote / Math.min(r.width, r.height);
+        const mini = f.cloneNode(true) as HTMLElement;
+        mini.removeAttribute('id');
+        mini.querySelectorAll('[id]').forEach((el) => el.removeAttribute('id'));
+        mini.inert = true;
+        mini.style.cssText = `position:absolute;inset:auto;left:${(cote - r.width * k) / 2}px;top:0;width:${r.width}px;height:${r.height}px;transform:scale(${k});transform-origin:0 0;margin:0;z-index:auto;animation:none;pointer-events:none;box-shadow:none`;
+        boite.append(mini);
+        return boite;
+      }
+
+      const MAX_REDUITES = 3;
+      function reduire(f: HTMLElement) {
+        const zone = document.querySelector('.dock__reduites');
+        if (!zone) return;
+        // Une page déjà réduite est remplacée par la nouvelle (aperçu à jour)
+        vignetteDe(f)?.remove();
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'dock__reduite';
+        b.dataset.restaurer = f.id;
+        if (f.id === 'fen-portfolio') b.dataset.adresse = location.pathname;
+        const titre = titreDe(f);
+        b.setAttribute('aria-label', `Rouvrir : ${titre}`);
+        const nom = document.createElement('span');
+        nom.className = 'dock__nom';
+        nom.textContent = titre;
+        b.append(iconeVignette(f, 54), nom);
+        b.style.visibility = 'hidden';
+        b.style.animation = 'none';
+        zone.append(b);
+        // Trois au plus : la plus ancienne s'en va
+        const toutes = zone.querySelectorAll('.dock__reduite');
+        if (toutes.length > MAX_REDUITES) toutes[0].remove();
+        aspirer(f, b.getBoundingClientRect(), () => {
           f.hidden = true;
-          if (b) b.style.visibility = '';
+          b.style.visibility = '';
           apresDisparition();
         });
       }
@@ -846,8 +889,15 @@ const recherchables = [
 
         const aRestaurer = t.closest<HTMLElement>('[data-restaurer]');
         if (aRestaurer) {
+          const adresse = aRestaurer.dataset.adresse;
           const f = document.getElementById(aRestaurer.dataset.restaurer!);
-          if (f) restaurer(f, point, aRestaurer.getBoundingClientRect());
+          if (adresse && adresse !== location.pathname) {
+            // Une autre page du portfolio : on y retourne, la fenêtre s'ouvre depuis la vignette
+            const r = aRestaurer.getBoundingClientRect();
+            dernierClic = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+            aRestaurer.remove();
+            navigate(adresse);
+          } else if (f) restaurer(f, point, aRestaurer.getBoundingClientRect());
           else aRestaurer.remove();
           return;
         }
@@ -1689,6 +1739,16 @@ const recherchables = [
 
       // ---------- D'une page du portfolio à l'autre : la fenêtre ne bouge pas ----------
       let geometrie: { style: string; agrandie: boolean; visible: boolean; z: string } | null = null;
+      // Un élément gardé d'une page à l'autre perd sa position de défilement : on la remet
+      let pageAccueil = 0;
+      document.addEventListener('astro:before-swap', () => {
+        pageAccueil = document.querySelector<HTMLElement>('.accueil-mobile')?.scrollLeft ?? 0;
+      });
+      document.addEventListener('astro:after-swap', () => {
+        const a = document.querySelector<HTMLElement>('.accueil-mobile');
+        if (a) a.scrollLeft = pageAccueil;
+      });
+
       document.addEventListener('astro:before-swap', () => {
         const f = fenPortfolio();
         geometrie =
@@ -1754,7 +1814,7 @@ const recherchables = [
 
         // Les fenêtres réduites dont la page a changé n'existent plus
         document.querySelectorAll<HTMLElement>('[data-restaurer]').forEach((b) => {
-          if (!document.getElementById(b.dataset.restaurer!)) b.remove();
+          if (!b.dataset.adresse && !document.getElementById(b.dataset.restaurer!)) b.remove();
         });
 
         const pf = fenPortfolio();

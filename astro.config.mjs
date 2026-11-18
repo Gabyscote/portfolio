@@ -13,5 +13,6 @@ export default defineConfig({
   // qui range texte et images en blocs côte à côte.
   markdown: { processor: unified({ rehypePlugins: [rehypeSections] }) },
   integrations: [mdx()],
-  prefetch: true,
+  // Les pages des projets se chargent dès que leur lien est à l'écran : l'ouverture est immédiate
+  prefetch: { prefetchAll: true, defaultStrategy: 'viewport' },
 });
