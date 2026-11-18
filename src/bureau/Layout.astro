@@ -865,6 +865,21 @@ const recherchables = [
       const cacherImage = () => (visionneuse().hidden = true);
 
       // ---------- Clics ----------
+      // Les liens « Fermer » (rouge, ou « Fermer » sur iPhone) changent de page : on les intercepte
+      // avant le routeur d'Astro, le temps de jouer l'animation de fermeture
+      document.addEventListener(
+        'click',
+        (e) => {
+          const lien = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[data-fermer]');
+          const fen = lien?.closest<HTMLElement>('.fenetre');
+          if (!lien || !fen || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
+          e.preventDefault();
+          e.stopPropagation();
+          fermer(fen);
+        },
+        true,
+      );
+
       document.addEventListener('click', (e) => {
         const t = e.target as HTMLElement;
         const point = { x: e.clientX, y: e.clientY };

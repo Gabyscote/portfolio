@@ -46,7 +46,7 @@ const poignees = ['n', 's', 'e', 'o', 'ne', 'no', 'se', 'so'];
     <div class="feux">
       {
         fermerVers ? (
-          <a href={fermerVers} class="feu feu--rouge" aria-label="Fermer la fenêtre" />
+          <a href={fermerVers} class="feu feu--rouge" data-fermer aria-label="Fermer la fenêtre" />
         ) : (
           <button type="button" class="feu feu--rouge" data-fermer aria-label="Fermer la fenêtre" />
         )
@@ -84,7 +84,7 @@ const poignees = ['n', 's', 'e', 'o', 'ne', 'no', 'se', 'so'];
 
     {
       fermerVers ? (
-        <a href={fermerVers} class="fenetre__fermer">Fermer</a>
+        <a href={fermerVers} class="fenetre__fermer" data-fermer>Fermer</a>
       ) : (
         <button type="button" class="fenetre__fermer" data-fermer>
           Fermer
