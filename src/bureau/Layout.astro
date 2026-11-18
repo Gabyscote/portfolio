@@ -226,8 +226,8 @@ const recherchables = [
             </button>
           </li>
           {
-            projets.map((p) => (
-              <li data-id={p.id}>
+            projets.map((p, i) => (
+              <li data-id={p.id} class:list={{ 'icones__premier-projet': i === 0 }}>
                 <a href={lien(p.id)} class="fichier">
                   <IconeProjet src={p.data.couverture} couleur={p.data.couleur} />
                   <span>{p.data.court}</span>
@@ -1280,7 +1280,7 @@ const recherchables = [
       // ---------- Icônes du bureau : on les déplace comme sur un vrai Mac ----------
       const ulIcones = document.querySelector<HTMLElement>('.icones')!;
       const lisIcones = () => [...ulIcones.querySelectorAll<HTMLElement>(':scope > li')];
-      const CLE_MAC = 'bureau-icones-mac-v2';
+      const CLE_MAC = 'bureau-icones-mac-v3';
       const CLE_IOS = 'bureau-icones-iphone-v2';
       const lire = (cle: string) => {
         try {

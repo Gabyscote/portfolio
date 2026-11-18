@@ -9,12 +9,12 @@ duree: Du 1er septembre au 13 novembre 2026
 outils: [Canva, Notion]
 livrables: [Idées de posts, Textes des publications, Posts et carrousels, Stories, Calendrier de l'Avent, Bannières, Vitrine]
 disciplines: Communication digitale, réseaux sociaux
-couleur: '#591F0C'
-nomCouleur: Brun Esprit Voyages
+couleur: '#2A2440'
+nomCouleur: Violet nuit
 encre: claire
 couverture: ../../assets/projets/esprit-voyages/couverture.webp
 cadreCouverture: libre
-altCouverture: "Deux publications côte à côte : « La destination de la semaine : Canada » pour Esprit Voyages sur fond brun, et « 5 expériences autour de la pomme » pour Beautiful Normandie sur fond vert sauge."
+altCouverture: "Deux publications côte à côte : « La destination de la semaine : Canada » pour Esprit Voyages, et « 5 expériences autour de la pomme » pour Beautiful Normandie."
 ordre: 2
 categories: [reseaux]
 contexte: entreprise
@@ -22,9 +22,6 @@ contexte: entreprise
 
 import Figure from '../../components/Figure.astro';
 import Comparaison from '../../components/Comparaison.astro';
-import Palette from '../../components/Palette.astro';
-import octobre1 from '../../assets/projets/esprit-voyages/ev-octobre-1.webp';
-import octobre2 from '../../assets/projets/esprit-voyages/ev-octobre-2.webp';
 import octobreEquipe from '../../assets/projets/esprit-voyages/ev-octobre-equipe.webp';
 import noel1 from '../../assets/projets/esprit-voyages/ev-noel-1.webp';
 import noel2 from '../../assets/projets/esprit-voyages/ev-noel-2.webp';
@@ -41,9 +38,6 @@ import pommesContact from '../../assets/projets/esprit-voyages/bn-pommes-contact
 import suisse1 from '../../assets/projets/esprit-voyages/bn-suisse-1.webp';
 import suisse2 from '../../assets/projets/esprit-voyages/bn-suisse-2.webp';
 import suisse3 from '../../assets/projets/esprit-voyages/bn-suisse-3.webp';
-import saviez from '../../assets/projets/esprit-voyages/bn-saviez.webp';
-import quiz from '../../assets/projets/esprit-voyages/bn-quiz.webp';
-import reponse from '../../assets/projets/esprit-voyages/bn-reponse.webp';
 import avent1 from '../../assets/projets/esprit-voyages/bn-avent-1.webp';
 import avent3 from '../../assets/projets/esprit-voyages/bn-avent-3.webp';
 import avent5 from '../../assets/projets/esprit-voyages/bn-avent-5.webp';
@@ -55,29 +49,9 @@ En septembre 2026, j'ai rejoint Esprit Voyages en alternance. L'agence, membre d
 
 Deux marques, donc deux publics. D'un côté, des clients qui rêvent d'ailleurs. De l'autre, des visiteurs qu'il faut convaincre de venir ici. Ma mission : faire vivre leurs réseaux sociaux, Facebook et Instagram, sans que l'une ressemble à l'autre.
 
-## Deux identités à respecter
+## Deux marques, deux voix
 
-Les deux marques avaient déjà leur charte graphique, avec leurs couleurs et leurs polices. Mon travail était de m'y tenir dans Canva, publication après publication, pour qu'on reconnaisse chaque marque avant même de lire son nom.
-
-Esprit Voyages parle en brun profond, avec l'orange pour les étiquettes et les appels à l'action :
-
-<Palette
-  teintes={[
-    { nom: 'Brun', hex: '#591F0C', note: 'Fonds et cartes contact' },
-    { nom: 'Orange', hex: '#FB8500', note: 'Étiquettes, accroches' },
-    { nom: 'Crème', hex: '#FEF7E7' },
-  ]}
-/>
-
-Beautiful Normandie prend un vert sauge et une crème, plus doux, plus campagne :
-
-<Palette
-  teintes={[
-    { nom: 'Sauge', hex: '#809D7C', note: 'Bandeaux et cartes contact' },
-    { nom: 'Vert profond', hex: '#5B7C56' },
-    { nom: 'Crème', hex: '#FFFAF2' },
-  ]}
-/>
+Les deux marques avaient déjà leur charte graphique, avec leurs couleurs et leurs polices. Mon travail était de m'y tenir dans Canva, publication après publication, pour qu'on reconnaisse chaque marque avant même de lire son nom : l'une invite au départ, l'autre donne envie de découvrir la région.
 
 La charte éditoriale commune aux deux marques fixe aussi le rythme : un à deux posts par semaine sur Facebook et Instagram, et des stories entre les deux. Chaque texte suit la même construction : une accroche, une découverte, ce qu'on y gagne, puis l'appel à l'action, avec cinq hashtags au plus.
 
@@ -87,15 +61,9 @@ Dans ce cadre, c'est moi qui remplissais les plannings Notion des deux marques :
 
 Un post de voyage qui tombe au bon moment se lit bien mieux. La ligne d'Esprit Voyages suit donc les temps forts de l'année : la rentrée, l'automne, Octobre rose, Halloween, puis les marchés de Noël.
 
-Octobre rose montre bien la logique : un même thème décliné sur plusieurs supports, du carrousel sur les circuits réservés aux femmes jusqu'à la photo de l'équipe habillée en rose.
+Pour Octobre rose, toute l'équipe a posé en rose, une idée trouvée ensemble et publiée sur les réseaux.
 
-<Comparaison
-  vues={[
-    { src: octobre1, alt: "Couverture du carrousel « Voyages au féminin », une voyageuse dans une rizière.", titre: 'Voyages au féminin', legende: "La première vue pose le sujet, avec le ruban d'Octobre rose en bas." },
-    { src: octobre2, alt: "Vue du carrousel présentant un circuit en Inde, avec son prix.", titre: 'Un circuit par vue', legende: 'Le lieu, le trajet, les dates et le prix, toujours au même endroit.' },
-    { src: octobreEquipe, alt: "L'équipe de l'agence en rose, devant un grand ruban rose.", titre: "L'équipe en rose", legende: "La publication la plus proche de l'agence : ses visages." },
-  ]}
-/>
+<Figure src={octobreEquipe} alt="L'équipe de l'agence habillée en rose, devant un grand ruban rose." legende="Octobre rose : l'équipe de l'agence, ses visages." />
 
 ## Des carrousels qui se feuillettent
 
@@ -104,7 +72,7 @@ Le carrousel est le format qui travaille le plus, parce qu'il retient la personn
 <Comparaison
   vues={[
     { src: noel1, alt: "Couverture du carrousel « Les marchés de Noël sont de sortie ! »", titre: 'Marchés de Noël', legende: 'Une couverture qui annonce le format.' },
-    { src: noel2, alt: "Le marché de Noël de Vienne devant l'hôtel de ville illuminé.", titre: 'Vienne', legende: "Une ville par vue, l'étiquette de pays en orange." },
+    { src: noel2, alt: "Le marché de Noël de Vienne devant l'hôtel de ville illuminé.", titre: 'Vienne', legende: 'Une ville par vue, chacune avec son étiquette de pays.' },
     { src: noel3, alt: "Le marché de Noël de Tallinn sur la place de la vieille ville.", titre: 'Tallinn', legende: 'La dernière étape, la plus inattendue.' },
   ]}
 />
@@ -137,13 +105,13 @@ La communication ne s'arrête pas à l'écran. Avec une collègue, j'ai décoré
 
 Pour Beautiful Normandie, le sujet, c'est la région elle-même. La ligne suit le calendrier normand : la saison des pommes, les fêtes de la coquille Saint-Jacques, la fête du hareng à Dieppe, la Suisse normande en automne, la Normandie à vélo.
 
-Les carrousels gardent toujours la même structure : une couverture avec le logo, une expérience par vue avec un bandeau vert, puis une carte contact qui ramène vers l'agence.
+Les carrousels gardent toujours la même structure : une couverture avec le logo, une expérience par vue avec son bandeau, puis une carte contact qui ramène vers l'agence.
 
 <Comparaison
   vues={[
     { src: pommes1, alt: "Couverture : « 5 expériences autour de la pomme à vivre en Normandie », des pommes sur l'arbre.", titre: 'La couverture', legende: 'Le sujet et la marque, en une image.' },
-    { src: pommes2, alt: "Vue « Participer à la cueillette », un panier de pommes.", titre: 'Une expérience par vue', legende: 'Le bandeau vert annonce, la photo fait envie.' },
-    { src: pommesContact, alt: "Carte contact verte de Beautiful Normandie avec le bouton « Contactez-nous ».", titre: 'La carte contact', legende: 'La dernière vue renvoie toujours vers un séjour.' },
+    { src: pommes2, alt: "Vue « Participer à la cueillette », un panier de pommes.", titre: 'Une expérience par vue', legende: 'Le bandeau annonce, la photo fait envie.' },
+    { src: pommesContact, alt: "Carte contact de Beautiful Normandie avec le bouton « Contactez-nous ».", titre: 'La carte contact', legende: 'La dernière vue renvoie toujours vers un séjour.' },
   ]}
 />
 
@@ -152,18 +120,6 @@ Les carrousels gardent toujours la même structure : une couverture avec le logo
     { src: suisse1, alt: "Couverture « La Suisse normande en automne », une randonneuse face à une vallée boisée.", titre: 'La Suisse normande', legende: "Montrer ce que la région offre hors de l'été." },
     { src: suisse2, alt: "Vue de la Roche d'Oëtre et de sa gorge en automne.", titre: "La Roche d'Oëtre", legende: 'Un lieu, une étiquette, deux phrases.' },
     { src: suisse3, alt: "Le viaduc de Clécy au-dessus d'une vallée en automne.", titre: 'Le viaduc de Clécy', legende: 'Des lieux moins connus que le Mont-Saint-Michel.' },
-  ]}
-/>
-
-## Des stories pour faire participer
-
-Entre les carrousels, les stories font participer : des « Saviez-vous ? » sur des lieux méconnus, comme le Marais Vernier, et des quiz dont la réponse tombe le lendemain.
-
-<Comparaison
-  vues={[
-    { src: saviez, alt: "Post « Le saviez-vous ? » sur le Marais Vernier, une chaumière normande.", titre: 'Le saviez-vous ?', legende: 'Une anecdote, une photo, rien de plus.' },
-    { src: quiz, alt: "Story quiz : « Dans quel département se trouve Deauville ? » avec la carte de la Normandie.", titre: 'Le quiz des départements', legende: 'Cinq questions, la carte en repère.' },
-    { src: reponse, alt: "Story réponse : « La réponse était… Granville ! » avec une photo du port.", titre: 'La réponse', legende: 'Le lendemain, pour faire revenir.' },
   ]}
 />
 
@@ -184,4 +140,4 @@ Pour finir l'année, j'ai préparé un calendrier de l'Avent pour Beautiful Norm
 
 Gérer deux marques en même temps m'a appris à changer de voix sans changer de méthode. Le même planning, la même construction de texte et les mêmes formats servent les deux, mais une même publication ne peut pas passer de l'une à l'autre : l'une vend le départ, l'autre l'arrivée.
 
-Travailler dans une charte existante m'a aussi appris la discipline. Quand chaque post suit la même structure et les mêmes couleurs, on ne se pose plus la question de la forme, et on peut passer ce temps sur le fond : trouver le bon sujet au bon moment.
+Travailler dans une charte existante m'a aussi appris la discipline. Quand chaque post suit la même structure et la même identité, on ne se pose plus la question de la forme, et on peut passer ce temps sur le fond : trouver le bon sujet au bon moment.
