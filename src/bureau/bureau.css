@@ -1880,8 +1880,10 @@ html:not(.js) .dock {
    et la barre d'accueil (en bas) les referme.
    ========================================================================== */
 @media (max-width: 56rem) {
+  /* Le vrai téléphone affiche déjà l'heure et le réseau : pas de fausse barre d'état,
+     juste la marge de sécurité de l'écran (encoche) quand il y en a une */
   :root {
-    --statut: 2.9rem;
+    --statut: max(0.6rem, env(safe-area-inset-top));
   }
 
   .carte {
@@ -1900,8 +1902,9 @@ html:not(.js) .dock {
     display: none;
   }
 
-  /* Barre d'état */
+  /* Barre d'état : masquée, le téléphone a déjà la sienne */
   .ios-statut {
+    visibility: hidden;
     position: fixed;
     inset: 0 0 auto;
     z-index: 6500;

@@ -1204,6 +1204,12 @@ const recherchables = [
         n.classList.add('est-sortie');
         setTimeout(() => (n.hidden = true), 280);
       }
+      // La notification s'efface dès qu'on touche ou clique ailleurs à l'écran
+      document.addEventListener('pointerdown', (e) => {
+        const n = notif();
+        if (!n || n.hidden || (e.target as HTMLElement).closest('.notif, [data-notif]')) return;
+        cacherNotif();
+      });
       if (!sessionStorage.getItem('notif-vue')) {
         sessionStorage.setItem('notif-vue', '1');
         setTimeout(montrerNotif, 1400);
@@ -1538,11 +1544,11 @@ const recherchables = [
         if (!icones.length) return;
         const colW = (W - 2 * marge) / 4;
         const rangH = icones[0].offsetHeight + 18;
-        const haut = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--statut')) * 16 || 46;
-        const debut = haut + 10;
         const widgets = accueilIos.querySelector<HTMLElement>('.widgets')!;
+        // Les pages commencent à la hauteur des widgets (sous l'encoche s'il y en a une)
+        const debut = widgets.offsetTop;
         // Le bas de la zone : au-dessus des points, de la recherche et du dock
-        const bas = rechercheIos.getBoundingClientRect().top - 34;
+        const bas = rechercheIos.getBoundingClientRect().top - 26;
         const rangsPage = Math.max(1, Math.floor((bas - debut + 18) / rangH));
         const debutPage1 = debut + widgets.offsetHeight + 20;
         const rangsPage1 = Math.max(0, Math.floor((bas - debutPage1 + 18) / rangH));
