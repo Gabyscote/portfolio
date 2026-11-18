@@ -100,7 +100,12 @@ const recherchables = [
       document.documentElement.classList.add('js');
       document.addEventListener('astro:after-swap', () => document.documentElement.classList.add('js'));
     </script>
-    <ClientRouter />
+    <!-- Pas de « View Transitions » du navigateur : leurs captures d'écran à chaque page
+         font ramer les téléphones. Le site gère ses propres animations (fenêtres, icônes). -->
+    <script is:inline>
+      document.startViewTransition = undefined;
+    </script>
+    <ClientRouter fallback="swap" />
   </head>
   <body>
     <a class="evitement" href="#scene">Aller au contenu</a>
@@ -683,7 +688,7 @@ const recherchables = [
               { transform: 'none', opacity: 1 },
               { transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`, opacity: 0 },
             ];
-            reglages = { duration: 380, easing: 'cubic-bezier(0.32, 0.72, 0, 1)' };
+            reglages = { duration: 480, easing: 'cubic-bezier(0.45, 0, 0.2, 1)' };
           } else {
             images = [
               { transform: 'none', opacity: 1, offset: 0 },
@@ -734,7 +739,11 @@ const recherchables = [
         const cible = mobile.matches ? (iconeIos(f)?.getBoundingClientRect() ?? null) : null;
         if (f.dataset.retour) {
           const retour = f.dataset.retour;
-          aspirer(f, cible, () => navigate(retour));
+          aspirer(f, cible, () => {
+            // La fenêtre reste cachée jusqu'au changement de page : pas de retour en arrière visible
+            f.style.visibility = 'hidden';
+            navigate(retour);
+          });
           return;
         }
         aspirer(f, cible, () => {

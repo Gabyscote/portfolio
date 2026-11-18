@@ -1814,7 +1814,9 @@ html:not(.js) .dock {
   background: rgb(29 26 38 / 0.035);
 }
 
-.finder__elements[data-affichage='liste'] .finder__element:hover {
+/* Le survol l'emporte aussi sur les lignes grisées (une ligne sur deux) */
+.finder__elements[data-affichage='liste'] li .finder__element:hover,
+.finder__elements[data-affichage='liste'] li:nth-child(even of :not([hidden])) .finder__element:hover {
   background: rgb(107 59 255 / 0.12);
 }
 
@@ -2244,7 +2246,7 @@ html:not(.js) .dock {
   }
 
   .fenetre.anim-ouvre {
-    animation: ouverture-ios 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+    animation: ouverture-ios 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
     will-change: transform, opacity;
   }
 
