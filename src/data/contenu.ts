@@ -127,6 +127,6 @@ export const savoirFaire = [
 export const interets = [
   { titre: 'Course à pied', texte: 'Mon sport principal : je cours régulièrement.' },
   { titre: 'Formule 1 et simracing', texte: 'Mon sport préféré à suivre. Je pilote aussi en simracing, au volant.' },
-  { titre: 'IA et nouvelles technologies', texte: "Je teste les nouveaux outils dès qu'ils sortent et je m'en sers au quotidien, ce portfolio compris." },
+  { titre: 'Nouvelles technologies', texte: "Je teste les nouveaux outils dès qu'ils sortent, pour voir ce qu'ils changent à ma façon de travailler." },
   { titre: 'Design', texte: 'Interfaces, typographies, affiches : je regarde comment c’est fait et pourquoi ça marche.' },
 ];
