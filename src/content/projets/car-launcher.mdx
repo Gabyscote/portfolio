@@ -1,0 +1,43 @@
+---
+titre: Un écran d'accueil pour ma voiture
+court: "Car Launcher"
+resume: L'autoradio Android de ma Peugeot 207 avait une interface que je n'utilisais jamais. J'ai conçu et codé la mienne, pensée pour être lue d'un coup d'œil en conduisant.
+annee: 2026
+cadre: Projet personnel
+role: Conception, design de l'interface, développement
+duree: Plusieurs semaines, en automne 2026
+equipe: Seul, en codant avec l'aide de Claude
+outils: [Android, Java, Claude]
+livrables: [Application Android installée dans ma voiture]
+disciplines: Interface, application
+couleur: '#A394F0'
+nomCouleur: Lavande de l'accent
+encre: foncee
+couverture: ../../assets/projets/car-launcher/car_accueil.webp
+cadreCouverture: libre
+altCouverture: "L'écran d'accueil du launcher : l'heure en très grand, un arc qui suit la course du soleil jusqu'au coucher, et quatre tuiles en bas pour CarPlay, la vitesse, le trajet et la luminosité."
+ordre: 12
+categories: [interface]
+secondaire: true
+---
+
+import Figure from '../../components/Figure.astro';
+import voiture from '../../assets/projets/car-launcher/car_voiture.webp';
+
+## Le point de départ
+
+Ma 207 a un autoradio Android avec CarPlay. En pratique, je ne me servais que de CarPlay, et l'écran d'accueil d'origine, chargé et peu lisible, ne me servait à rien. Sur Android, on peut remplacer cet écran par sa propre application : j'ai décidé de dessiner celui que je voulais voir en montant dans la voiture.
+
+## Lisible en un coup d'œil
+
+En voiture, on ne lit pas un écran, on y jette un œil. J'ai donc gardé très peu d'éléments, en grand : l'heure, un arc qui suit la course du soleil et annonce la nuit, puis quatre tuiles pour reprendre CarPlay, voir sa vitesse, son trajet et la luminosité. Le fond est noir pour ne pas éblouir la nuit, avec une seule couleur d'accent, un lavande, et des cibles assez larges pour être touchées sans viser.
+
+## Ce que l'écran fait tout seul
+
+L'arc du soleil n'est pas décoratif : la luminosité de l'écran baisse d'elle-même au coucher du soleil. CarPlay peut s'ouvrir dès le démarrage, ou dès que mon téléphone se connecte en Bluetooth. Les trajets sont comptés pour afficher la conduite de la semaine.
+
+<Figure src={voiture} alt="L'écran Voiture : le réglage de la luminosité en jour, nuit ou automatique, l'ouverture automatique de CarPlay, des raccourcis vers les réglages, et le début d'un graphique de la conduite de la semaine." legende="L'écran Voiture, qui regroupe les réglages utiles au quotidien." />
+
+## Ce que j'en retiens
+
+C'est le projet où je suis à la fois le designer et l'utilisateur, tous les jours. Chaque trajet me montre ce qui marche et ce qui gêne, et l'interface a beaucoup évolué grâce à ça. Je l'ai codée avec l'aide de Claude : j'ai décidé de ce que l'écran devait faire et de son apparence, et l'IA m'a permis d'aller jusqu'à une application qui tourne vraiment dans ma voiture.
