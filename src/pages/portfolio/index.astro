@@ -28,13 +28,41 @@ const base = siteBase;
   >
     <div class="pf pf-accueil" data-couleurs style={`--fond:${site.couleur}`} data-encre="claire">
       <section class="pf-intro" data-couleur={site.couleur} data-ton="claire">
-        <p class="pf-intro__nom">Gabriel Roger, designer numérique</p>
-        <h1>{accroche}</h1>
-        <p class="pf-intro__texte">{recherche}</p>
-        <div class="pf-boutons">
-          <a class="pf-btn pf-btn--plein" href="#projets">Voir les projets</a>
-          <a class="pf-btn" href={`${base}a-propos/`}>Qui je suis</a>
+        <div class="pf-intro__texte-bloc">
+          <p class="pf-intro__nom">Gabriel Roger, designer numérique</p>
+          <h1>{accroche}</h1>
+          <p class="pf-intro__texte">{recherche}</p>
+          <div class="pf-boutons">
+            <a class="pf-btn pf-btn--plein" href="#projets">Voir les projets</a>
+            {autres.length > 0 && <a class="pf-btn" href="#autres">Autres projets</a>}
+            <a class="pf-btn" href={`${base}a-propos/`}>Qui je suis</a>
+          </div>
         </div>
+
+        <!-- Tous les projets d'un coup d'œil : un clic ouvre le projet -->
+        <nav class="pf-mosaique" aria-label="Aperçu des projets">
+          <ul>
+            {
+              projets.map((p) => (
+                <li>
+                  <a href={`${base}projets/${p.id}/`} style={`--c:${p.data.couleur}`}>
+                    <span class="pf-mosaique__image">
+                      <Image src={p.data.couverture} alt="" widths={[240, 400, 560]} sizes="(min-width: 64rem) 12rem, 30vw" />
+                    </span>
+                    <span class="pf-mosaique__nom">{p.data.court}</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+          {
+            autres.length > 0 && (
+              <a class="pf-mosaique__autres" href="#autres">
+                Et {autres.length} autre{autres.length > 1 ? 's' : ''} projet{autres.length > 1 ? 's' : ''} plus modeste{autres.length > 1 ? 's' : ''}
+              </a>
+            )
+          }
+        </nav>
       </section>
 
       <ol class="pf-liste" id="projets" aria-label="Projets">
@@ -59,7 +87,7 @@ const base = siteBase;
 
       {
         autres.length > 0 && (
-          <section class="pf-autres" data-couleur="#F3F0FF" data-ton="foncee" aria-labelledby="autres-titre">
+          <section class="pf-autres" id="autres" data-couleur="#F3F0FF" data-ton="foncee" aria-labelledby="autres-titre">
             <h2 id="autres-titre">Autres projets</h2>
             <p class="pf-autres__intro">Des projets plus modestes ou plus anciens, qui ont compté dans mon parcours.</p>
             <ul>

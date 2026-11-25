@@ -143,6 +143,7 @@ const recherchables = [
             ))
           }
           <hr />
+          <a href={`${portfolio}#autres`}>Autres projets</a>
           <a href={portfolio}>Tout le portfolio</a>
           <button type="button" data-ouvrir="finder">Parcourir dans le Finder</button>
         </div>
@@ -231,6 +232,12 @@ const recherchables = [
               <span>Lisez-moi</span>
             </button>
           </li>
+          <li data-id="autres-projets">
+            <button type="button" data-ouvrir="finder" data-finder-filtre="autres" class="fichier">
+              <Icone type="dossier" />
+              <span>Autres projets</span>
+            </button>
+          </li>
           <li data-id="terminal">
             <button type="button" data-ouvrir="terminal" class="fichier">
               <Icone type="terminal" />
@@ -265,6 +272,7 @@ const recherchables = [
             <h2 id="carte-nom">Gabriel Roger</h2>
             <p class="carte__metier">Designer numérique</p>
             <p class="carte__statut"><span class="led" aria-hidden="true"></span>Disponible en alternance</p>
+            <p class="carte__lieu">Habite à Yvetot, étudie à Rouen</p>
           </div>
         </div>
         <p class="carte__accroche">{accroche}</p>
@@ -323,6 +331,7 @@ const recherchables = [
             <p class="finder__rubrique">Favoris</p>
             <ul>
               <li><button type="button" data-filtre="tout" class="est-actif" aria-pressed="true">Tous les projets</button></li>
+              <li><button type="button" data-filtre="autres" aria-pressed="false">Autres projets</button></li>
               <li><button type="button" data-filtre="documents" aria-pressed="false">Documents</button></li>
             </ul>
             <p class="finder__rubrique">Catégories</p>
@@ -375,6 +384,7 @@ const recherchables = [
                     data-type="projet"
                     data-cat={(p.data.categories ?? []).join(' ')}
                     data-ctx={p.data.contexte}
+                    data-secondaire={p.data.secondaire ? '1' : undefined}
                     data-texte={`${p.data.titre} ${p.data.court} ${p.data.disciplines} ${p.data.outils.join(' ')}`}
                   >
                     <a href={lien(p.id)} class="finder__element">
@@ -445,6 +455,7 @@ const recherchables = [
           <p class="mail__ligne"><span>À</span>{site.email}</p>
           <p class="mail__ligne"><span>Objet</span>Une alternance en design numérique</p>
           <p class="mail__corps">{recherche}</p>
+          <p class="mail__lieux">J'habite à {site.habite}, j'étudie à {site.etudie}.</p>
           <div class="boutons">
             <a class="btn btn--principal" href={`mailto:${site.email}?subject=Alternance%20en%20design%20num%C3%A9rique`}>Écrire le message</a>
             <button type="button" class="btn" data-copier={site.email}>Copier l'adresse</button>
@@ -919,6 +930,9 @@ const recherchables = [
         const aOuvrir = t.closest<HTMLElement>('[data-ouvrir]');
         if (aOuvrir) {
           if (ouvrir(aOuvrir.dataset.ouvrir!, point)) e.preventDefault();
+          // Le dossier « Autres projets » ouvre le Finder directement sur ce rangement
+          const rangement = aOuvrir.dataset.finderFiltre;
+          if (rangement) document.querySelector<HTMLElement>(`#fen-finder [data-filtre="${rangement}"]`)?.click();
           fermerMenus();
           return;
         }
@@ -1448,7 +1462,9 @@ const recherchables = [
             let ok =
               filtre === 'tout'
                 ? d.type === 'projet'
-                : filtre === 'documents'
+                : filtre === 'autres'
+                  ? d.type === 'projet' && d.secondaire === '1'
+                  : filtre === 'documents'
                   ? d.type === 'document'
                   : filtre.startsWith('cat:')
                     ? (d.cat ?? '').split(' ').includes(filtre.slice(4))
@@ -1493,8 +1509,8 @@ const recherchables = [
       // ---------- Icônes du bureau : on les déplace comme sur un vrai Mac ----------
       const ulIcones = document.querySelector<HTMLElement>('.icones')!;
       const lisIcones = () => [...ulIcones.querySelectorAll<HTMLElement>(':scope > li')];
-      const CLE_MAC = 'bureau-icones-mac-v3';
-      const CLE_IOS = 'bureau-icones-iphone-v2';
+      const CLE_MAC = 'bureau-icones-mac-v4';
+      const CLE_IOS = 'bureau-icones-iphone-v3';
       const lire = (cle: string) => {
         try {
           return JSON.parse(localStorage.getItem(cle) ?? 'null');

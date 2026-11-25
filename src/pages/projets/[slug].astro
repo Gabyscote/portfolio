@@ -31,13 +31,12 @@ const { data } = projet;
 const { Content } = await render(projet);
 const base = siteBase;
 
+// La fiche du projet : quelques repères courts dans l'en-tête, puis les outils en étiquettes
 const fiche = [
-  ['Cadre', data.cadre],
   ['Mon rôle', data.role],
   ['Durée', data.duree],
+  ['Cadre', data.cadre],
   ...(data.equipe ? [['Équipe', data.equipe]] : []),
-  ['Outils', data.outils.join(', ')],
-  ['Livrables', data.livrables.join(', ')],
 ];
 ---
 
@@ -61,29 +60,32 @@ const fiche = [
           <p class="pf-tete__meta">{data.disciplines}, {data.annee}</p>
           <h1>{data.titre}</h1>
           <p class="pf-tete__resume">{data.resume}</p>
+          <dl class="pf-tete__fiche">
+            {
+              fiche.map(([t, v]) => (
+                <div>
+                  <dt>{t}</dt>
+                  <dd>{v}</dd>
+                </div>
+              ))
+            }
+          </dl>
+          <ul class="pf-tete__outils" aria-label="Outils utilisés">
+            {data.outils.map((o) => <li>{o}</li>)}
+          </ul>
+          {
+            data.lienSite && (
+              <a class="pf-btn pf-tete__site" href={data.lienSite} target="_blank" rel="noopener">
+                Voir le site en ligne
+              </a>
+            )
+          }
         </div>
         <Couverture src={data.couverture} alt={data.altCouverture} cadre={data.cadreCouverture} eager />
       </header>
 
-      <div class="pf-fiche">
-        <dl>
-          {
-            fiche.map(([t, v]) => (
-              <div>
-                <dt>{t}</dt>
-                <dd>{v}</dd>
-              </div>
-            ))
-          }
-        </dl>
-        {
-          data.lienSite && (
-            <a class="pf-btn pf-btn--plein" href={data.lienSite} target="_blank" rel="noopener">
-              Voir le site en ligne
-            </a>
-          )
-        }
-      </div>
+      <!-- Ce que j'ai produit, juste avant le récit -->
+      <p class="pf-livrables"><span>Livrables</span>{data.livrables.join(', ')}</p>
 
       <div class="recit">
         <Content />

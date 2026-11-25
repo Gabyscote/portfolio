@@ -15,6 +15,8 @@ interface Props {
 }
 
 const { src, alt, legende, taille = 'large', fond = false, navigateur = false } = Astro.props;
+// Une image beaucoup plus haute que large (capture de page entière) : on montre le haut, le reste s'ouvre au clic
+const longue = src.height / src.width > 1.9;
 const sizes = {
   texte: '(min-width: 48rem) 40rem, 100vw',
   large: '(min-width: 72rem) 64rem, 100vw',
@@ -22,7 +24,7 @@ const sizes = {
 };
 ---
 
-<figure class:list={['fig', `fig--${taille}`, { 'fig--fond': fond, 'fig--navigateur': navigateur }]}>
+<figure class:list={['fig', `fig--${taille}`, { 'fig--fond': fond, 'fig--navigateur': navigateur, 'fig--longue': longue }]}>
   <div class="fig__cadre">
     {navigateur && <span class="navigateur__barre" aria-hidden="true"><i></i><i></i><i></i></span>}
     <Image src={src} alt={alt} widths={[640, 1000, 1400, 2000]} sizes={sizes[taille]} />

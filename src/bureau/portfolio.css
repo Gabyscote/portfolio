@@ -115,10 +115,88 @@
 
 .pf-intro {
   display: grid;
-  align-content: center;
-  gap: 1.5rem;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 4.5rem);
   min-height: min(44rem, 88svh);
-  padding: clamp(3rem, 8vw, 6rem) var(--marge);
+  padding: clamp(3rem, 7vw, 5.5rem) var(--marge);
+}
+
+.pf-intro__texte-bloc {
+  display: grid;
+  gap: 1.4rem;
+}
+
+/* La mosaïque : chaque projet en vignette, sur sa couleur */
+.pf-mosaique {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.pf-mosaique ul {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pf-mosaique li {
+  animation: pf-monte 0.7s var(--ease) both;
+}
+
+.pf-mosaique li:nth-child(2) { animation-delay: 0.06s; }
+.pf-mosaique li:nth-child(3) { animation-delay: 0.12s; }
+.pf-mosaique li:nth-child(4) { animation-delay: 0.18s; }
+.pf-mosaique li:nth-child(5) { animation-delay: 0.24s; }
+.pf-mosaique li:nth-child(6) { animation-delay: 0.3s; }
+
+.pf-mosaique a {
+  display: grid;
+  gap: 0.45rem;
+  color: var(--encre);
+  text-decoration: none;
+}
+
+.pf-mosaique__image {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  padding: 12%;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--c);
+  box-shadow: 0 10px 24px -14px rgb(0 0 0 / 0.6);
+  transition: transform 0.35s var(--ease), box-shadow 0.35s;
+}
+
+.pf-mosaique__image img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.pf-mosaique a:hover .pf-mosaique__image,
+.pf-mosaique a:focus-visible .pf-mosaique__image {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 30px -14px rgb(0 0 0 / 0.65);
+}
+
+.pf-mosaique__nom {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.pf-mosaique__autres {
+  justify-self: start;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--encre);
+  text-underline-offset: 0.2em;
 }
 
 .pf-intro__nom {
@@ -128,8 +206,8 @@
 }
 
 .pf-intro h1 {
-  max-width: 15ch;
-  font-size: clamp(2.6rem, 7.2vw, 6.4rem);
+  max-width: 16ch;
+  font-size: clamp(2.3rem, 4.6vw, 4.4rem);
 }
 
 .pf-intro__texte {
@@ -398,7 +476,7 @@
 
 .pf-tete__texte {
   display: grid;
-  gap: 1.1rem;
+  gap: 1rem;
   animation: pf-monte 0.8s 0.45s var(--ease) both;
 }
 
@@ -420,7 +498,7 @@
 }
 
 .pf-tete h1 {
-  font-size: clamp(2.8rem, 7vw, 6.2rem);
+  font-size: clamp(2.5rem, 5.6vw, 5rem);
   letter-spacing: -0.035em;
 }
 
@@ -437,41 +515,76 @@
   color: var(--encre);
 }
 
-.pf-fiche {
+/* La fiche du projet, dans l'en-tête : des repères courts séparés par un filet,
+   dans la couleur du projet, plutôt qu'un bloc à part */
+.pf-tete__fiche {
   display: grid;
-  gap: 1.25rem;
-  justify-items: start;
-  padding: clamp(1.75rem, 4vw, 2.75rem) var(--marge);
-  border-bottom: 1px solid rgb(29 26 38 / 0.1);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  margin: 0.6rem 0 0;
+  border-top: 1px solid color-mix(in srgb, var(--encre) 22%, transparent);
 }
 
-.pf-fiche dl {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-  gap: 1.25rem 2rem;
-  width: 100%;
-  margin: 0;
+.pf-tete__fiche > div {
+  padding: 0.8rem 1.2rem 0.8rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--encre) 22%, transparent);
 }
 
-.pf-fiche dt {
-  font-size: 13.5px;
+/* Un repère seul sur sa ligne prend toute la largeur */
+.pf-tete__fiche > div:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
+.pf-tete__fiche dt {
+  font-size: 12.5px;
   font-weight: 600;
   color: var(--encre-2);
 }
 
-.pf-fiche dd {
+.pf-tete__fiche dd {
+  margin: 0.15rem 0 0;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+/* Les outils, en étiquettes */
+.pf-tete__outils {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
   margin: 0.2rem 0 0;
-  font-size: 15.5px;
-  line-height: 1.45;
+  padding: 0;
+  list-style: none;
 }
 
-.pf-fiche .pf-btn--plein {
-  background: var(--c);
-  color: #fff;
+.pf-tete__outils li {
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--encre) 12%, transparent);
+  font-size: 13.5px;
+  font-weight: 600;
 }
 
-.pf-projet[data-encre='foncee'] .pf-fiche .pf-btn--plein {
-  color: #1d1a26;
+.pf-tete__site {
+  justify-self: start;
+  margin-top: 0.4rem;
+}
+
+/* Les livrables : une ligne discrète avant le récit */
+.pf-livrables {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.8rem;
+  margin: 0;
+  padding: 1.2rem var(--marge);
+  border-bottom: 1px solid rgb(29 26 38 / 0.1);
+  font-size: 15px;
+  color: var(--encre-2);
+}
+
+.pf-livrables span {
+  font-weight: 700;
+  color: var(--encre);
 }
 
 /* ---------- Le récit, en blocs : texte d'un côté, images de l'autre ---------- */
@@ -592,8 +705,17 @@
   border-radius: 10px;
 }
 
-/* Les images très hautes : on montre le haut, l'image entière s'ouvre au clic */
-.pf .fig__cadre:has(img[height]) {
+/* Une image s'affiche toujours en entier, sans dépasser la hauteur de l'écran */
+.pf .fig:not(.fig--navigateur):not(.fig--longue):not(.fig--fond) .fig__cadre img {
+  width: auto;
+  max-width: 100%;
+  max-height: min(80svh, 48rem);
+  display: block;
+  margin-inline: auto;
+}
+
+/* Seules les images très allongées (pages entières) sont coupées : l'image complète s'ouvre au clic */
+.pf .fig--longue .fig__cadre {
   max-height: min(78svh, 46rem);
   overflow: hidden;
 }
@@ -858,6 +980,32 @@
   color: var(--encre);
 }
 
+/* Les repères pratiques : où j'habite, où j'étudie */
+.pf-reperes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, auto));
+  justify-content: start;
+  gap: 0.4rem 2.2rem;
+  margin: 0.8rem 0 0;
+}
+
+.pf-reperes dt {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--encre-2);
+}
+
+.pf-reperes dd {
+  margin: 0.1rem 0 0;
+  font-weight: 600;
+}
+
+@container portfolio (max-width: 38rem) {
+  .pf-reperes {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .pf-apropos__photo {
   width: 100%;
   aspect-ratio: 4 / 5;
@@ -1102,6 +1250,7 @@
    Fenêtre étroite ou mobile : tout s'empile
    ========================================================================== */
 @container portfolio (max-width: 60rem) {
+  .pf-intro,
   .pf-ecran__lien,
   .pf-tete,
   .pf .bloc--media,

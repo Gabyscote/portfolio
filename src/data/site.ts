@@ -12,6 +12,10 @@ export const site = {
   cv: `${base}CV_Gabriel_Roger.pdf?v=5`,
   // La même version sur fond blanc, pour imprimer sans vider la cartouche
   cvImpression: `${base}CV_Gabriel_Roger_impression.pdf?v=1`,
+  // Où j'habite, où j'étudie : deux choses distinctes
+  habite: 'Yvetot (76)',
+  etudie: 'Need for School, Rouen',
+  mobilite: 'Permis B, véhiculé',
   couleur: '#6B3BFF',
   description:
     "Portfolio de Gabriel Roger, étudiant en Bachelor Designer Numérique à NFS Rouen. Identité visuelle, affiches, interfaces, et l'intégration web qui va avec. En recherche d'alternance.",

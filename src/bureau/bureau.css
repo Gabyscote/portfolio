@@ -384,6 +384,12 @@ button {
   font-weight: 500;
 }
 
+.carte__lieu {
+  margin: 0.15rem 0 0;
+  font-size: 12.5px;
+  color: var(--texte-2);
+}
+
 .carte__accroche {
   margin: 0;
 }
@@ -951,6 +957,13 @@ button {
 .mail__ligne span {
   color: var(--texte-2);
   min-width: 3rem;
+}
+
+.mail__lieux {
+  margin: -0.5rem 0 0;
+  padding: 0 1.25rem 1rem;
+  font-size: 13px;
+  color: var(--texte-2);
 }
 
 .mail__corps {
