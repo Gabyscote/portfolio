@@ -631,6 +631,37 @@ const recherchables = [
         f.querySelector<HTMLElement>('.fenetre__titre, .outils__adresse')?.focus({ preventScroll: true });
 
       // Une fenêtre reste toujours entière à l'écran (petits écrans, fenêtre du navigateur réduite)
+      // ---------- Comme sur un Mac, chaque fenêtre retrouve la taille et la place qu'on lui a données ----------
+      const CLE_FENETRES = 'bureau-fenetres-v1';
+      const memoire = (): Record<string, { l: number; t: number; w: number; h: number; a: boolean }> => {
+        try {
+          return JSON.parse(localStorage.getItem(CLE_FENETRES) ?? '{}') ?? {};
+        } catch {
+          return {};
+        }
+      };
+      function retenir(f: HTMLElement) {
+        if (mobile.matches || !f.id) return;
+        const m = memoire();
+        const a = f.classList.contains('est-agrandie');
+        const prec = m[f.id];
+        // Agrandie : on garde la taille d'avant pour pouvoir la rétablir
+        m[f.id] = a && prec
+          ? { ...prec, a }
+          : { l: f.offsetLeft, t: f.offsetTop, w: f.offsetWidth, h: f.offsetHeight, a };
+        try {
+          localStorage.setItem(CLE_FENETRES, JSON.stringify(m));
+        } catch {}
+      }
+      function retrouver(f: HTMLElement) {
+        if (mobile.matches) return;
+        const g = memoire()[f.id];
+        if (!g) return;
+        Object.assign(f.style, { left: `${g.l}px`, top: `${g.t}px`, width: `${g.w}px`, height: `${g.h}px` });
+        f.classList.toggle('est-agrandie', g.a);
+      }
+      document.querySelectorAll<HTMLElement>('.fenetre').forEach(retrouver);
+
       function recadrer(f: HTMLElement) {
         if (mobile.matches || f.hidden || f.classList.contains('est-agrandie')) return;
         const marge = 8;
@@ -845,6 +876,7 @@ const recherchables = [
         f.classList.add('est-anime');
         f.classList.toggle('est-agrandie', etat);
         setTimeout(() => f.classList.remove('est-anime'), 320);
+        retenir(f);
         devant(f);
       }
 
@@ -1044,13 +1076,18 @@ const recherchables = [
               // On garde une position de retour raisonnable
               f.style.top = `${HAUT + 24}px`;
               basculerAgrandie(f, true);
-            }
+            } else if (aBouge) retenir(f);
           },
         );
       }
 
       function redimensionner(f: HTMLElement, cote: string, poignee: HTMLElement, e: PointerEvent) {
         const r = f.getBoundingClientRect();
+        // Une fenêtre agrandie qu'on redimensionne redevient une fenêtre normale, depuis sa taille actuelle
+        if (f.classList.contains('est-agrandie')) {
+          Object.assign(f.style, { left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px` });
+          f.classList.remove('est-agrandie');
+        }
         const min = { l: 320, h: 160 };
         const d = { x: e.clientX, y: e.clientY };
         f.classList.add('est-redimensionnee');
@@ -1074,7 +1111,10 @@ const recherchables = [
             }
             Object.assign(f.style, { left: `${left}px`, top: `${top}px`, width: `${width}px`, height: `${height}px` });
           },
-          () => f.classList.remove('est-redimensionnee'),
+          () => {
+            f.classList.remove('est-redimensionnee');
+            retenir(f);
+          },
         );
       }
 
@@ -1816,6 +1856,7 @@ const recherchables = [
       });
       document.addEventListener('astro:after-swap', () => {
         const f = fenPortfolio();
+        if (f && !geometrie) retrouver(f);
         if (!f || !geometrie) return;
         f.setAttribute('style', geometrie.style);
         f.classList.toggle('est-agrandie', geometrie.agrandie);

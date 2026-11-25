@@ -46,11 +46,10 @@ const fiche = [
     titre={`${data.titre}, étude de cas`}
     navigateur
     ouverte
-    agrandie
     fermerVers={base}
     chemin={[{ nom: 'Portfolio', href: `${base}portfolio/` }, { nom: data.court }]}
     couleur={data.couleur}
-    position="left:6%;top:calc(2rem + 3%);width:min(80rem, 88vw);height:calc(100svh - 10rem)"
+    position="left:max(1rem, 3.5vw);top:calc(var(--haut) + 0.9rem);width:min(84rem, 93vw);height:calc(100svh - var(--haut) - var(--bas) - 1.8rem)"
   >
     <article class="pf pf-projet" style={`--c:${data.couleur}`} data-encre={data.encre}>
       <div class="pf-ouverture" aria-hidden="true"></div>

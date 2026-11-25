@@ -17,11 +17,10 @@ const base = siteBase;
     titre="À propos de Gabriel Roger"
     navigateur
     ouverte
-    agrandie
     fermerVers={base}
     chemin={[{ nom: 'Portfolio', href: `${base}portfolio/` }, { nom: 'À propos' }]}
     couleur={site.couleur}
-    position="left:6%;top:calc(2rem + 3%);width:min(80rem, 88vw);height:calc(100svh - 10rem)"
+    position="left:max(1rem, 3.5vw);top:calc(var(--haut) + 0.9rem);width:min(84rem, 93vw);height:calc(100svh - var(--haut) - var(--bas) - 1.8rem)"
   >
     <article class="pf pf-apropos" style={`--c:${site.couleur}`}>
       <header class="pf-apropos__tete">

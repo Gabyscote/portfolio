@@ -20,11 +20,10 @@ const base = siteBase;
     titre="Portfolio de Gabriel Roger"
     navigateur
     ouverte
-    agrandie
     fermerVers={base}
     chemin={[{ nom: 'Portfolio' }]}
     couleur={site.couleur}
-    position="left:6%;top:calc(2rem + 3%);width:min(80rem, 88vw);height:calc(100svh - 10rem)"
+    position="left:max(1rem, 3.5vw);top:calc(var(--haut) + 0.9rem);width:min(84rem, 93vw);height:calc(100svh - var(--haut) - var(--bas) - 1.8rem)"
   >
     <div class="pf pf-accueil" data-couleurs style={`--fond:${site.couleur}`} data-encre="claire">
       <section class="pf-intro" data-couleur={site.couleur} data-ton="claire">
