@@ -1,0 +1,46 @@
+---
+titre: Une carrière F1 sur Assetto Corsa
+court: "Launcher F1"
+resume: "Assetto Corsa permet de courir en F1, mais pas de vivre une saison. J'ai conçu et codé un launcher qui ajoute une carrière complète autour du jeu : calendrier, écuries, argent, développement de la voiture."
+annee: 2026
+cadre: Projet personnel
+role: Conception, design de l'interface, développement
+duree: Plusieurs semaines, en automne 2026
+equipe: Seul, en codant avec l'aide de Claude
+outils: [Node.js, HTML, CSS, JavaScript, Assetto Corsa, Claude]
+livrables: [Application de bureau pour Windows]
+disciplines: Interface, application
+couleur: '#E10600'
+nomCouleur: Rouge F1
+encre: claire
+couverture: ../../assets/projets/launcher-f1/f1_course.webp
+cadreCouverture: libre
+altCouverture: "L'écran Prochaine course du launcher : le Grand Prix de Grande-Bretagne, le briefing de l'ingénieur et le classement des pilotes."
+ordre: 13
+categories: [interface]
+secondaire: true
+---
+
+import Figure from '../../components/Figure.astro';
+import dev from '../../assets/projets/launcher-f1/f1_developpement.webp';
+import constructeurs from '../../assets/projets/launcher-f1/f1_constructeurs.webp';
+
+## Le point de départ
+
+Je fais de la F1 sur Assetto Corsa avec mon volant, contre l'IA. Le jeu propose des courses isolées, mais rien ne relie un Grand Prix au suivant : pas de saison, pas de classement, pas de raison de rouler mieux que la semaine dernière. J'ai voulu construire ce qui manquait, et j'ai commencé par un launcher qui prépare et lance chaque course à ma place.
+
+## Une carrière autour du jeu
+
+Le launcher s'ouvre comme un menu de jeu vidéo : carrière pilote, championnat, course rapide, contre-la-montre, showroom. En carrière, chaque semaine de course suit le même fil. Je lis le briefing de l'ingénieur, avec l'objectif, la stratégie et mon rival, je lance le Grand Prix, puis les résultats reviennent dans le classement des pilotes et celui des constructeurs.
+
+<Figure src={constructeurs} alt="Le classement des constructeurs de la saison 2014 : Mercedes, Ferrari et Red Bull en tête, avec les victoires et les points de chaque écurie." legende="Le classement des constructeurs, mis à jour après chaque course." />
+
+## Une voiture qu'on fait progresser
+
+Pour qu'une saison ait un enjeu, j'ai ajouté un budget : un salaire par course, des primes selon mes résultats et un objectif à atteindre. Cet argent sert à améliorer la voiture dans cinq domaines, de l'aérodynamique à la fiabilité. Chaque amélioration retire du poids ou de la bride moteur, dans le jeu. Les écuries IA se développent aussi : celles qui sont derrière rattrapent un peu leur retard.
+
+<Figure src={dev} alt="L'onglet Développement : l'argent disponible, le salaire par course, l'objectif de la saison, et cinq domaines de la voiture avec leur niveau et leur prix." legende="L'onglet Développement : le budget, et ce qu'on peut améliorer avant la prochaine course." />
+
+## Ce que j'en retiens
+
+Ce projet m'a obligé à penser l'interface comme un jeu : peu de texte, des écrans qui se lisent vite, une identité sombre et rouge reprise de l'univers de la F1. Il m'a aussi appris à garder l'ensemble cohérent quand les fonctions s'accumulent. Je l'ai codé avec l'aide de Claude : j'ai décidé de ce que le launcher devait faire et de son apparence, et l'IA m'a permis d'en faire un outil que j'utilise vraiment pour courir.
